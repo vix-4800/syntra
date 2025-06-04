@@ -1,0 +1,32 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+define('PACKAGE_ROOT', dirname(__DIR__));
+
+if (!file_exists(__DIR__ . '/bootstrap.php')) {
+    fwrite(STDERR, "Bootstrap file missing. Reinstall package.\n");
+    exit(1);
+}
+
+require_once __DIR__ . '/bootstrap.php';
+
+$autoload = find_composer_autoload(PACKAGE_ROOT);
+if ($autoload === null) {
+    fwrite(STDERR, "ERROR: Composer autoloader not found.\n");
+    fwrite(STDERR, "Run 'composer install' in the project root.\n");
+    exit(1);
+}
+
+require $autoload;
+
+use Symfony\Component\Console\Application;
+
+try {
+    $application = new Application('Syntra', '1.0.0');
+    $application->run();
+} catch (Throwable $e) {
+    fwrite(STDERR, "CRITICAL ERROR: " . $e->getMessage() . "\n");
+    exit(1);
+}
