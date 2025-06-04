@@ -1,0 +1,12 @@
+/.phpunit.cache
+/.php-cs-fixer.cache
+
+/vendor
+
+.phpactor.json
+.phpunit.result.cache
+
+/.idea
+/.vscode
+
+*.log

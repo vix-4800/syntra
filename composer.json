@@ -1,0 +1,47 @@
+{
+	"name": "vix/syntra",
+	"description": "Syntra — unified CLI for PHP project health checks, code refactoring, and extensible framework integrations.",
+	"type": "library",
+	"license": "MIT",
+	"keywords": [
+		"php",
+		"cli",
+		"health-check",
+		"refactor",
+		"phpstan",
+		"php-cs-fixer",
+		"rector",
+		"extension"
+	],
+	"homepage": "https://github.com/vix-4800/syntra",
+	"authors": [
+		{
+			"name": "Anton Vix",
+			"email": "Gordan.ei@protonmail.ch",
+			"homepage": "https://github.com/vix-4800",
+			"role": "maintainer"
+		}
+	],
+	"require": {
+		"php": "^8.2",
+		"symfony/console": "^7.3",
+		"symfony/process": "^7.3",
+		"symfony/filesystem": "^7.3",
+		"symfony/yaml": "^7.3"
+	},
+	"autoload": {
+		"psr-4": {
+			"Vix\\Syntra\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Pulse\\Tests\\": "tests/"
+		}
+	},
+	"bin": [
+		"bin/syntra"
+	],
+	"minimum-stability": "stable",
+	"prefer-stable": true
+}
