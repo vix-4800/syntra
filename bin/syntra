@@ -21,7 +21,7 @@ if ($autoload === null) {
 
 require $autoload;
 
-use Symfony\Component\Console\Application;
+use Vix\Syntra\Application;
 
 try {
     $application = new Application('Syntra', '1.0.0');
