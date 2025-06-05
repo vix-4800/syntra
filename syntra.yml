@@ -32,7 +32,6 @@ refactor:
     enabled: true
   rector:
     enabled: true
-    path: "vendor/bin/rector"
     config: "rector.php"
 
 extensions:

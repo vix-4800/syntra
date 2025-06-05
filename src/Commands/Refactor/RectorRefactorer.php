@@ -20,6 +20,17 @@ class RectorRefactorer extends SyntraRefactorCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        return 1;
+        $result = $this->processRunner->run(
+            find_composer_bin('rector', $this->configLoader->getProjectRoot()),
+            [
+                'process',
+                $this->configLoader->getProjectRoot(),
+                "--config=" . $this->configLoader->get('refactor.rector.config'),
+            ],
+        );
+
+        $this->output->success('Rector refactoring completed.');
+
+        return $result['exitCode'];
     }
 }
