@@ -13,9 +13,9 @@ use Vix\Syntra\Utils\ProcessRunner;
 
 class Application extends SymfonyApplication
 {
-    private ConfigLoader $configLoader;
-    private ProcessRunner $processRunner;
-    private ExtensionManager $extensionManager;
+    private readonly ConfigLoader $configLoader;
+    private readonly ProcessRunner $processRunner;
+    private readonly ExtensionManager $extensionManager;
 
     public function __construct(string $name = 'Syntra', string $version = '1.0.0')
     {

@@ -9,8 +9,8 @@ use Vix\Syntra\Utils\ProcessRunner;
 class ComposerChecker
 {
     public function __construct(
-        private ProcessRunner $processRunner,
-        private string $projectRoot
+        private readonly ProcessRunner $processRunner,
+        private readonly string $projectRoot
     ) {
         //
     }

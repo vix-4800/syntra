@@ -9,10 +9,10 @@ use Vix\Syntra\Utils\ProcessRunner;
 class PhpStanChecker
 {
     public function __construct(
-        private ProcessRunner $processRunner,
-        private string $projectRoot,
-        private int $level = 5,
-        private string $configPath = 'phpstan.neon'
+        private readonly ProcessRunner $processRunner,
+        private readonly string $projectRoot,
+        private readonly int $level = 5,
+        private readonly string $configPath = 'phpstan.neon'
     ) {
         //
     }
