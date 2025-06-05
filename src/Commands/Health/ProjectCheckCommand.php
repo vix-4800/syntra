@@ -25,30 +25,50 @@ class ProjectCheckCommand extends SyntraCommand
 
         $projectRoot = $this->configLoader->getProjectRoot();
 
-        // 1) Composer
-        $this->output->text('→ Checking Composer dependencies...');
-        $composerChecker = new ComposerChecker($this->processRunner, $projectRoot);
-        $result = $composerChecker->run();
+        $checks = [];
 
-        if ($result['status'] === 'ok') {
-            $this->output->success('Composer: OK');
-        } elseif ($result['status'] === 'warning') {
-            $this->output->warning('Composer: outdated packages found');
+        $checks[] = [
+            'name' => 'Composer',
+            'checker' => new ComposerChecker($this->processRunner, $projectRoot),
+        ];
 
-            foreach ($result['messages'] as $msg) {
-                $this->output->writeln("  - $msg");
+        $checks[] = [
+            'name' => 'PHPStan',
+            'checker' => new PhpStanChecker(
+                $this->processRunner,
+                $projectRoot,
+                (int)($this->configLoader->get('tools.phpstan.level', 5)),
+                $this->configLoader->get('tools.phpstan.config', 'phpstan.neon'),
+            ),
+        ];
+
+        $hasErrors = false;
+        $hasWarnings = false;
+
+        foreach ($checks as $item) {
+            $name = $item['name'];
+            $result = $item['checker']->run();
+
+            if ($result['status'] === 'ok') {
+                $this->output->success("$name: OK");
+            } elseif ($result['status'] === 'warning') {
+                $hasWarnings = true;
+                $this->output->warning("$name: warning(s)");
+                foreach ($result['messages'] as $msg) {
+                    $this->output->writeln("  - $msg");
+                }
+            } else {
+                $hasErrors = true;
+                $this->output->error("$name: ERROR");
+                foreach ($result['messages'] as $msg) {
+                    $this->output->writeln("  - $msg");
+                }
             }
-        } else {
-            $this->output->error('Composer: ERROR');
-
-            foreach ($result['messages'] as $msg) {
-                $this->output->writeln("  - $msg");
-            }
-
-            return self::FAILURE;
         }
 
-        // TODO: сюда позже добавим PHPStan, CS-Fixer, PHPUnit, SecurityChecker и т.д.
+        if ($hasErrors) {
+            return self::FAILURE;
+        }
 
         $this->output->success('Project check completed without critical errors.');
         return self::SUCCESS;
