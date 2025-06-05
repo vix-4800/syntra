@@ -1,0 +1,39 @@
+tools:
+  phpstan:
+    enabled: true
+    path: "vendor/bin/phpstan"
+    level: 8
+  php_cs_fixer:
+    enabled: true
+    path: "vendor/bin/php-cs-fixer"
+    config: ".php_cs.dist"
+  security_checker:
+    enabled: true
+    path: "vendor/bin/security-checker"
+  phpunit:
+    enabled: true
+    path: "vendor/bin/phpunit"
+    config: "phpunit.xml"
+
+checks:
+  composer:
+    enabled: true
+
+refactor:
+  php_cs_fixer:
+    enabled: true
+  fix_imports:
+    enabled: true
+  fix_var_comments:
+    enabled: true
+  add_file_docblocks:
+    enabled: true
+  add_class_docblocks:
+    enabled: true
+  rector:
+    enabled: true
+    path: "vendor/bin/rector"
+    config: "rector.php"
+
+extensions:
+  # -
