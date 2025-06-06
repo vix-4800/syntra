@@ -10,6 +10,11 @@ use Vix\Syntra\SyntraCommand;
 
 class ProjectCheckCommand extends SyntraCommand
 {
+    public function isAvailable(): bool
+    {
+        return true;
+    }
+
     protected function configure(): void
     {
         parent::configure();

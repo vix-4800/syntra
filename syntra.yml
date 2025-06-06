@@ -26,9 +26,7 @@ refactor:
     enabled: true
   fix_var_comments:
     enabled: true
-  add_file_docblocks:
-    enabled: true
-  add_class_docblocks:
+  add_missing_docblocks:
     enabled: true
   rector:
     enabled: true

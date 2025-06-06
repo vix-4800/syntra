@@ -10,6 +10,11 @@ use Vix\Syntra\Exceptions\CommandException;
 
 class RectorRefactorer extends SyntraRefactorCommand
 {
+    public function isAvailable(): bool
+    {
+        return $this->configLoader->get('refactor.rector.enabled', false);
+    }
+
     protected function configure(): void
     {
         parent::configure();

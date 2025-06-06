@@ -35,7 +35,6 @@ class Application extends SymfonyApplication
         $namespacePrefix = 'Vix\\Syntra\\Commands\\';
 
         $commands = [];
-
         $phpFiles = (new FileHelper())->collectFiles($directory);
 
         foreach ($phpFiles as $filePath) {

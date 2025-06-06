@@ -15,6 +15,11 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ImportRefactorer extends SyntraRefactorCommand
 {
+    public function isAvailable(): bool
+    {
+        return $this->configLoader->get('refactor.fix_imports.enabled', false);
+    }
+
     protected function configure(): void
     {
         parent::configure();

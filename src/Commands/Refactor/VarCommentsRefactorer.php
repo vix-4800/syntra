@@ -17,6 +17,11 @@ use Vix\Syntra\Utils\FileHelper;
  */
 class VarCommentsRefactorer extends SyntraRefactorCommand
 {
+    public function isAvailable(): bool
+    {
+        return $this->configLoader->get('refactor.fix_var_comments.enabled', false);
+    }
+
     protected function configure(): void
     {
         parent::configure();

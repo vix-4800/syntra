@@ -9,6 +9,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class PhpCsFixerRefactorer extends SyntraRefactorCommand
 {
+    public function isAvailable(): bool
+    {
+        return $this->configLoader->get('refactor.php_cs_fixer.enabled', false);
+    }
+
     protected function configure(): void
     {
         parent::configure();
