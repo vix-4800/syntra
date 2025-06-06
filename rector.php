@@ -10,11 +10,11 @@ use Rector\CodingStyle\Rector\ClassMethod\NewlineBeforeNewAssignSetRector;
 use Rector\Config\RectorConfig;
 use Rector\DeadCode\Rector\ClassMethod\RemoveUnusedPrivateMethodRector;
 use Rector\DeadCode\Rector\Property\RemoveUnusedPrivatePropertyRector;
-use Vix\Syntra\Commands\Refactor\Rector\CanHelpersRector;
-use Vix\Syntra\Commands\Refactor\Rector\DeleteAllShortcutRector;
-use Vix\Syntra\Commands\Refactor\Rector\FindOneFindAllShortcutRector;
-use Vix\Syntra\Commands\Refactor\Rector\FindOneIdShortcutRector;
-use Vix\Syntra\Commands\Refactor\Rector\UpdateAllShortcutRector;
+use Vix\Syntra\Commands\Rector\CanHelpersRector;
+use Vix\Syntra\Commands\Rector\DeleteAllShortcutRector;
+use Vix\Syntra\Commands\Rector\FindOneFindAllShortcutRector;
+use Vix\Syntra\Commands\Rector\FindOneIdShortcutRector;
+use Vix\Syntra\Commands\Rector\UpdateAllShortcutRector;
 
 return RectorConfig::configure()
     ->withRootFiles()

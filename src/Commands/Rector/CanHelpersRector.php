@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vix\Syntra\Commands\Refactor\Rector;
+namespace Vix\Syntra\Commands\Rector;
 
 use PhpParser\Node;
 use PhpParser\Node\Arg;

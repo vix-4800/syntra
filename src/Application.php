@@ -25,22 +25,39 @@ class Application extends SymfonyApplication
         $this->processRunner = new ProcessRunner();
         $this->extensionManager = new ExtensionManager($this->configLoader);
 
-        $this->registerCoreCommands();
+        $this->configLoader->load();
+
+        $this->registerCommandGroup([
+            'directory' => PACKAGE_ROOT . '/src/Commands/Refactor',
+            'namespace' => 'Vix\\Syntra\\Commands\\Refactor',
+            'enabled' => true
+        ]);
+
+        $this->registerCommandGroup([
+            'directory' => PACKAGE_ROOT . '/src/Commands/Rector',
+            'namespace' => 'Vix\\Syntra\\Commands\\Rector\\',
+            'enabled' => $this->configLoader->get('refactor.rector.enabled', false)
+        ]);
+
         $this->registerExtensionCommands();
     }
 
-    private function registerCoreCommands(): void
+    /**
+     * @param array{enabled:bool, directory:string, namespace:string} $options
+     */
+    private function registerCommandGroup(array $options): void
     {
-        $directory = PACKAGE_ROOT . '/src/Commands';
-        $namespacePrefix = 'Vix\\Syntra\\Commands\\';
+        if (!$options['enabled']) {
+            return;
+        }
 
         $commands = [];
-        $phpFiles = (new FileHelper())->collectFiles($directory);
+        $phpFiles = (new FileHelper())->collectFiles($options['directory']);
 
         foreach ($phpFiles as $filePath) {
             // Derive the class name from the file path
-            $relativePath = substr($filePath, strlen($directory) + 1, -4);
-            $class = $namespacePrefix . str_replace(['/', '\\'], '\\', $relativePath);
+            $relativePath = substr($filePath, strlen($options['directory']) + 1, -4);
+            $class = $options['namespace'] . str_replace(['/', '\\'], '\\', $relativePath);
 
             if (!class_exists($class)) {
                 continue;

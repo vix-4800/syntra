@@ -1,18 +1,11 @@
 tools:
   phpstan:
     enabled: true
-    path: "vendor/bin/phpstan"
     level: 8
-  php_cs_fixer:
-    enabled: true
-    path: "vendor/bin/php-cs-fixer"
-    config: ".php_cs.dist"
   security_checker:
     enabled: true
-    path: "vendor/bin/security-checker"
   phpunit:
     enabled: true
-    path: "vendor/bin/phpunit"
     config: "phpunit.xml"
 
 checks:
@@ -21,16 +14,17 @@ checks:
 
 refactor:
   php_cs_fixer:
-    enabled: true
+    enabled: false
+    config: ".php_cs.dist"
+  rector:
+    enabled: false
+    config: "rector.php"
   fix_imports:
     enabled: true
   fix_var_comments:
     enabled: true
   add_missing_docblocks:
     enabled: true
-  rector:
-    enabled: true
-    config: "rector.php"
 
 extensions:
   # -
