@@ -13,7 +13,8 @@ class RectorRefactorer extends SyntraRefactorCommand
     {
         parent::configure();
 
-        $this->setName('refactor:rector')
+        $this
+            ->setName('refactor:rector')
             ->setDescription('')
             ->addForceOption();
     }

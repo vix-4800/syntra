@@ -13,7 +13,8 @@ class DocblockRefactorer extends SyntraRefactorCommand
     {
         parent::configure();
 
-        $this->setName('refactor:docblocks')
+        $this
+            ->setName('refactor:docblocks')
             ->setDescription('')
             ->addForceOption();
     }

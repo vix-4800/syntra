@@ -13,7 +13,8 @@ class PhpCsFixerRefactorer extends SyntraRefactorCommand
     {
         parent::configure();
 
-        $this->setName('refactor:cs-fixer')
+        $this
+            ->setName('refactor:cs-fixer')
             ->setDescription('')
             ->addForceOption();
     }

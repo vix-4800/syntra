@@ -22,8 +22,6 @@ abstract class SyntraCommand extends Command
 
     protected bool $dryRun = false;
 
-
-
     public function __construct(
         protected ConfigLoader $configLoader,
         protected ProcessRunner $processRunner,
