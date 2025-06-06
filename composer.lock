@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "86e5f515fd35bc5fbdfbc657832d36db",
+    "content-hash": "3a0de9a9e98ee4501e2503d459e65018",
     "packages": [
         {
             "name": "phpstan/phpstan",
@@ -2578,6 +2578,54 @@
                 }
             ],
             "time": "2024-10-20T05:08:20+00:00"
+        },
+        {
+            "name": "symplify/rule-doc-generator",
+            "version": "12.2.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symplify/rule-doc-generator.git",
+                "reference": "0bed481b115cf801edff518ac0d27be2dd182f62"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symplify/rule-doc-generator/zipball/0bed481b115cf801edff518ac0d27be2dd182f62",
+                "reference": "0bed481b115cf801edff518ac0d27be2dd182f62",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2"
+            },
+            "bin": [
+                "bin/rule-doc-generator"
+            ],
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "stubs"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Documentation generator for coding standard or static analysis rules",
+            "support": {
+                "issues": "https://github.com/symplify/rule-doc-generator/issues",
+                "source": "https://github.com/symplify/rule-doc-generator/tree/12.2.5"
+            },
+            "funding": [
+                {
+                    "url": "https://www.paypal.me/rectorphp",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/tomasvotruba",
+                    "type": "github"
+                }
+            ],
+            "abandoned": true,
+            "time": "2024-08-08T12:13:41+00:00"
         },
         {
             "name": "theseer/tokenizer",
