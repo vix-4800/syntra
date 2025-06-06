@@ -43,12 +43,15 @@ class Application extends SymfonyApplication
             $relativePath = substr($filePath, strlen($directory) + 1, -4);
             $class = $namespacePrefix . str_replace(['/', '\\'], '\\', $relativePath);
 
+            if (!class_exists($class)) {
+                continue;
+            }
+
             // Ensure it's a concrete subclass of Symfony Command
             $reflectionClass = new ReflectionClass($class);
 
             if (
-                class_exists($class)
-                && is_subclass_of($class, SyntraCommand::class)
+                is_subclass_of($class, SyntraCommand::class)
                 && !$reflectionClass->isAbstract()
             ) {
                 $constructor = $reflectionClass->getConstructor();
