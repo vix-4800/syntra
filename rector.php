@@ -10,6 +10,11 @@ use Rector\CodingStyle\Rector\ClassMethod\NewlineBeforeNewAssignSetRector;
 use Rector\Config\RectorConfig;
 use Rector\DeadCode\Rector\ClassMethod\RemoveUnusedPrivateMethodRector;
 use Rector\DeadCode\Rector\Property\RemoveUnusedPrivatePropertyRector;
+use Vix\Syntra\Commands\Refactor\Rector\CanHelpersRector;
+use Vix\Syntra\Commands\Refactor\Rector\DeleteAllShortcutRector;
+use Vix\Syntra\Commands\Refactor\Rector\FindOneFindAllShortcutRector;
+use Vix\Syntra\Commands\Refactor\Rector\FindOneIdShortcutRector;
+use Vix\Syntra\Commands\Refactor\Rector\UpdateAllShortcutRector;
 
 return RectorConfig::configure()
     ->withRootFiles()
@@ -29,9 +34,11 @@ return RectorConfig::configure()
         RemoveUnusedPrivateMethodRector::class, // Removes unused private methods
         RemoveUnusedPrivatePropertyRector::class, // Removes unused private properties
         NewlineBeforeNewAssignSetRector::class, // Enforces newline style before `new` assignments
-        // FindOneFindAllShortcutRector::class, // Converts Model::find()->where([...])->one() or all() to Model::findOne(...) / findAll(...)
-        // FindOneIdShortcutRector::class, // Converts Model::findOne(['id' => $id]) to Model::findOne($id)
-        // UpdateAllShortcutRector::class, // Replaces chains like find()->where([...])->update([...]) with updateAll([...], [...])
-        // DeleteAllShortcutRector::class, // Replaces chains like find()->where([...])->delete() with deleteAll([...])
-        // CanHelpersRector::class, // Replaces can/!can chains with canAny, canAll, cannotAny, or cannotAll
+
+        // Yii specific
+        CanHelpersRector::class, // Replaces can/!can chains with canAny, canAll, cannotAny, or cannotAll
+        FindOneFindAllShortcutRector::class, // Converts Model::find()->where([...])->one() or all() to Model::findOne(...) / findAll(...)
+        FindOneIdShortcutRector::class, // Converts Model::findOne(['id' => $id]) to Model::findOne($id)
+        UpdateAllShortcutRector::class, // Replaces chains like find()->where([...])->update([...]) with updateAll([...], [...])
+        DeleteAllShortcutRector::class, // Replaces chains like find()->where([...])->delete() with deleteAll([...])
     ]);
