@@ -29,9 +29,6 @@
         "symfony/process": "^5.4 || ^6.0 || ^7.0",
         "symfony/filesystem": "^5.4 || ^6.0 || ^7.0",
         "symfony/yaml": "^5.4 || ^6.0 || ^7.0",
-        "phpstan/phpstan": "^2.1",
-        "rector/rector": "^2.0",
-        "phpunit/phpunit": "^12.2",
         "symplify/rule-doc-generator": "^12.2"
     },
     "autoload": {
@@ -43,6 +40,11 @@
         "psr-4": {
             "Pulse\\Tests\\": "tests/"
         }
+    },
+    "suggest": {
+        "phpunit/phpunit": "Required for running tests",
+        "rector/rector": "Required for code refactoring",
+        "phpstan/phpstan": "Required for static analysis"
     },
     "bin": [
         "bin/syntra"

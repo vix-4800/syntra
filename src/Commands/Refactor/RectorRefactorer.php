@@ -6,6 +6,7 @@ namespace Vix\Syntra\Commands\Refactor;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Vix\Syntra\Exceptions\CommandException;
 
 class RectorRefactorer extends SyntraRefactorCommand
 {
@@ -21,8 +22,14 @@ class RectorRefactorer extends SyntraRefactorCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $binary = find_composer_bin('rector', $this->configLoader->getProjectRoot());
+
+        if (!$binary) {
+            throw new CommandException("rector not installed.");
+        }
+
         $result = $this->processRunner->run(
-            find_composer_bin('rector', $this->configLoader->getProjectRoot()),
+            $binary,
             [
                 'process',
                 $this->configLoader->getProjectRoot(),
