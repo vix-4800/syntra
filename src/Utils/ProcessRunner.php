@@ -6,6 +6,7 @@ namespace Vix\Syntra\Utils;
 
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
+use Vix\Syntra\DTO\ProcessResult;
 
 class ProcessRunner
 {
@@ -14,9 +15,9 @@ class ProcessRunner
      * @param string[] $args
      * @param array<string, mixed> $options
      *
-     * @return array{exitCode:int, output:string, stderr:string}
+     * @return ProcessResult
      */
-    public function run(string $command, array $args = [], array $options = []): array
+    public function run(string $command, array $args = [], array $options = []): ProcessResult
     {
         $cmd = array_merge([$command], $args);
 
@@ -26,19 +27,19 @@ class ProcessRunner
         try {
             $process->mustRun();
 
-            return [
-                'exitCode' => $process->getExitCode() ?? 0,
-                'output' => $process->getOutput(),
-                'stderr' => $process->getErrorOutput(),
-            ];
+            return new ProcessResult(
+                $process->getExitCode() ?? 0,
+                $process->getOutput(),
+                $process->getErrorOutput()
+            );
         } catch (ProcessFailedException $e) {
-            $proc = $e->getProcess();
+            $process = $e->getProcess();
 
-            return [
-                'exitCode' => $proc->getExitCode() ?? 1,
-                'output' => $proc->getOutput(),
-                'stderr' => $proc->getErrorOutput(),
-            ];
+            return new ProcessResult(
+                $process->getExitCode() ?? 1,
+                $process->getOutput(),
+                $process->getErrorOutput()
+            );
         }
     }
 }

@@ -23,14 +23,14 @@ class ComposerChecker
             ['working_dir' => $this->projectRoot]
         );
 
-        if ($result['exitCode'] !== 0) {
+        if ($result->exitCode !== 0) {
             return [
                 'status' => 'error',
-                'messages' => ["Composer errored out:\n" . $result['stderr']],
+                'messages' => ["Composer errored out:\n$result->stderr"],
             ];
         }
 
-        $json = json_decode($result['output'], true);
+        $json = json_decode($result->output, true);
         if (!isset($json['installed']) || count($json['installed']) === 0) {
             return [
                 'status' => 'ok',

@@ -56,18 +56,4 @@ abstract class SyntraCommand extends Command
 
         // $this->extensionManager->registerFromConfig($this->configLoader->get('extensions', []));
     }
-
-    protected function runProcess(string $command, array $args = []): array
-    {
-        $result = $this->processRunner->run($command, $args, [
-            'working_dir' => $this->configLoader->getProjectRoot(),
-        ]);
-
-        if ($result['exitCode'] !== 0) {
-            $this->output->error("Command «{$command}» exited with code {$result['exitCode']}:\n" . $result['output']);
-            throw new CommandException("External command error: $command");
-        }
-
-        return $result;
-    }
 }

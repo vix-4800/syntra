@@ -41,14 +41,14 @@ class PhpStanChecker
             ['working_dir' => $this->projectRoot]
         );
 
-        if ($result['exitCode'] !== 0 && empty($result['output'])) {
+        if ($result->exitCode !== 0 && empty($result->output)) {
             return [
                 'status' => 'error',
-                'messages' => ["PHPStan crashed:\n" . $result['stderr']],
+                'messages' => ["PHPStan crashed:\n$result->stderr"],
             ];
         }
 
-        $output = $result['output'];
+        $output = $result->output;
         $json = @json_decode($output, true);
         if (!$json || !isset($json['totals'])) {
             return [

@@ -39,6 +39,6 @@ class RectorRefactorer extends SyntraRefactorCommand
 
         $this->output->success('Rector refactoring completed.');
 
-        return $result['exitCode'];
+        return $result->exitCode;
     }
 }
