@@ -25,10 +25,10 @@
     ],
     "require": {
         "php": "^8.2",
-        "symfony/console": "^7.3",
-        "symfony/process": "^7.3",
-        "symfony/filesystem": "^7.3",
-        "symfony/yaml": "^7.3",
+        "symfony/console": "^5.4 || ^6.0 || ^7.0",
+        "symfony/process": "^5.4 || ^6.0 || ^7.0",
+        "symfony/filesystem": "^5.4 || ^6.0 || ^7.0",
+        "symfony/yaml": "^5.4 || ^6.0 || ^7.0",
         "phpstan/phpstan": "^2.1"
     },
     "require-dev": {
