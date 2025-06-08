@@ -7,18 +7,18 @@ tools:
   phpunit:
     enabled: true
     config: "phpunit.xml"
+  rector:
+    enabled: false
+    config: "rector.php"
+  php_cs_fixer:
+    enabled: false
+    config: "php_cs_fixer.php"
 
 checks:
   composer:
     enabled: true
 
 refactor:
-  php_cs_fixer:
-    enabled: false
-    config: ".php_cs.dist"
-  rector:
-    enabled: false
-    config: "rector.php"
   fix_imports:
     enabled: true
   fix_var_comments:

@@ -11,7 +11,7 @@ class PhpCsFixerRefactorer extends SyntraRefactorCommand
 {
     public function isAvailable(): bool
     {
-        return $this->configLoader->get('refactor.php_cs_fixer.enabled', false);
+        return $this->configLoader->get('tools.php_cs_fixer.enabled', false);
     }
 
     protected function configure(): void

@@ -36,7 +36,7 @@ class Application extends SymfonyApplication
         $this->registerCommandGroup([
             'directory' => PACKAGE_ROOT . '/src/Commands/Rector',
             'namespace' => 'Vix\\Syntra\\Commands\\Rector\\',
-            'enabled' => $this->configLoader->get('refactor.rector.enabled', false)
+            'enabled' => $this->configLoader->get('tools.rector.enabled', false)
         ]);
 
         $this->registerExtensionCommands();
