@@ -30,7 +30,13 @@ class Application extends SymfonyApplication
         $this->registerCommandGroup([
             'directory' => PACKAGE_ROOT . '/src/Commands/Refactor',
             'namespace' => 'Vix\\Syntra\\Commands\\Refactor',
-            'enabled' => true
+            'enabled' => true // TODO
+        ]);
+
+        $this->registerCommandGroup([
+            'directory' => PACKAGE_ROOT . '/src/Commands/Health',
+            'namespace' => 'Vix\\Syntra\\Commands\\Health',
+            'enabled' => true // TODO
         ]);
 
         $this->registerCommandGroup([
