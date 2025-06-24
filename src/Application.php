@@ -56,7 +56,7 @@ class Application extends SymfonyApplication
 
         foreach ($phpFiles as $filePath) {
             // Derive the class name from the file path
-            $relativePath = substr($filePath, strlen($options['directory']) + 1, -4);
+            $relativePath = substr($filePath, strlen($options['directory']), -4);
             $class = $options['namespace'] . str_replace(['/', '\\'], '\\', $relativePath);
 
             if (!class_exists($class)) {

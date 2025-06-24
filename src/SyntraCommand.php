@@ -46,7 +46,5 @@ abstract class SyntraCommand extends Command implements AvailabilityCheckerInter
         if ($input->getOption('path')) {
             $this->configLoader->setProjectRoot((string) $input->getOption('path'));
         }
-
-        // $this->extensionManager->registerFromConfig($this->configLoader->get('extensions', []));
     }
 }
