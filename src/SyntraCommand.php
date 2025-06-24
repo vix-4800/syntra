@@ -9,7 +9,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Throwable;
 use Vix\Syntra\Contracts\AvailabilityCheckerInterface;
 use Vix\Syntra\Traits\HasStyledOutput;
 use Vix\Syntra\Utils\ConfigLoader;

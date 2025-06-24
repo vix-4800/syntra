@@ -52,9 +52,9 @@ class ProjectCheckCommand extends SyntraCommand
             $name = $item['name'];
             $result = $item['checker']->run();
 
-            if ($result->status === 'ok') {
+            if ($result->isOk()) {
                 $this->output->success("$name: OK");
-            } elseif ($result->status === 'warning') {
+            } elseif ($result->hasWarnings()) {
                 $hasWarnings = true;
                 $this->output->warning("$name: warning(s)");
                 foreach ($result->messages as $msg) {

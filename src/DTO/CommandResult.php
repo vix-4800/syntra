@@ -6,11 +6,12 @@ namespace Vix\Syntra\DTO;
 
 use ArrayAccess;
 use LogicException;
+use Vix\Syntra\Enums\CommandStatus;
 
 class CommandResult implements ArrayAccess
 {
     public function __construct(
-        public readonly string $status,
+        public readonly CommandStatus $status,
         public readonly array $messages,
     ) {
         //
@@ -18,17 +19,17 @@ class CommandResult implements ArrayAccess
 
     public static function ok(array $messages = []): self
     {
-        return new self('ok', $messages);
+        return new self(CommandStatus::OK, $messages);
     }
 
     public static function warning(array $messages): self
     {
-        return new self('warning', $messages);
+        return new self(CommandStatus::WARNING, $messages);
     }
 
     public static function error(array $messages): self
     {
-        return new self('error', $messages);
+        return new self(CommandStatus::WARNING, $messages);
     }
 
     public function offsetExists($offset): bool
@@ -53,5 +54,15 @@ class CommandResult implements ArrayAccess
     public function offsetUnset($offset): void
     {
         throw new LogicException('CommandResult is immutable');
+    }
+
+    public function isOk(): bool
+    {
+        return $this->status === CommandStatus::OK;
+    }
+
+    public function hasWarnings(): bool
+    {
+        return $this->status === CommandStatus::WARNING;
     }
 }
