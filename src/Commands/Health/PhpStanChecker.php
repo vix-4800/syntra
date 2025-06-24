@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Vix\Syntra\Commands\Health;
 
+use Vix\Syntra\DTO\CommandResult;
 use Vix\Syntra\Exceptions\CommandException;
 use Vix\Syntra\Utils\ProcessRunner;
 
@@ -18,7 +19,7 @@ class PhpStanChecker
         //
     }
 
-    public function run(): array
+    public function run(): CommandResult
     {
         $args = [
             'analyse',
@@ -42,26 +43,17 @@ class PhpStanChecker
         );
 
         if ($result->exitCode !== 0 && empty($result->output)) {
-            return [
-                'status' => 'error',
-                'messages' => ["PHPStan crashed:\n$result->stderr"],
-            ];
+            return CommandResult::error(["PHPStan crashed:\n$result->stderr"]);
         }
 
         $output = $result->output;
         $json = @json_decode($output, true);
         if (!$json || !isset($json['totals'])) {
-            return [
-                'status' => 'error',
-                'messages' => ['PHPStan output is not parseable.'],
-            ];
+            return CommandResult::error(["PHPStan output is not parseable."]);
         }
 
         if ($json['totals']['errors'] === 0) {
-            return [
-                'status' => 'ok',
-                'messages' => ['No errors found by PHPStan.'],
-            ];
+            return CommandResult::ok(["No errors found by PHPStan."]);
         }
 
         $messages = [];
@@ -74,9 +66,6 @@ class PhpStanChecker
             $messages[] = "General: $err";
         }
 
-        return [
-            'status'   => 'warning',
-            'messages' => $messages,
-        ];
+        return CommandResult::warning($messages);
     }
 }

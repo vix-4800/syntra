@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Vix\Syntra\Commands\Health;
 
+use Vix\Syntra\DTO\CommandResult;
 use Vix\Syntra\Utils\ProcessRunner;
 
 class ComposerChecker
@@ -15,7 +16,7 @@ class ComposerChecker
         //
     }
 
-    public function run(): array
+    public function run(): CommandResult
     {
         $result = $this->processRunner->run(
             'composer',
@@ -24,24 +25,16 @@ class ComposerChecker
         );
 
         if ($result->exitCode !== 0) {
-            return [
-                'status' => 'error',
-                'messages' => ["Composer errored out:\n$result->stderr"],
-            ];
+            return CommandResult::error(["Composer errored out:\n$result->stderr"]);
         }
 
         $json = json_decode($result->output, true);
         if (!isset($json['installed']) || count($json['installed']) === 0) {
-            return [
-                'status' => 'ok',
-                'messages' => ['All packages are up to date.'],
-            ];
+            return CommandResult::ok(["All packages are up to date."]);
         }
 
         $packages = array_map(fn($pkg): string => "{$pkg['name']} ({$pkg['version']} → {$pkg['latest']})", $json['installed']);
-        return [
-            'status' => 'warning',
-            'messages' => $packages,
-        ];
+
+        return CommandResult::warning($packages);
     }
 }
