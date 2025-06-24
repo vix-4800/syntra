@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Vix\Syntra\Commands\Health;
 
+use Symfony\Component\Console\Helper\QuestionHelper;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Vix\Syntra\Exceptions\CommandException;
+use Vix\Syntra\Exceptions\MissingBinaryException;
 use Vix\Syntra\SyntraCommand;
 
 class ProjectCheckCommand extends SyntraCommand
@@ -50,7 +54,34 @@ class ProjectCheckCommand extends SyntraCommand
 
         foreach ($checks as $item) {
             $name = $item['name'];
-            $result = $item['checker']->run();
+
+            try {
+                $result = $item['checker']->run();
+            } catch (MissingBinaryException $e) {
+                $this->output->error($e->getMessage());
+
+                if ($e->suggestedInstall) {
+                    /** @var QuestionHelper $helper */
+                    $helper = $this->getHelper('question');
+
+                    $question = new ConfirmationQuestion(
+                        '<fg=yellow>Do you want to install it now? (y/N): </>',
+                        false,
+                        '/^(y|yes)$/i'
+                    );
+
+                    if ($helper->ask($this->input, $this->output, $question)) {
+                        $this->output->writeln("Running: $e->suggestedInstall");
+                        shell_exec($e->suggestedInstall);
+                        $this->output->success('phpstan installed! Please re-run the command.');
+                    }
+                }
+
+                continue;
+            } catch (CommandException $e) {
+                $this->output->error($e->getMessage());
+                continue;
+            }
 
             if ($result->isOk()) {
                 $this->output->success("$name: OK");

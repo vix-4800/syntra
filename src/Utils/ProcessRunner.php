@@ -7,6 +7,7 @@ namespace Vix\Syntra\Utils;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 use Vix\Syntra\DTO\ProcessResult;
+use Vix\Syntra\Exceptions\MissingBinaryException;
 
 class ProcessRunner
 {
@@ -16,6 +17,8 @@ class ProcessRunner
      * @param array<string, mixed> $options
      *
      * @return ProcessResult
+     *
+     * @throws MissingBinaryException
      */
     public function run(string $command, array $args = [], array $options = []): ProcessResult
     {

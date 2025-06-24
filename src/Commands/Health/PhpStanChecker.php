@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Vix\Syntra\Commands\Health;
 
 use Vix\Syntra\DTO\CommandResult;
-use Vix\Syntra\Exceptions\CommandException;
+use Vix\Syntra\Exceptions\MissingBinaryException;
 use Vix\Syntra\Utils\ProcessRunner;
 
 class PhpStanChecker
@@ -33,7 +33,7 @@ class PhpStanChecker
         $binary = find_composer_bin('phpstan', $this->projectRoot);
 
         if (!$binary) {
-            throw new CommandException("phpstan is not installed.");
+            throw new MissingBinaryException("phpstan", "composer require --dev phpstan/phpstan");
         }
 
         $result = $this->processRunner->run(
