@@ -24,7 +24,7 @@ class DocblockRefactorer extends SyntraRefactorCommand
             ->addForceOption();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    public function perform(): int
     {
         return 1;
     }

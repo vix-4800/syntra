@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Vix\Syntra\Commands\Refactor;
 
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Vix\Syntra\Exceptions\CommandException;
 
 class RectorRefactorer extends SyntraRefactorCommand
@@ -25,7 +23,7 @@ class RectorRefactorer extends SyntraRefactorCommand
             ->addForceOption();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    public function perform(): int
     {
         $binary = find_composer_bin('rector', $this->configLoader->getProjectRoot());
 

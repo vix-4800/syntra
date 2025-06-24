@@ -20,6 +20,8 @@ abstract class SyntraCommand extends Command implements AvailabilityCheckerInter
 {
     use HasStyledOutput;
 
+    protected InputInterface $input;
+
     protected bool $dryRun = false;
 
     public function __construct(
@@ -39,6 +41,7 @@ abstract class SyntraCommand extends Command implements AvailabilityCheckerInter
 
     protected function initialize(InputInterface $input, OutputInterface $output): void
     {
+        $this->input = $input;
         $this->output = new SymfonyStyle($input, $output);
 
         $this->dryRun = (bool) $input->getOption('dry-run');
@@ -47,4 +50,11 @@ abstract class SyntraCommand extends Command implements AvailabilityCheckerInter
             $this->configLoader->setProjectRoot((string) $input->getOption('path'));
         }
     }
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        return $this->perform();
+    }
+
+    abstract public function perform(): int;
 }

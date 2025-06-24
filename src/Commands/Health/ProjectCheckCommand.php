@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Vix\Syntra\Commands\Health;
 
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Vix\Syntra\SyntraCommand;
 
 class ProjectCheckCommand extends SyntraCommand
@@ -24,7 +22,7 @@ class ProjectCheckCommand extends SyntraCommand
             ->setDescription('Run basic health checks: composer, phpstan, phpunit, etc.');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    public function perform(): int
     {
         $this->output->section('Starting project health check...');
 

@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Vix\Syntra\Commands\Refactor;
 
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-
 /**
  * Fixes the order of DocBlock comments and import statements in PHP files.
  *
@@ -30,7 +27,7 @@ class ImportRefactorer extends SyntraRefactorCommand
             ->addForceOption();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    public function perform(): int
     {
         return 1;
     }

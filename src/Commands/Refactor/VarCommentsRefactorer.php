@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Vix\Syntra\Commands\Refactor;
 
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Vix\Syntra\Utils\FileHelper;
 
 /**
@@ -32,7 +30,7 @@ class VarCommentsRefactorer extends SyntraRefactorCommand
             ->addForceOption();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    public function perform(): int
     {
         $files = (new FileHelper())->collectFiles($this->configLoader->getProjectRoot());
 
