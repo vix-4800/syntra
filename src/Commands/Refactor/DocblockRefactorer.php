@@ -12,7 +12,7 @@ class DocblockRefactorer extends SyntraRefactorCommand
 {
     public function isAvailable(): bool
     {
-        return $this->configLoader->get('refactor.add_missing_docblocks.enabled', false);
+        return $this->configLoader->get('refactor.docblock_refactorer.enabled', false);
     }
 
     protected function configure(): void

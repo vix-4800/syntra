@@ -17,7 +17,7 @@ class VarCommentsRefactorer extends SyntraRefactorCommand
 {
     public function isAvailable(): bool
     {
-        return $this->configLoader->get('refactor.fix_var_comments.enabled', false);
+        return $this->configLoader->get('refactor.var_comments_refactorer.enabled', false);
     }
 
     protected function configure(): void

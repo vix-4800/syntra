@@ -2,28 +2,28 @@ tools:
   phpstan:
     enabled: true
     level: 8
-  security_checker:
-    enabled: true
   phpunit:
     enabled: true
     config: "phpunit.xml"
-  rector:
+  rector_refactorer:
     enabled: false
     config: "rector.php"
-  php_cs_fixer:
+  php_cs_fixer_refactorer:
     enabled: false
     config: "php_cs_fixer.php"
 
 checks:
   composer:
     enabled: true
+  security:
+    enabled: true
 
 refactor:
-  fix_imports:
+  import_refactorer:
     enabled: true
-  fix_var_comments:
+  var_comments_refactorer:
     enabled: true
-  add_missing_docblocks:
+  docblock_refactorer:
     enabled: true
 
 extensions:

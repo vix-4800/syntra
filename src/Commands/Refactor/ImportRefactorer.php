@@ -17,7 +17,7 @@ class ImportRefactorer extends SyntraRefactorCommand
 {
     public function isAvailable(): bool
     {
-        return $this->configLoader->get('refactor.fix_imports.enabled', false);
+        return $this->configLoader->get('refactor.import_refactorer.enabled', false);
     }
 
     protected function configure(): void

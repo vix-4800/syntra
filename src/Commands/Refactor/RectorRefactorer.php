@@ -11,7 +11,7 @@ class RectorRefactorer extends SyntraRefactorCommand
 {
     public function isAvailable(): bool
     {
-        return $this->configLoader->get('tools.rector.enabled', false);
+        return $this->configLoader->get('tools.rector_refactorer.enabled', false);
     }
 
     protected function configure(): void
@@ -35,7 +35,7 @@ class RectorRefactorer extends SyntraRefactorCommand
         $result = $this->processRunner->run($binary, [
             'process',
             $this->configLoader->getProjectRoot(),
-            "--config=" . $this->configLoader->get('tools.rector.config'),
+            "--config=" . $this->configLoader->get('tools.rector_refactorer.config'),
         ]);
 
         $this->output->success('Rector refactoring completed.');
