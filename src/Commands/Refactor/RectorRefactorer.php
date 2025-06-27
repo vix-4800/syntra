@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Vix\Syntra\Commands\Refactor;
 
+use Vix\Syntra\Enums\DangerLevel;
 use Vix\Syntra\Exceptions\CommandException;
 
 class RectorRefactorer extends SyntraRefactorCommand
@@ -19,7 +20,8 @@ class RectorRefactorer extends SyntraRefactorCommand
 
         $this
             ->setName('refactor:rector')
-            ->setDescription('')
+            ->setDescription('Runs Rector for automated refactoring')
+            ->setDangerLevel(DangerLevel::HIGH)
             ->addForceOption();
     }
 

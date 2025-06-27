@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Vix\Syntra\Commands\Refactor;
 
+use Vix\Syntra\Enums\DangerLevel;
+
 class DocblockRefactorer extends SyntraRefactorCommand
 {
     public function isAvailable(): bool
@@ -18,6 +20,8 @@ class DocblockRefactorer extends SyntraRefactorCommand
         $this
             ->setName('refactor:docblocks')
             ->setDescription('')
+            ->setDescription('Adds a file-level PHPDoc block to the beginning of the file and a PHPDoc block to each class if it is missing')
+            ->setDangerLevel(DangerLevel::MEDIUM)
             ->addForceOption();
     }
 
