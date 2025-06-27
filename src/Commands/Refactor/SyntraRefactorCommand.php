@@ -17,8 +17,7 @@ abstract class SyntraRefactorCommand extends SyntraCommand
     {
         parent::configure();
 
-        $this
-            ->addForceOption();
+        $this->addForceOption();
     }
 
     protected function initialize(InputInterface $input, OutputInterface $output): void

@@ -24,8 +24,7 @@ class VarCommentsRefactorer extends SyntraRefactorCommand
     {
         parent::configure();
 
-        $this
-            ->setName('refactor:var-comments')
+        $this->setName('refactor:var-comments')
             ->setDescription('Standardizes @var comments to /** @var Type $var */')
             ->setHelp('Transforms all single-line @var annotations such as /* @var ... */ to PHPDoc-style /** @var Type $var */')
             ->addForceOption();

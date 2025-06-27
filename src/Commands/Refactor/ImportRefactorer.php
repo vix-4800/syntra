@@ -24,8 +24,7 @@ class ImportRefactorer extends SyntraRefactorCommand
     {
         parent::configure();
 
-        $this
-            ->setName('refactor:imports')
+        $this->setName('refactor:imports')
             ->setDescription('Fixes incorrect order of docblocks and import statements in PHP files')
             ->addForceOption();
     }

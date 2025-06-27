@@ -18,8 +18,7 @@ class RectorRefactorer extends SyntraRefactorCommand
     {
         parent::configure();
 
-        $this
-            ->setName('refactor:rector')
+        $this->setName('refactor:rector')
             ->setDescription('Runs Rector for automated refactoring')
             ->setDangerLevel(DangerLevel::HIGH)
             ->addForceOption();
@@ -33,14 +32,11 @@ class RectorRefactorer extends SyntraRefactorCommand
             throw new CommandException("rector not installed.");
         }
 
-        $result = $this->processRunner->run(
-            $binary,
-            [
-                'process',
-                $this->configLoader->getProjectRoot(),
-                "--config=" . $this->configLoader->get('tools.rector.config'),
-            ],
-        );
+        $result = $this->processRunner->run($binary, [
+            'process',
+            $this->configLoader->getProjectRoot(),
+            "--config=" . $this->configLoader->get('tools.rector.config'),
+        ]);
 
         $this->output->success('Rector refactoring completed.');
 

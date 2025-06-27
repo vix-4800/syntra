@@ -17,8 +17,7 @@ class PhpCsFixerRefactorer extends SyntraRefactorCommand
     {
         parent::configure();
 
-        $this
-            ->setName('refactor:cs-fixer')
+        $this->setName('refactor:cs-fixer')
             ->setDescription('Fixes code style using php-cs-fixer for the selected files')
             ->addForceOption();
     }
@@ -33,14 +32,11 @@ class PhpCsFixerRefactorer extends SyntraRefactorCommand
 
         $config = $this->configLoader->get('tools.php_cs_fixer.config', 'php_cs_fixer.php');
 
-        $result = $this->processRunner->run(
-            $binary,
-            [
-                'fix',
-                $this->configLoader->getProjectRoot(),
-                "--config={$config}",
-            ],
-        );
+        $result = $this->processRunner->run($binary, [
+            'fix',
+            $this->configLoader->getProjectRoot(),
+            "--config={$config}",
+        ]);
 
         $this->output->success('CS Fixer refactoring completed.');
 
