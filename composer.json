@@ -44,7 +44,8 @@
     "suggest": {
         "phpunit/phpunit": "Required for running tests",
         "rector/rector": "Required for code refactoring",
-        "phpstan/phpstan": "Required for static analysis"
+        "phpstan/phpstan": "Required for static analysis",
+        "friendsofphp/php-cs-fixer": "Required for code style fixes"
     },
     "bin": [
         "bin/syntra"
