@@ -12,11 +12,6 @@ use Vix\Syntra\SyntraCommand;
 
 class ProjectCheckCommand extends SyntraCommand
 {
-    public function isAvailable(): bool
-    {
-        return true;
-    }
-
     protected function configure(): void
     {
         parent::configure();
@@ -43,8 +38,8 @@ class ProjectCheckCommand extends SyntraCommand
             'checker' => new PhpStanChecker(
                 $this->processRunner,
                 $projectRoot,
-                (int)($this->configLoader->get('tools.phpstan.level', 5)),
-                $this->configLoader->get('tools.phpstan.config', 'phpstan.neon'),
+                (int) $this->configLoader->getCommandOption('health', self::class, 'level'),
+                $this->configLoader->getCommandOption('health', self::class, 'config'),
             ),
         ];
 

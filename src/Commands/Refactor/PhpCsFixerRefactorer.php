@@ -8,11 +8,6 @@ use Vix\Syntra\Exceptions\CommandException;
 
 class PhpCsFixerRefactorer extends SyntraRefactorCommand
 {
-    public function isAvailable(): bool
-    {
-        return $this->configLoader->get('tools.php_cs_fixer_refactorer.enabled', false);
-    }
-
     protected function configure(): void
     {
         parent::configure();
@@ -30,7 +25,7 @@ class PhpCsFixerRefactorer extends SyntraRefactorCommand
             throw new CommandException("php-cs-fixer not installed.");
         }
 
-        $config = $this->configLoader->get('tools.php_cs_fixer_refactorer.config', 'php_cs_fixer.php');
+        $config = $this->configLoader->getCommandOption('refactor', self::class, 'config');
 
         $result = $this->processRunner->run($binary, [
             'fix',

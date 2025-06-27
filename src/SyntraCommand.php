@@ -9,13 +9,12 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Vix\Syntra\Contracts\AvailabilityCheckerInterface;
 use Vix\Syntra\Traits\HasStyledOutput;
 use Vix\Syntra\Utils\ConfigLoader;
 use Vix\Syntra\Utils\ExtensionManager;
 use Vix\Syntra\Utils\ProcessRunner;
 
-abstract class SyntraCommand extends Command implements AvailabilityCheckerInterface
+abstract class SyntraCommand extends Command
 {
     use HasStyledOutput;
 

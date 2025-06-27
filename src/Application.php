@@ -8,7 +8,6 @@ use ReflectionClass;
 use Symfony\Component\Console\Application as SymfonyApplication;
 use Vix\Syntra\Utils\ConfigLoader;
 use Vix\Syntra\Utils\ExtensionManager;
-use Vix\Syntra\Utils\FileHelper;
 use Vix\Syntra\Utils\ProcessRunner;
 
 class Application extends SymfonyApplication
@@ -25,74 +24,34 @@ class Application extends SymfonyApplication
         $this->processRunner = new ProcessRunner();
         $this->extensionManager = new ExtensionManager($this->configLoader);
 
-        $this->configLoader->load();
-
-        $this->registerCommandGroup([
-            'directory' => PACKAGE_ROOT . '/src/Commands/Refactor',
-            'namespace' => 'Vix\\Syntra\\Commands\\Refactor',
-            'enabled' => true // TODO
-        ]);
-
-        $this->registerCommandGroup([
-            'directory' => PACKAGE_ROOT . '/src/Commands/Health',
-            'namespace' => 'Vix\\Syntra\\Commands\\Health',
-            'enabled' => true // TODO
-        ]);
-
-        $this->registerCommandGroup([
-            'directory' => PACKAGE_ROOT . '/src/Commands/Rector',
-            'namespace' => 'Vix\\Syntra\\Commands\\Rector\\',
-            'enabled' => $this->configLoader->get('tools.rector.enabled', false)
-        ]);
+        $this->registerCommands();
 
         $this->registerExtensionCommands();
     }
 
-    /**
-     * @param array{enabled:bool, directory:string, namespace:string} $options
-     */
-    private function registerCommandGroup(array $options): void
+    private function registerCommands(): void
     {
-        if (!$options['enabled']) {
-            return;
-        }
-
-        $commands = [];
-        $phpFiles = (new FileHelper())->collectFiles($options['directory']);
-
-        foreach ($phpFiles as $filePath) {
-            // Derive the class name from the file path
-            $relativePath = substr($filePath, strlen($options['directory']), -4);
-            $class = $options['namespace'] . str_replace(['/', '\\'], '\\', $relativePath);
-
-            if (!class_exists($class)) {
+        foreach ($this->configLoader->getEnabledCommands() as $commandClass) {
+            if (!class_exists($commandClass)) {
                 continue;
             }
 
-            // Ensure it's a concrete subclass of Symfony Command
-            $reflectionClass = new ReflectionClass($class);
+            // Ensure it's a concrete subclass of Syntra Command
+            $reflectionClass = new ReflectionClass($commandClass);
 
             if (
-                is_subclass_of($class, SyntraCommand::class)
+                is_subclass_of($commandClass, SyntraCommand::class)
                 && !$reflectionClass->isAbstract()
             ) {
-                $constructor = $reflectionClass->getConstructor();
+                $instance = $reflectionClass->newInstance(
+                    $this->configLoader,
+                    $this->processRunner,
+                    $this->extensionManager
+                );
 
-                if ($constructor === null || $constructor->getNumberOfRequiredParameters() === 0) {
-                    $commands[] = $reflectionClass->newInstance();
-                } elseif ($constructor && $constructor->getNumberOfRequiredParameters() === 3) {
-                    $commands[] = $reflectionClass->newInstance(
-                        $this->configLoader,
-                        $this->processRunner,
-                        $this->extensionManager
-                    );
-                } else {
-                    continue;
-                }
+                $this->add($instance);
             }
         }
-
-        $this->addCommands($commands);
     }
 
     private function registerExtensionCommands(): void

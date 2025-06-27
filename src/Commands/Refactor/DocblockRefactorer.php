@@ -10,11 +10,6 @@ use Vix\Syntra\Utils\FileHelper;
 
 class DocblockRefactorer extends SyntraRefactorCommand
 {
-    public function isAvailable(): bool
-    {
-        return $this->configLoader->get('refactor.docblock_refactorer.enabled', false);
-    }
-
     protected function configure(): void
     {
         parent::configure();

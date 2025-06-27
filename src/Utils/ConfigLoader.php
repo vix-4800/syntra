@@ -4,19 +4,18 @@ declare(strict_types=1);
 
 namespace Vix\Syntra\Utils;
 
-use Symfony\Component\Yaml\Yaml;
-use Throwable;
-use Vix\Syntra\Exceptions\ConfigException;
+use Vix\Syntra\SyntraConfig;
 
 class ConfigLoader
 {
     private ?string $projectRoot = null;
 
-    private array $config = [];
+    private SyntraConfig $config;
 
     public function __construct(?string $projectRoot = null)
     {
         $this->projectRoot = $projectRoot ?? getcwd();
+        $this->config = new SyntraConfig();
     }
 
     public function setProjectRoot(string $path): void
@@ -29,58 +28,50 @@ class ConfigLoader
         return $this->projectRoot;
     }
 
-    public function get(string $path, mixed $default = null): mixed
+    public function getCommandConfig(string $group, string $commandClass): array|bool
     {
-        if (empty($this->config)) {
-            throw new ConfigException('Configuration not loaded yet. Call load() first.');
-        }
+        $all = $this->config->commands();
 
-        $parts = explode('.', $path);
-        $cursor = $this->config;
-
-        foreach ($parts as $part) {
-            if (!is_array($cursor) || !array_key_exists($part, $cursor)) {
-                return $default;
-            }
-
-            $cursor = $cursor[$part];
-        }
-
-        return $cursor;
+        return $all[$group][$commandClass] ?? false;
     }
 
-    /**
-     * @throws ConfigException
-     */
-    public function load(): void
+    public function isCommandEnabled(string $group, string $commandClass): bool
     {
-        $root = $this->projectRoot;
-        $ymlPath  = "$root/syntra.yml";
-        $jsonPath = "$root/syntra.json";
+        $cfg = $this->getCommandConfig($group, $commandClass);
 
-        if (file_exists($ymlPath)) {
-            try {
-                $parsed = Yaml::parseFile($ymlPath);
-            } catch (Throwable $e) {
-                throw new ConfigException("Invalid YAML in $ymlPath: " . $e->getMessage());
-            }
-
-            if (!is_array($parsed)) {
-                throw new ConfigException("$ymlPath parsed but is not an array");
-            }
-
-            $this->config = $parsed;
-        } elseif (file_exists($jsonPath)) {
-            $content = file_get_contents($jsonPath);
-            $parsed = json_decode($content, true);
-
-            if (json_last_error() !== JSON_ERROR_NONE || !is_array($parsed)) {
-                throw new ConfigException("Invalid JSON in $jsonPath: " . json_last_error_msg());
-            }
-
-            $this->config = $parsed;
-        } else {
-            throw new ConfigException('No syntra.yml or syntra.json found in project root.');
+        if (is_array($cfg)) {
+            return $cfg['enabled'] ?? true;
         }
+
+        return (bool)$cfg;
+    }
+
+    public function getCommandOption(string $group, string $commandClass, string $option, $default = null)
+    {
+        $cfg = $this->getCommandConfig($group, $commandClass);
+
+        if (is_array($cfg) && array_key_exists($option, $cfg)) {
+            return $cfg[$option];
+        }
+
+        return $default;
+    }
+
+    public function getEnabledCommands(): array
+    {
+        $result = [];
+        $all = $this->config->commands();
+
+        foreach ($all as $group => $commands) {
+            foreach ($commands as $class => $cfg) {
+                if (!$this->isCommandEnabled($group, $class)) {
+                    continue;
+                }
+
+                $result[] = $class;
+            }
+        }
+
+        return $result;
     }
 }
