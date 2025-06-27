@@ -10,7 +10,7 @@ class ConfigLoader
 {
     private ?string $projectRoot = null;
 
-    private SyntraConfig $config;
+    private readonly SyntraConfig $config;
 
     public function __construct(?string $projectRoot = null)
     {
