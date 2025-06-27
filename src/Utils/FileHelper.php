@@ -42,4 +42,14 @@ class FileHelper
 
         return $files;
     }
+
+    /**
+     * Writes changes to a file if they differ from the original.
+     */
+    public function writeChanges(string $filePath, string $oldContent, string $newContent): void
+    {
+        if ($newContent !== $oldContent) {
+            file_put_contents($filePath, $newContent);
+        }
+    }
 }

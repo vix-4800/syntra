@@ -31,14 +31,17 @@ class ImportRefactorer extends SyntraRefactorCommand
 
     public function perform(): int
     {
-        $files = (new FileHelper())->collectFiles($this->configLoader->getProjectRoot());
+        $fileHelper = new FileHelper();
+        $files = $fileHelper->collectFiles($this->configLoader->getProjectRoot());
 
         foreach ($files as $filePath) {
             $content = file_get_contents($filePath);
 
             $newContent = $this->reorderHeaderBlocks($content);
 
-            $this->writeChanges($filePath, $content, $newContent);
+            if (!$this->dryRun) {
+                $fileHelper->writeChanges($filePath, $content, $newContent);
+            }
             // $this->progressBar->advance();
         }
 
@@ -134,18 +137,5 @@ class ImportRefactorer extends SyntraRefactorCommand
         $result = substr($clean, 0, $afterPhpPos) . "\n\n" . $newHeader . ltrim((string) $afterPhp, "\r\n");
 
         return rtrim($result, "\r\n") . "\n";
-    }
-
-    /**
-     * Writes changes to a file if they differ from the original.
-     */
-    protected function writeChanges(string $filePath, string $oldContent, string $newContent): void
-    {
-        if ($newContent !== $oldContent) {
-            if (!$this->dryRun) {
-                file_put_contents($filePath, $newContent);
-                // $this->logChange($filePath, 'modified');
-            }
-        }
     }
 }
