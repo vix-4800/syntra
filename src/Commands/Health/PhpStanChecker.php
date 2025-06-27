@@ -21,6 +21,12 @@ class PhpStanChecker
 
     public function run(): CommandResult
     {
+        $binary = find_composer_bin('phpstan', $this->projectRoot);
+
+        if (!$binary) {
+            throw new MissingBinaryException("phpstan", "composer require --dev phpstan/phpstan");
+        }
+
         $args = [
             'analyse',
             "--level=$this->level",
@@ -29,12 +35,6 @@ class PhpStanChecker
             "--configuration=$this->configPath",
             'src'
         ];
-
-        $binary = find_composer_bin('phpstan', $this->projectRoot);
-
-        if (!$binary) {
-            throw new MissingBinaryException("phpstan", "composer require --dev phpstan/phpstan");
-        }
 
         $result = $this->processRunner->run(
             $binary,
