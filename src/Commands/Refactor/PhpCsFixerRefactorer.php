@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Vix\Syntra\Commands\Refactor;
 
-use Vix\Syntra\Exceptions\CommandException;
+use Vix\Syntra\Exceptions\MissingBinaryException;
 
 class PhpCsFixerRefactorer extends SyntraRefactorCommand
 {
@@ -22,7 +22,7 @@ class PhpCsFixerRefactorer extends SyntraRefactorCommand
         $binary = find_composer_bin('php-cs-fixer', $this->configLoader->getProjectRoot());
 
         if (!$binary) {
-            throw new CommandException("php-cs-fixer not installed.");
+            throw new MissingBinaryException("php-cs-fixer", "composer require --dev friendsofphp/php-cs-fixer");
         }
 
         $config = $this->configLoader->getCommandOption('refactor', self::class, 'config');

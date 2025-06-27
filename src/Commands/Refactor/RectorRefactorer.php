@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Vix\Syntra\Commands\Refactor;
 
 use Vix\Syntra\Enums\DangerLevel;
-use Vix\Syntra\Exceptions\CommandException;
+use Vix\Syntra\Exceptions\MissingBinaryException;
 
 class RectorRefactorer extends SyntraRefactorCommand
 {
@@ -24,7 +24,7 @@ class RectorRefactorer extends SyntraRefactorCommand
         $binary = find_composer_bin('rector', $this->configLoader->getProjectRoot());
 
         if (!$binary) {
-            throw new CommandException("rector not installed.");
+            throw new MissingBinaryException("rector", "composer require --dev rector/rector");
         }
 
         $result = $this->processRunner->run($binary, [

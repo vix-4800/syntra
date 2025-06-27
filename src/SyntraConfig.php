@@ -40,7 +40,7 @@ class SyntraConfig
                     'level' => 5
                 ],
                 PhpUnitChecker::class => false,
-                SecurityChecker::class => false
+                SecurityChecker::class => false,
             ],
         ];
     }
