@@ -49,7 +49,7 @@ class VarCommentsRefactorer extends SyntraRefactorCommand
     /**
      * Converts @var comments to PHPDoc-compliant style.
      */
-    public function convertVarComments(string $content): string
+    private function convertVarComments(string $content): string
     {
         $newContent = $content;
 

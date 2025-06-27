@@ -48,7 +48,7 @@ class ImportRefactorer extends SyntraRefactorCommand
     /**
      * Reorders file-level docblock, namespace, use statements, and @var comments in header.
      */
-    public function reorderHeaderBlocks(string $content): string
+    private function reorderHeaderBlocks(string $content): string
     {
         // 1. Match file-level docblock (not @var)
         $docBlock = '';
