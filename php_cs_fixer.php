@@ -46,4 +46,5 @@ return (new Config())
         'standardize_not_equals' => true, // Converts != to !==
 
         // 'use_arrow_functions' => true, // Use arrow functions where possible (potentially unsafe)
-    ]);
+    ])
+    ->setUsingCache(false);
