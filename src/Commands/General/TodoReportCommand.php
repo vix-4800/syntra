@@ -38,6 +38,8 @@ class TodoReportCommand extends SyntraCommand
         $files = $fileHelper->collectFiles($this->configLoader->getProjectRoot());
 
         $matches = [];
+        $allTags = implode('|', array_map('preg_quote', self::$TAGS));
+        $pattern = "/(?:\/\/|#|\*|\s)\s*($allTags)\b(.*)/i";
 
         foreach ($files as $filePath) {
             $content = file_get_contents($filePath);
@@ -45,7 +47,7 @@ class TodoReportCommand extends SyntraCommand
 
             foreach ($lines as $lineNumber => $line) {
                 foreach (self::$TAGS as $tag) {
-                    if (preg_match('/(?:\/\/|#|\*|\s)\s*(' . preg_quote($tag, '/') . ')\b(.*)/i', $line, $m)) {
+                    if (preg_match($pattern, $line, $m)) {
                         $matches[] = [
                             $filePath,
                             $lineNumber + 1,
@@ -67,7 +69,7 @@ class TodoReportCommand extends SyntraCommand
             $matches
         );
 
-        $this->output->success('Scan complete. Review your TODO/FIXME/deprecated and other notes!');
+        $this->output->success('Scan complete (' . count($matches) . ' matches). Review your TODO/FIXME/deprecated and other notes!');
 
         return Command::SUCCESS;
     }
