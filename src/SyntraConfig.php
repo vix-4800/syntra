@@ -9,6 +9,7 @@ use Vix\Syntra\Commands\General\TodoReportCommand;
 use Vix\Syntra\Commands\Health\ComposerChecker;
 use Vix\Syntra\Commands\Health\PhpStanChecker;
 use Vix\Syntra\Commands\Health\PhpUnitChecker;
+use Vix\Syntra\Commands\Health\ProjectCheckCommand;
 use Vix\Syntra\Commands\Health\SecurityChecker;
 use Vix\Syntra\Commands\Refactor\DocblockRefactorer;
 use Vix\Syntra\Commands\Refactor\ImportRefactorer;
@@ -43,6 +44,7 @@ class SyntraConfig
                 ],
                 PhpUnitChecker::class => false,
                 SecurityChecker::class => false,
+                ProjectCheckCommand::class => true,
             ],
             'general' => [
                 GenerateCommandCommand::class => true,
