@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace {{namespace}};
 
-use Vix\Syntra\SyntraCommand;
+use Vix\Syntra\Commands\SyntraCommand;
 use Symfony\Component\Console\Command\Command;
 
 class {{class}} extends SyntraCommand
