@@ -17,7 +17,7 @@ class FindTodosCommand extends SyntraCommand
         '@fixme',
         '@deprecated',
         '@note',
-        '@see',
+        // '@see',
         '@hack',
         '@internal'
     ];
