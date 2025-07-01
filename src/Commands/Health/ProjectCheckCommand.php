@@ -8,7 +8,7 @@ use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Vix\Syntra\Exceptions\CommandException;
 use Vix\Syntra\Exceptions\MissingBinaryException;
-use Vix\Syntra\SyntraCommand;
+use Vix\Syntra\Commands\SyntraCommand;
 
 class ProjectCheckCommand extends SyntraCommand
 {

@@ -6,6 +6,7 @@ namespace Vix\Syntra;
 
 use ReflectionClass;
 use Symfony\Component\Console\Application as SymfonyApplication;
+use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Utils\ConfigLoader;
 use Vix\Syntra\Utils\ExtensionManager;
 use Vix\Syntra\Utils\ProcessRunner;

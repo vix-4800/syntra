@@ -6,7 +6,7 @@ namespace Vix\Syntra\Commands\Refactor;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Vix\Syntra\SyntraCommand;
+use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Traits\HasDangerLevel;
 
 abstract class SyntraRefactorCommand extends SyntraCommand

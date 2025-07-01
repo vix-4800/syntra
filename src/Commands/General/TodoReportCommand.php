@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Vix\Syntra\Commands\General;
 
-use Vix\Syntra\SyntraCommand;
+use Vix\Syntra\Commands\SyntraCommand;
 use Symfony\Component\Console\Command\Command;
 use Vix\Syntra\Utils\FileHelper;
 
