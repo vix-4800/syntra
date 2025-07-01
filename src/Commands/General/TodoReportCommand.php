@@ -34,8 +34,10 @@ class TodoReportCommand extends SyntraCommand
 
     public function perform(): int
     {
+        $projectRoot = $this->configLoader->getProjectRoot();
+
         $fileHelper = new FileHelper();
-        $files = $fileHelper->collectFiles($this->configLoader->getProjectRoot());
+        $files = $fileHelper->collectFiles($projectRoot);
 
         $matches = [];
         $allTags = implode('|', array_map('preg_quote', self::$TAGS));
@@ -45,11 +47,15 @@ class TodoReportCommand extends SyntraCommand
             $content = file_get_contents($filePath);
             $lines = explode("\n", $content);
 
+            $relativePath = str_starts_with($filePath, $projectRoot)
+                ? substr($filePath, strlen($projectRoot))
+                : $filePath;
+
             foreach ($lines as $lineNumber => $line) {
                 foreach (self::$TAGS as $tag) {
                     if (preg_match($pattern, $line, $m)) {
                         $matches[] = [
-                            $filePath,
+                            $relativePath,
                             $lineNumber + 1,
                             strtoupper($tag),
                             trim($m[2])
