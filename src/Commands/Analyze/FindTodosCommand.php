@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Vix\Syntra\Commands\General;
+namespace Vix\Syntra\Commands\Analyze;
 
 use Vix\Syntra\Commands\SyntraCommand;
 use Symfony\Component\Console\Command\Command;
 use Vix\Syntra\Utils\FileHelper;
 
-class TodoReportCommand extends SyntraCommand
+class FindTodosCommand extends SyntraCommand
 {
     protected static array $TAGS = [
         'TODO',
@@ -27,7 +27,7 @@ class TodoReportCommand extends SyntraCommand
         parent::configure();
 
         $this
-            ->setName('general:find-todos')
+            ->setName('analyze:find-todos')
             ->setDescription('Scans project files and collects all TODO, FIXME, @todo, @deprecated and other important comments for further review and refactoring.')
             ->setHelp('');
     }

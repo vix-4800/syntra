@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Vix\Syntra;
 
+use Vix\Syntra\Commands\Analyze\FindTodosCommand;
 use Vix\Syntra\Commands\General\GenerateCommandCommand;
-use Vix\Syntra\Commands\General\TodoReportCommand;
 use Vix\Syntra\Commands\Health\ComposerChecker;
 use Vix\Syntra\Commands\Health\PhpStanChecker;
 use Vix\Syntra\Commands\Health\PhpUnitChecker;
@@ -46,9 +46,11 @@ class SyntraConfig
                 SecurityChecker::class => false,
                 ProjectCheckCommand::class => true,
             ],
+            'analyze' => [
+                FindTodosCommand::class => true,
+            ],
             'general' => [
                 GenerateCommandCommand::class => true,
-                TodoReportCommand::class => true,
             ]
         ];
     }
