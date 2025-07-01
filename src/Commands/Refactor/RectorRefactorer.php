@@ -33,7 +33,11 @@ class RectorRefactorer extends SyntraRefactorCommand
             "--config=" . $this->configLoader->getCommandOption('refactor', self::class, 'config'),
         ]);
 
-        $this->output->success('Rector refactoring completed.');
+        if ($result->exitCode === 0) {
+            $this->output->success('Rector refactoring completed.');
+        } else {
+            $this->output->error('Rector refactoring crashed.');
+        }
 
         return $result->exitCode;
     }

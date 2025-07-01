@@ -33,7 +33,11 @@ class PhpCsFixerRefactorer extends SyntraRefactorCommand
             "--config={$config}",
         ]);
 
-        $this->output->success('CS Fixer refactoring completed.');
+        if ($result->exitCode === 0) {
+            $this->output->success('CS Fixer refactoring completed.');
+        } else {
+            $this->output->error('CS Fixer refactoring crashed.');
+        }
 
         return $result->exitCode;
     }
