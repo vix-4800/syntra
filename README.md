@@ -74,7 +74,7 @@ vendor/bin/syntra health:project
 
 ## 📁 Configuration
 
-Configuration is defined in PHP via `SyntraConfig`, allowing you to enable/disable commands or set options per tool. Example:
+Configuration is defined in PHP via `config.php`, allowing you to enable/disable commands or set options per tool. Example:
 
 ```php
 return [

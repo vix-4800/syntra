@@ -4,20 +4,18 @@ declare(strict_types=1);
 
 namespace Vix\Syntra\Utils;
 
-use Vix\Syntra\SyntraConfig;
-
 class ConfigLoader
 {
     private array $coreGroups = ['refactor', 'health', 'analyze', 'general'];
 
     private ?string $projectRoot = null;
 
-    private readonly SyntraConfig $config;
+    private readonly array $commands;
 
     public function __construct(?string $projectRoot = null)
     {
         $this->projectRoot = $projectRoot ?? getcwd();
-        $this->config = new SyntraConfig();
+        $this->commands = require_once(PACKAGE_ROOT . '/config.php');
     }
 
     public function setProjectRoot(string $path): void
@@ -32,9 +30,7 @@ class ConfigLoader
 
     public function getCommandConfig(string $group, string $commandClass): array|bool
     {
-        $all = $this->config->commands();
-
-        return $all[$group][$commandClass] ?? false;
+        return $this->commands[$group][$commandClass] ?? false;
     }
 
     public function isCommandEnabled(string $group, string $commandClass): bool
@@ -71,9 +67,7 @@ class ConfigLoader
 
     private function filterEnabledCommands(bool $core): array
     {
-        $result = [];
-
-        foreach ($this->config->commands() as $group => $commands) {
+        foreach ($this->commands as $group => $commands) {
             $isCoreGroup = in_array($group, $this->coreGroups, true);
             if ($core !== $isCoreGroup) {
                 continue;
