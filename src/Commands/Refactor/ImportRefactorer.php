@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Vix\Syntra\Commands\Refactor;
 
 use Symfony\Component\Console\Command\Command;
+use Vix\Syntra\Commands\SyntraRefactorCommand;
 use Vix\Syntra\Utils\FileHelper;
 
 /**

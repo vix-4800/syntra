@@ -6,7 +6,7 @@ namespace Vix\Syntra\Commands\Extension\Yii;
 
 use Vix\Syntra\Commands\Rector\FindOneIdShortcutRector;
 use Vix\Syntra\Commands\Refactor\RectorRefactorer;
-use Vix\Syntra\Commands\Refactor\SyntraRefactorCommand;
+use Vix\Syntra\Commands\SyntraRefactorCommand;
 use Vix\Syntra\Exceptions\MissingBinaryException;
 
 class YiiFindIdCommand extends SyntraRefactorCommand

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Vix\Syntra\Commands\Refactor;
 
+use Vix\Syntra\Commands\SyntraRefactorCommand;
 use Vix\Syntra\Exceptions\MissingBinaryException;
 
 class PhpCsFixerRefactorer extends SyntraRefactorCommand
