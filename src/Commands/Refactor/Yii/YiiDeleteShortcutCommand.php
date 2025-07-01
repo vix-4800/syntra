@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace Vix\Syntra\Commands\Refactor\Yii;
 
-use Vix\Syntra\Commands\Rector\FindOneFindAllShortcutRector;
+use Vix\Syntra\Commands\Rector\DeleteAllShortcutRector;
 use Vix\Syntra\Commands\Refactor\RectorRefactorer;
 use Vix\Syntra\Commands\Refactor\SyntraRefactorCommand;
 use Vix\Syntra\Exceptions\MissingBinaryException;
 
-class YiiFindShortcutsCommand extends SyntraRefactorCommand
+class YiiDeleteShortcutCommand extends SyntraRefactorCommand
 {
     protected function configure(): void
     {
         parent::configure();
 
         $this
-            ->setName('yii:find-shortcuts')
-            ->setDescription('Converts Model::find()->where([...])->one()/all() into Model::findOne([...]) or findAll([...])')
+            ->setName('yii:delete-shortcut')
+            ->setDescription('Replaces Model::find()->where([...])->delete() with Model::deleteAll([...])')
             ->setHelp('');
     }
 
@@ -32,7 +32,7 @@ class YiiFindShortcutsCommand extends SyntraRefactorCommand
         $result = $this->processRunner->run($binary, [
             $this->configLoader->getProjectRoot(),
             "--config=" . $this->configLoader->getCommandOption('refactor', RectorRefactorer::class, 'config'),
-            "--only=" . str_replace("::class", "", FindOneFindAllShortcutRector::class),
+            "--only=" . str_replace("::class", "", DeleteAllShortcutRector::class),
         ]);
 
         if ($result->exitCode === 0) {

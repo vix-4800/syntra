@@ -18,7 +18,11 @@ use Vix\Syntra\Commands\Refactor\ImportRefactorer;
 use Vix\Syntra\Commands\Refactor\PhpCsFixerRefactorer;
 use Vix\Syntra\Commands\Refactor\RectorRefactorer;
 use Vix\Syntra\Commands\Refactor\VarCommentsRefactorer;
+use Vix\Syntra\Commands\Refactor\Yii\YiiCanHelpersCommand;
+use Vix\Syntra\Commands\Refactor\Yii\YiiDeleteShortcutCommand;
+use Vix\Syntra\Commands\Refactor\Yii\YiiFindIdCommand;
 use Vix\Syntra\Commands\Refactor\Yii\YiiFindShortcutsCommand;
+use Vix\Syntra\Commands\Refactor\Yii\YiiUpdateShortcutCommand;
 
 class SyntraConfig
 {
@@ -37,7 +41,6 @@ class SyntraConfig
                     'enabled' => true,
                     'config' => PACKAGE_ROOT . '/rector.php',
                 ],
-                YiiFindShortcutsCommand::class => true,
             ],
             'health' => [
                 ComposerChecker::class => true,
@@ -57,7 +60,17 @@ class SyntraConfig
             ],
             'general' => [
                 GenerateCommandCommand::class => true,
-            ]
+            ],
+            'yii' => [
+                YiiFindShortcutsCommand::class => true,
+                YiiFindIdCommand::class => true,
+                YiiUpdateShortcutCommand::class => true,
+                YiiDeleteShortcutCommand::class => true,
+                YiiCanHelpersCommand::class => true,
+            ],
+            'laravel' => [
+                //
+            ],
         ];
     }
 }
