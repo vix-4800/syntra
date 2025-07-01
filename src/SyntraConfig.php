@@ -18,6 +18,7 @@ use Vix\Syntra\Commands\Refactor\ImportRefactorer;
 use Vix\Syntra\Commands\Refactor\PhpCsFixerRefactorer;
 use Vix\Syntra\Commands\Refactor\RectorRefactorer;
 use Vix\Syntra\Commands\Refactor\VarCommentsRefactorer;
+use Vix\Syntra\Commands\Refactor\Yii\YiiFindShortcutsCommand;
 
 class SyntraConfig
 {
@@ -36,6 +37,7 @@ class SyntraConfig
                     'enabled' => true,
                     'config' => PACKAGE_ROOT . '/rector.php',
                 ],
+                YiiFindShortcutsCommand::class => true,
             ],
             'health' => [
                 ComposerChecker::class => true,
