@@ -27,10 +27,8 @@ class FileHelper
                 continue;
             }
 
-            $relativePath = str_replace("$dir/", '', $file->getPathname());
-
             foreach ($excludeDirs as $dir) {
-                if (str_starts_with($relativePath, "$dir/")) {
+                if (strpos($file->getPathname(), DIRECTORY_SEPARATOR . $dir . DIRECTORY_SEPARATOR) !== false) {
                     continue 2;
                 }
             }
