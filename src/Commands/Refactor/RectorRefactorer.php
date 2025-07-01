@@ -32,6 +32,7 @@ class RectorRefactorer extends SyntraRefactorCommand
             'process',
             $this->configLoader->getProjectRoot(),
             "--config=" . $this->configLoader->getCommandOption('refactor', self::class, 'config'),
+            "--clear-cache",
         ]);
 
         if ($result->exitCode === 0) {

@@ -33,6 +33,7 @@ class YiiDeleteShortcutCommand extends SyntraRefactorCommand
             $this->configLoader->getProjectRoot(),
             "--config=" . $this->configLoader->getCommandOption('refactor', RectorRefactorer::class, 'commands_config'),
             "--only=" . str_replace("::class", "", DeleteAllShortcutRector::class),
+            "--clear-cache",
         ]);
 
         if ($result->exitCode === 0) {
