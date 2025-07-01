@@ -1,0 +1,28 @@
+<?php
+
+declare(strict_types=1);
+
+namespace {{namespace}};
+
+use Vix\Syntra\SyntraCommand;
+use Symfony\Component\Console\Command\Command;
+
+class {{class}} extends SyntraCommand
+{
+    protected function configure(): void
+    {
+        parent::configure();
+
+        $this
+            ->setName('{{group}}:{{cli_name}}')
+            ->setDescription('{{desc}}')
+            ->setHelp('');
+    }
+
+    public function perform(): int
+    {
+        // TODO: Add your logic here
+
+        return Command::SUCCESS;
+    }
+}
