@@ -38,8 +38,8 @@ class ProjectCheckCommand extends SyntraCommand
             'checker' => new PhpStanChecker(
                 $this->processRunner,
                 $projectRoot,
-                (int) $this->configLoader->getCommandOption('health', self::class, 'level'),
-                $this->configLoader->getCommandOption('health', self::class, 'config'),
+                (int) $this->configLoader->getCommandOption('health', PhpStanChecker::class, 'level'),
+                $this->configLoader->getCommandOption('health', PhpStanChecker::class, 'config'),
             ),
         ];
 
