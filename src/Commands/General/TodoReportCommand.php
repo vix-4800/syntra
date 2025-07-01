@@ -27,7 +27,7 @@ class TodoReportCommand extends SyntraCommand
         parent::configure();
 
         $this
-            ->setName('general:todos')
+            ->setName('general:find-todos')
             ->setDescription('Scans project files and collects all TODO, FIXME, @todo, @deprecated and other important comments for further review and refactoring.')
             ->setHelp('');
     }
