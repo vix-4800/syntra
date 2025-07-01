@@ -28,7 +28,8 @@
         "symfony/console": "^5.4 || ^6.0 || ^7.0",
         "symfony/process": "^5.4 || ^6.0 || ^7.0",
         "symfony/filesystem": "^5.4 || ^6.0 || ^7.0",
-        "symplify/rule-doc-generator": "^12.2"
+        "symplify/rule-doc-generator": "^12.2",
+        "nikic/php-parser": "^5.5"
     },
     "autoload": {
         "psr-4": {
