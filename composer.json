@@ -38,7 +38,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Pulse\\Tests\\": "tests/"
+            "Vix\\Syntra\\Tests\\": "tests/"
         }
     },
     "suggest": {
