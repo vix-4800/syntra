@@ -17,6 +17,7 @@ use Vix\Syntra\Commands\Refactor\PhpCsFixerRefactorer;
 use Vix\Syntra\Commands\Refactor\RectorRefactorer;
 use Vix\Syntra\Commands\Refactor\VarCommentsRefactorer;
 use Vix\Syntra\Commands\Extension\Yii\YiiCanHelpersCommand;
+use Vix\Syntra\Commands\Extension\Yii\YiiCheckModelSchemaCommand;
 use Vix\Syntra\Commands\Extension\Yii\YiiCheckTranslationsCommand;
 use Vix\Syntra\Commands\Extension\Yii\YiiDeleteShortcutCommand;
 use Vix\Syntra\Commands\Extension\Yii\YiiFindIdCommand;
@@ -64,6 +65,7 @@ return [
         YiiDeleteShortcutCommand::class => true,
         YiiCanHelpersCommand::class => true,
         YiiCheckTranslationsCommand::class => true,
+        YiiCheckModelSchemaCommand::class => true,
     ],
     'laravel' => [
         //
