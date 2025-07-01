@@ -60,15 +60,13 @@ class TodoReportCommand extends SyntraCommand
                 : $filePath;
 
             foreach ($lines as $lineNumber => $line) {
-                foreach (self::$TAGS as $tag) {
-                    if (preg_match($pattern, $line, $m)) {
-                        $matches[] = [
-                            $relativePath,
-                            $lineNumber + 1,
-                            strtoupper($tag),
-                            trim($m[2])
-                        ];
-                    }
+                if (preg_match($pattern, $line, $m)) {
+                    $matches[] = [
+                        $relativePath,
+                        $lineNumber + 1,
+                        $m[1],
+                        trim($m[2])
+                    ];
                 }
             }
         }
