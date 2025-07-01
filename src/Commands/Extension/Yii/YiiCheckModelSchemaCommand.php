@@ -40,6 +40,11 @@ class YiiCheckModelSchemaCommand extends SyntraCommand
             if (!$class) {
                 continue;
             }
+
+            if (!class_exists($class)) {
+                require_once $file;
+            }
+
             if (!is_subclass_of($class, ActiveRecord::class)) {
                 continue;
             }
