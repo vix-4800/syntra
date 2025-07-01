@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Vix\Syntra;
 
-use Vix\Syntra\Commands\GenerateCommandCommand;
+use Vix\Syntra\Commands\General\GenerateCommandCommand;
 use Vix\Syntra\Commands\Health\ComposerChecker;
 use Vix\Syntra\Commands\Health\PhpStanChecker;
 use Vix\Syntra\Commands\Health\PhpUnitChecker;

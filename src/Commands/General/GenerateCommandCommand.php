@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vix\Syntra\Commands;
+namespace Vix\Syntra\Commands\General;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
@@ -56,7 +56,8 @@ class GenerateCommandCommand extends SyntraCommand
             ?? $helper->ask($this->input, $this->output, new Question('Description: '));
 
         $namespace = 'Vix\Syntra\Commands\\' . ucfirst($group);
-        $filePath = PACKAGE_ROOT . "/src/Commands/$group/$name.php";
+        $fileDir = PACKAGE_ROOT . '/src/Commands/' . ucfirst($group);
+        $filePath = "$fileDir/$name.php";
 
         if (file_exists($filePath)) {
             $this->output->error("File already exists: $filePath");
@@ -72,9 +73,8 @@ class GenerateCommandCommand extends SyntraCommand
             'group' => $group,
         ]);
 
-        $dir = dirname($filePath);
-        if (!is_dir($dir)) {
-            mkdir($dir, 0777, true);
+        if (!is_dir($fileDir)) {
+            mkdir($fileDir, 0777, true);
         }
 
         file_put_contents($filePath, $content);
