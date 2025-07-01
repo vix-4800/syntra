@@ -8,6 +8,8 @@ use Vix\Syntra\SyntraConfig;
 
 class ConfigLoader
 {
+    private array $coreGroups = ['refactor', 'health', 'analyze', 'general'];
+
     private ?string $projectRoot = null;
 
     private readonly SyntraConfig $config;
@@ -59,16 +61,28 @@ class ConfigLoader
 
     public function getEnabledCommands(): array
     {
+        return $this->filterEnabledCommands(true);
+    }
+
+    public function getEnabledExtensionCommands(): array
+    {
+        return $this->filterEnabledCommands(false);
+    }
+
+    private function filterEnabledCommands(bool $core): array
+    {
         $result = [];
-        $all = $this->config->commands();
 
-        foreach ($all as $group => $commands) {
+        foreach ($this->config->commands() as $group => $commands) {
+            $isCoreGroup = in_array($group, $this->coreGroups, true);
+            if ($core !== $isCoreGroup) {
+                continue;
+            }
+
             foreach ($commands as $class => $cfg) {
-                if (!$this->isCommandEnabled($group, $class)) {
-                    continue;
+                if ($this->isCommandEnabled($group, $class)) {
+                    $result[] = $class;
                 }
-
-                $result[] = $class;
             }
         }
 

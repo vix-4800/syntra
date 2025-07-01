@@ -26,22 +26,21 @@ class Application extends SymfonyApplication
         $this->extensionManager = new ExtensionManager($this->configLoader);
 
         $this->registerCommands();
-
         $this->registerExtensionCommands();
     }
 
     private function registerCommands(): void
     {
-        foreach ($this->configLoader->getEnabledCommands() as $commandClass) {
-            if (!class_exists($commandClass)) {
+        foreach ($this->configLoader->getEnabledCommands() as $class) {
+            if (!class_exists($class)) {
                 continue;
             }
 
             // Ensure it's a concrete subclass of Syntra Command
-            $reflectionClass = new ReflectionClass($commandClass);
+            $reflectionClass = new ReflectionClass($class);
 
             if (
-                is_subclass_of($commandClass, SyntraCommand::class)
+                is_subclass_of($class, SyntraCommand::class)
                 && !$reflectionClass->isAbstract()
             ) {
                 $instance = $reflectionClass->newInstance(
@@ -57,6 +56,25 @@ class Application extends SymfonyApplication
 
     private function registerExtensionCommands(): void
     {
-        //
+        foreach ($this->configLoader->getEnabledExtensionCommands() as $class) {
+            if (!class_exists($class)) {
+                continue;
+            }
+
+            $reflectionClass = new ReflectionClass($class);
+
+            if (
+                is_subclass_of($class, SyntraCommand::class)
+                && !$reflectionClass->isAbstract()
+            ) {
+                $instance = new $class(
+                    $this->configLoader,
+                    $this->processRunner,
+                    $this->extensionManager
+                );
+
+                $this->add($instance);
+            }
+        }
     }
 }
