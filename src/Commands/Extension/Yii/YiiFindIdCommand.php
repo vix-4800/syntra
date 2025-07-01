@@ -31,7 +31,7 @@ class YiiFindIdCommand extends SyntraRefactorCommand
 
         $result = $this->processRunner->run($binary, [
             $this->configLoader->getProjectRoot(),
-            "--config=" . $this->configLoader->getCommandOption('refactor', RectorRefactorer::class, 'config'),
+            "--config=" . $this->configLoader->getCommandOption('refactor', RectorRefactorer::class, 'commands_config'),
             "--only=" . str_replace("::class", "", FindOneIdShortcutRector::class),
         ]);
 

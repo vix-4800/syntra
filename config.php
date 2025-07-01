@@ -34,6 +34,7 @@ return [
         RectorRefactorer::class => [
             'enabled' => true,
             'config' => PACKAGE_ROOT . '/rector.php',
+            'commands_config' => PACKAGE_ROOT . '/rector_only_custom.php',
         ],
     ],
     'health' => [
