@@ -80,7 +80,7 @@ class YiiCheckTranslationsCommand extends SyntraCommand
     private function findUsedTranslationKeys(string $root, ?string $filterCategory = null): array
     {
         $fileHelper = new FileHelper();
-        $files = $fileHelper->collectFiles($root, ['php']);
+        $files = $fileHelper->collectFiles($root);
         $used = [];
 
         $pattern = '/Yii::t\s*\(\s*[\'"]([^\'"]+)[\'"]\s*,\s*[\'"]([^\'"]+)[\'"]/';

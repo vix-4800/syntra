@@ -31,7 +31,7 @@ class YiiCheckModelSchemaCommand extends SyntraCommand
         $modelsDir = "$projectRoot/backend/models";
 
         $fileHelper = new FileHelper();
-        $files = $fileHelper->collectFiles($modelsDir, ['php']);
+        $files = $fileHelper->collectFiles($modelsDir);
 
         $results = [];
 
@@ -53,7 +53,7 @@ class YiiCheckModelSchemaCommand extends SyntraCommand
             try {
                 $model = Yii::createObject($class);
             } catch (Throwable) {
-                continue; // skip broken/abstract/etc.
+                continue;
             }
 
             // 1. Table columns from DB

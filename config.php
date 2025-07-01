@@ -65,7 +65,7 @@ return [
         YiiDeleteShortcutCommand::class => true,
         YiiCanHelpersCommand::class => true,
         YiiCheckTranslationsCommand::class => true,
-        YiiCheckModelSchemaCommand::class => true,
+        YiiCheckModelSchemaCommand::class => false,
     ],
     'laravel' => [
         //
