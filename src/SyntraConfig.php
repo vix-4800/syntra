@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Vix\Syntra;
 
+use Vix\Syntra\Commands\Analyze\FindDebugCallsCommand;
 use Vix\Syntra\Commands\Analyze\FindTodosCommand;
 use Vix\Syntra\Commands\General\GenerateCommandCommand;
 use Vix\Syntra\Commands\Health\ComposerChecker;
@@ -48,6 +49,7 @@ class SyntraConfig
             ],
             'analyze' => [
                 FindTodosCommand::class => true,
+                FindDebugCallsCommand::class => true,
             ],
             'general' => [
                 GenerateCommandCommand::class => true,

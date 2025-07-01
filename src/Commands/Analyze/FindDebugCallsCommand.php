@@ -8,18 +8,19 @@ use Vix\Syntra\Commands\SyntraCommand;
 use Symfony\Component\Console\Command\Command;
 use Vix\Syntra\Utils\FileHelper;
 
-class FindTodosCommand extends SyntraCommand
+class FindDebugCallsCommand extends SyntraCommand
 {
-    protected static array $TAGS = [
-        'TODO',
-        'FIXME',
-        '@todo',
-        '@fixme',
-        '@deprecated',
-        '@note',
-        '@see',
-        '@hack',
-        '@internal'
+    protected static array $DEBUG_FUNCTIONS = [
+        'var_dump',
+        'print_r',
+        'dd',
+        'dump',
+        'ray',
+        'die',
+        'exit',
+        'logger(',
+        'eval',
+        'xdebug_break',
     ];
 
     protected function configure(): void
@@ -27,8 +28,8 @@ class FindTodosCommand extends SyntraCommand
         parent::configure();
 
         $this
-            ->setName('analyze:find-todos')
-            ->setDescription('Scans project files and collects all TODO, FIXME, @todo, @deprecated and other important comments for further review and refactoring.')
+            ->setName('analyze:find-debug-calls')
+            ->setDescription('Checks that var_dump, dd, print_r, eval, and other calls prohibited in production are not used.')
             ->setHelp('');
     }
 
@@ -40,11 +41,10 @@ class FindTodosCommand extends SyntraCommand
         $files = $fileHelper->collectFiles($projectRoot);
 
         $matches = [];
-        $allTags = implode('|', array_map('preg_quote', self::$TAGS));
-        $pattern = "/(?:\/\/|#|\*|\s)\s*($allTags)\b(.*)/i";
+        $pattern = '/(?<![\w\$])(' . implode('|', array_map('preg_quote', self::$DEBUG_FUNCTIONS)) . ')\s*\(/i';
 
         foreach ($files as $filePath) {
-            if (strpos($filePath, "TodoReportCommand") !== false) {
+            if (strpos($filePath, "FindDebugCallsCommand") !== false) {
                 continue;
             }
 
@@ -57,26 +57,30 @@ class FindTodosCommand extends SyntraCommand
 
             $lines = explode("\n", $content);
             foreach ($lines as $lineNumber => $line) {
-                if (preg_match($pattern, $line, $m)) {
+                if (preg_match($pattern, $line, $fnMatch)) {
                     $matches[] = [
                         $relativePath,
                         $lineNumber + 1,
-                        $m[1],
-                        trim($m[2])
+                        "$fnMatch[1]()",
+                        trim($line)
                     ];
                 }
             }
         }
 
         if (!$matches) {
-            $this->output->success('No TODO or special tags found! Clean code 👌');
+            $this->output->success('No debug calls or comments found! Code is clean 👌');
             return Command::SUCCESS;
         }
 
-        $this->table(['File', 'Line', 'Tag', 'Comment'], $matches);
+        usort($matches, fn($a, $b) => [$a[0], $a[1]] <=> [$b[0], $b[1]]);
 
-        $this->output->success('Scan complete (' . count($matches) . ' matches). Review your TODO/FIXME/deprecated and other notes!');
+        $this->table(
+            ['File', 'Line', 'Type', 'Code'],
+            $matches
+        );
 
-        return Command::SUCCESS;
+        $this->output->warning('Found ' . count($matches) . ' debug calls/comments. Please remove them before production!');
+        return Command::FAILURE;
     }
 }

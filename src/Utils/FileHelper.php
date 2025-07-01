@@ -50,4 +50,12 @@ class FileHelper
             file_put_contents($filePath, $newContent);
         }
     }
+
+    public function makeRelative(string $path, string $root): string
+    {
+        $root = rtrim($root, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
+        return str_starts_with($path, $root)
+            ? substr($path, strlen($root))
+            : $path;
+    }
 }
