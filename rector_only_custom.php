@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
 use Vix\Syntra\Commands\Rector\CanHelpersRector;
+use Vix\Syntra\Commands\Rector\ConvertAccessChainRector;
 use Vix\Syntra\Commands\Rector\DeleteAllShortcutRector;
 use Vix\Syntra\Commands\Rector\FindOneFindAllShortcutRector;
 use Vix\Syntra\Commands\Rector\FindOneIdShortcutRector;
@@ -15,10 +16,13 @@ return RectorConfig::configure()
         'vendor'
     ])
     ->withRules([
-        // Yii specific
+        // Yii Specific
         CanHelpersRector::class, // Replaces can/!can chains with canAny, canAll, cannotAny, or cannotAll
         FindOneFindAllShortcutRector::class, // Converts Model::find()->where([...])->one() or all() to Model::findOne(...) / findAll(...)
         FindOneIdShortcutRector::class, // Converts Model::findOne(['id' => $id]) to Model::findOne($id)
         UpdateAllShortcutRector::class, // Replaces chains like find()->where([...])->update([...]) with updateAll([...], [...])
         DeleteAllShortcutRector::class, // Replaces chains like find()->where([...])->delete() with deleteAll([...])
+        ConvertAccessChainRector::class, // Replaces identity->hasAccessChain()/hasNoAccessChain() with user->canAny()/cannotAny() for Yii apps
+
+        // Laravel Specific
     ]);

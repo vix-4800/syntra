@@ -23,6 +23,7 @@ use Vix\Syntra\Commands\Extension\Yii\YiiDeleteShortcutCommand;
 use Vix\Syntra\Commands\Extension\Yii\YiiFindIdCommand;
 use Vix\Syntra\Commands\Extension\Yii\YiiFindShortcutsCommand;
 use Vix\Syntra\Commands\Extension\Yii\YiiUpdateShortcutCommand;
+use Vix\Syntra\Commands\Yii\YiiConvertAccessChainCommand;
 
 return [
     'refactor' => [
@@ -66,6 +67,7 @@ return [
         YiiCanHelpersCommand::class => true,
         YiiCheckTranslationsCommand::class => true,
         YiiCheckModelSchemaCommand::class => false,
+        YiiConvertAccessChainCommand::class => true,
     ],
     'laravel' => [
         //
