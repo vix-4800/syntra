@@ -19,11 +19,11 @@ use Vix\Syntra\Commands\Refactor\VarCommentsRefactorer;
 use Vix\Syntra\Commands\Extension\Yii\YiiCanHelpersCommand;
 use Vix\Syntra\Commands\Extension\Yii\YiiCheckModelSchemaCommand;
 use Vix\Syntra\Commands\Extension\Yii\YiiCheckTranslationsCommand;
+use Vix\Syntra\Commands\Extension\Yii\YiiConvertAccessChainCommand;
 use Vix\Syntra\Commands\Extension\Yii\YiiDeleteShortcutCommand;
 use Vix\Syntra\Commands\Extension\Yii\YiiFindIdCommand;
 use Vix\Syntra\Commands\Extension\Yii\YiiFindShortcutsCommand;
 use Vix\Syntra\Commands\Extension\Yii\YiiUpdateShortcutCommand;
-use Vix\Syntra\Commands\Yii\YiiConvertAccessChainCommand;
 
 return [
     'refactor' => [
