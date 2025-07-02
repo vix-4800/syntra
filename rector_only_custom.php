@@ -9,6 +9,7 @@ use Vix\Syntra\Commands\Rector\DeleteAllShortcutRector;
 use Vix\Syntra\Commands\Rector\FindOneFindAllShortcutRector;
 use Vix\Syntra\Commands\Rector\FindOneIdShortcutRector;
 use Vix\Syntra\Commands\Rector\UpdateAllShortcutRector;
+use Vix\Syntra\Commands\Rector\UserFindOneToIdentityRector;
 
 return RectorConfig::configure()
     ->withRootFiles()
@@ -23,6 +24,7 @@ return RectorConfig::configure()
         UpdateAllShortcutRector::class, // Replaces chains like find()->where([...])->update([...]) with updateAll([...], [...])
         DeleteAllShortcutRector::class, // Replaces chains like find()->where([...])->delete() with deleteAll([...])
         ConvertAccessChainRector::class, // Replaces identity->hasAccessChain()/hasNoAccessChain() with user->canAny()/cannotAny() for Yii apps
+        UserFindOneToIdentityRector::class, // Replaces redundant User::findOne(...) lookups for current user with Yii::$app->user->identity
 
         // Laravel Specific
     ]);

@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Vix\Syntra\Commands\Analyze\FindDebugCallsCommand;
 use Vix\Syntra\Commands\Analyze\FindLongMethodsCommand;
 use Vix\Syntra\Commands\Analyze\FindTodosCommand;
+use Vix\Syntra\Commands\Extension\Yii\YiiUserFindoneToIdentityCommand;
 use Vix\Syntra\Commands\General\GenerateCommandCommand;
 use Vix\Syntra\Commands\Health\ComposerChecker;
 use Vix\Syntra\Commands\Health\PhpStanChecker;
@@ -68,6 +69,7 @@ return [
         YiiCheckTranslationsCommand::class => true,
         YiiCheckModelSchemaCommand::class => false,
         YiiConvertAccessChainCommand::class => true,
+        YiiUserFindoneToIdentityCommand::class => true,
     ],
     'laravel' => [
         //
