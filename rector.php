@@ -10,11 +10,6 @@ use Rector\CodingStyle\Rector\ClassMethod\NewlineBeforeNewAssignSetRector;
 use Rector\Config\RectorConfig;
 use Rector\DeadCode\Rector\ClassMethod\RemoveUnusedPrivateMethodRector;
 use Rector\DeadCode\Rector\Property\RemoveUnusedPrivatePropertyRector;
-use Vix\Syntra\Commands\Rector\CanHelpersRector;
-use Vix\Syntra\Commands\Rector\DeleteAllShortcutRector;
-use Vix\Syntra\Commands\Rector\FindOneFindAllShortcutRector;
-use Vix\Syntra\Commands\Rector\FindOneIdShortcutRector;
-use Vix\Syntra\Commands\Rector\UpdateAllShortcutRector;
 
 return RectorConfig::configure()
     ->withRootFiles()
@@ -34,11 +29,4 @@ return RectorConfig::configure()
         RemoveUnusedPrivateMethodRector::class, // Removes unused private methods
         RemoveUnusedPrivatePropertyRector::class, // Removes unused private properties
         NewlineBeforeNewAssignSetRector::class, // Enforces newline style before `new` assignments
-
-        // Yii specific
-        CanHelpersRector::class, // Replaces can/!can chains with canAny, canAll, cannotAny, or cannotAll
-        FindOneFindAllShortcutRector::class, // Converts Model::find()->where([...])->one() or all() to Model::findOne(...) / findAll(...)
-        FindOneIdShortcutRector::class, // Converts Model::findOne(['id' => $id]) to Model::findOne($id)
-        UpdateAllShortcutRector::class, // Replaces chains like find()->where([...])->update([...]) with updateAll([...], [...])
-        DeleteAllShortcutRector::class, // Replaces chains like find()->where([...])->delete() with deleteAll([...])
     ]);

@@ -12,17 +12,11 @@ use PhpParser\Node\Expr\ArrayItem;
 use Rector\Rector\AbstractRector;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Expr\PropertyFetch;
-use PhpParser\Node\Expr\BinaryOp\BooleanOr;
-use PhpParser\Node\Expr\BinaryOp\BooleanAnd;
 use PhpParser\Node\Expr\StaticCall;
 use PhpParser\Node\Expr\StaticPropertyFetch;
 use PhpParser\Node\Scalar\String_;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
-/**
- * Rector rule that replaces chains of can()/!can() combined via && or ||
- * with shortcut methods like canAny(), canAll(), cannotAny(), cannotAll().
- */
 class UserFindOneToIdentityRector extends AbstractRector
 {
     public function getRuleDefinition(): RuleDefinition
@@ -42,7 +36,7 @@ class UserFindOneToIdentityRector extends AbstractRector
     }
 
     /**
-     * @param BooleanOr|BooleanAnd $node
+     * @param StaticCall|MethodCall $node
      */
     public function refactor(Node $node): ?Node
     {
