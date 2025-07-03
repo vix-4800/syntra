@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace Vix\Syntra\Commands\General;
 
-use ReflectionClass;
-use ReflectionMethod;
+use PhpParser\Node;
+use PhpParser\Node\Stmt\Class_;
+use PhpParser\NodeTraverser;
+use PhpParser\NodeVisitorAbstract;
+use PhpParser\ParserFactory;
 use Vix\Syntra\Commands\SyntraCommand;
 use Symfony\Component\Console\Command\Command;
+use Throwable;
 use Vix\Syntra\Utils\FileHelper;
 
 class GenerateDocsCommand extends SyntraCommand
@@ -27,53 +31,76 @@ class GenerateDocsCommand extends SyntraCommand
         $projectRoot = $this->configLoader->getProjectRoot();
         $controllerDir = "$projectRoot/backend/controllers";
 
-        $files = (new FileHelper())->collectFiles($controllerDir);
+        $parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
 
         $routes = [];
 
+        $files = (new FileHelper())->collectFiles($controllerDir);
         foreach ($files as $file) {
-            require_once $file;
-
-            $className = $this->findClassNameInFile($file);
-            if (!$className) {
+            $code = file_get_contents($file);
+            if ($code === false) {
                 continue;
             }
 
-            $reflector = new ReflectionClass($className);
-
-            if ($reflector->isAbstract() || !preg_match('/Controller$/', $className)) {
+            try {
+                $ast = $parser->parse($code);
+            } catch (Throwable $e) {
                 continue;
             }
 
-            $controllerName = strtolower(preg_replace('/Controller$/', '', $reflector->getShortName()));
+            $visitor = new class extends NodeVisitorAbstract {
+                public array $routes = [];
 
-            foreach ($reflector->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
-                if (strpos($method->name, 'action') !== 0) {
-                    continue;
-                }
+                public function enterNode(Node $node): void
+                {
+                    if (
+                        $node instanceof Class_
+                        && $node->name !== null
+                        && str_ends_with($node->name->name, 'Controller')
+                    ) {
+                        $short = $node->name->name;
+                        $ctrl = strtolower(preg_replace('/Controller$/', '', $short));
 
-                $actionRaw = substr($method->name, 6);
-                $action = strtolower(preg_replace('/([a-z])([A-Z])/', '$1-$2', $actionRaw));
+                        foreach ($node->getMethods() as $method) {
+                            if (! $method->isPublic()) {
+                                continue;
+                            }
 
-                $route = "$controllerName/$action";
+                            $mName = $method->name->name;
+                            if (str_starts_with($mName, 'action')) {
+                                $actionRaw = substr($mName, 6);
+                                $action  = strtolower(
+                                    preg_replace('/([a-z])([A-Z])/', '$1-$2', $actionRaw)
+                                );
+                                $route = "$ctrl/$action";
 
-                $description = '';
-                if ($doc = $method->getDocComment()) {
-                    $lines = explode("\n", $doc);
-                    foreach ($lines as $line) {
-                        $line = trim($line, "/* \t");
-                        if ($line && strpos($line, '@') !== 0) {
-                            $description = $line;
-                            break;
+                                $desc = '';
+                                if ($doc = $method->getDocComment()) {
+                                    $lines = explode("\n", $doc->getText());
+                                    foreach ($lines as $line) {
+                                        $txt = trim($line, "/* \t");
+                                        if ($txt !== '' && $txt[0] !== '@') {
+                                            $desc = $txt;
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                $this->routes[] = [
+                                    'route' => $route,
+                                    'desc' => $desc,
+                                ];
+                            }
                         }
                     }
                 }
+            };
 
-                $routes[] = [
-                    'route' => $route,
-                    'desc' => $description,
-                ];
-            }
+            $traverser = new NodeTraverser();
+            $traverser->addVisitor($visitor);
+            $traverser->traverse($ast);
+
+            $routes = array_merge($routes, $visitor->routes);
         }
 
         if (empty($routes)) {
@@ -90,22 +117,5 @@ class GenerateDocsCommand extends SyntraCommand
         $this->output->writeln($md);
 
         return Command::SUCCESS;
-    }
-
-    private function findClassNameInFile(string $file)
-    {
-        $src = file_get_contents($file);
-
-        $ns = preg_match('/namespace\s+(.+?);/', $src, $mns)
-            ? $mns[1]
-            : '';
-
-        if (preg_match('/class\s+([^\s]+)/', $src, $mc)) {
-            $cls = $mc[1];
-        } else {
-            return null;
-        }
-
-        return $ns ? "$ns\\$cls" : $cls;
     }
 }
