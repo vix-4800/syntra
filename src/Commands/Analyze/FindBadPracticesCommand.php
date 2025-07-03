@@ -22,7 +22,7 @@ class FindBadPracticesCommand extends SyntraCommand
 
         $this
             ->setName('analyze:find-bad-practices')
-            ->setDescription('')
+            ->setDescription('Detects bad practices in code like magic numbers, nested ternaries, and assignments in conditions.')
             ->setHelp('');
     }
 
