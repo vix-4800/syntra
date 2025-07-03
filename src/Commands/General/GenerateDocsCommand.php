@@ -77,11 +77,11 @@ class GenerateDocsCommand extends SyntraCommand
         }
 
         if (empty($routes)) {
-            $this->output->warning("Контроллеры с action-методами не найдены.");
+            $this->output->warning("Controllers with action methods not found.");
             return Command::SUCCESS;
         }
 
-        $md = "# Документация маршрутов (Yii)\n\n";
+        $md = "# Route documentation (Yii)\n\n";
         foreach ($routes as $r) {
             $desc = $r['desc'] ? " — {$r['desc']}" : '';
             $md .= "- **`{$r['route']}`**{$desc}\n";
