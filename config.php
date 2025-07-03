@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Vix\Syntra\Commands\Analyze\FindBadPracticesCommand;
 use Vix\Syntra\Commands\Analyze\FindDebugCallsCommand;
 use Vix\Syntra\Commands\Analyze\FindLongMethodsCommand;
 use Vix\Syntra\Commands\Analyze\FindTodosCommand;
@@ -56,6 +57,7 @@ return [
         FindTodosCommand::class => true,
         FindDebugCallsCommand::class => true,
         FindLongMethodsCommand::class => true,
+        FindBadPracticesCommand::class => true,
     ],
     'general' => [
         GenerateCommandCommand::class => true,
