@@ -64,7 +64,6 @@ class DocblockRefactorer extends SyntraRefactorCommand
             if (!$nextToken || $nextToken[0] !== T_STRING) {
                 continue;
             }
-            $className = $nextToken[1];
 
             // Check for existing docblock
             $prevTokenIndex = $this->getPreviousTokenIndex($tokens, $i);
@@ -80,7 +79,13 @@ class DocblockRefactorer extends SyntraRefactorCommand
             }
 
             if (!$hasDocBlock) {
-                $insertions[$i] = $this->generateClassDocblock($className, $filePath);
+                $insertions[$i] = $this->renderStub(PACKAGE_ROOT . '/stubs/class-docblock.stub', [
+                    'description' => str_replace(getcwd() . DIRECTORY_SEPARATOR, '', $filePath),
+                    'category' => 'File',
+                    'author' => 'author <author@gmail.com>',
+                    'copyright' => date('Y'),
+                    'link' => 'http://example.com/',
+                ]);
             }
         }
 
@@ -94,7 +99,7 @@ class DocblockRefactorer extends SyntraRefactorCommand
 
         foreach ($insertions as $index => $docBlock) {
             $newContent .= $this->concatTokens(array_slice($tokens, $currentIndex, $index - $currentIndex));
-            $newContent .= $docBlock . "\n";
+            $newContent .= $docBlock;
             $currentIndex = $index;
         }
 
@@ -170,30 +175,6 @@ class DocblockRefactorer extends SyntraRefactorCommand
     }
 
     /**
-     * Generates a standard PHPDoc block for a class.
-     *
-     * @param  string $className
-     * @param  string $filePath
-     * @return string
-     */
-    private function generateClassDocblock(string $className, string $filePath): string
-    {
-        $date = date('Y');
-        return <<<EOT
-        /**
-         * Class $className
-         *
-         * @category  Class
-         * @package   Package
-         * @author    author <author@gmail.com>
-         * @copyright $date
-         * @license   MIT License
-         * @link      http://example.com/
-         */
-        EOT;
-    }
-
-    /**
      * Adds a file-level docblock if it doesn't already exist.
      *
      * @param  string $content
@@ -203,13 +184,12 @@ class DocblockRefactorer extends SyntraRefactorCommand
     private function addFileDocBlock(string $content, string $filePath): string
     {
         $tokens = token_get_all($content);
-        if (count($tokens) === 0) {
+        if (empty($tokens)) {
             return $content;
         }
 
         $firstToken = $tokens[0];
-        $hasOpenTag = is_array($firstToken) &&
-            ($firstToken[0] === T_OPEN_TAG || $firstToken[0] === T_OPEN_TAG_WITH_ECHO);
+        $hasOpenTag = is_array($firstToken) && ($firstToken[0] === T_OPEN_TAG || $firstToken[0] === T_OPEN_TAG_WITH_ECHO);
 
         // Skip if file does not start with an opening PHP tag
         if (!$hasOpenTag) {
@@ -242,38 +222,28 @@ class DocblockRefactorer extends SyntraRefactorCommand
             return $content;
         }
 
-        $docBlock = $this->generateFileDocBlock($filePath);
+        $docBlock = $this->renderStub(PACKAGE_ROOT . '/stubs/file-docblock.stub', [
+            'description' => str_replace(getcwd() . DIRECTORY_SEPARATOR, '', $filePath),
+            'phpVersion' => PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION,
+            'category' => 'File',
+            'author' => 'author <author@gmail.com>',
+            'copyright' => date('Y'),
+            'link' => 'http://example.com/',
+        ]);
 
-        return $firstToken[1] . $docBlock . $this->concatTokens(array_slice($tokens, 1));
+        return $firstToken[1] . "\n$docBlock" . $this->concatTokens(array_slice($tokens, 1));
     }
 
-    /**
-     * Generates a standard file-level PHPDoc block.
-     *
-     * @param  string $filePath
-     * @return string
-     */
-    private function generateFileDocBlock(string $filePath): string
+    private function renderStub(string $stubPath, array $replacements): string
     {
-        $shortPath = str_replace(getcwd() . DIRECTORY_SEPARATOR, '', $filePath);
-        $year = date('Y');
-        $phpVersion = PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION;
+        $content = file_get_contents($stubPath);
+        foreach ($replacements as $key => $value) {
+            if (!$value) {
+                continue;
+            }
 
-        return <<<EOT
-
-        /**
-         * $shortPath
-         *
-         * PHP Version $phpVersion
-         *
-         * @category  File
-         * @package   Package
-         * @author    author <author@gmail.com>
-         * @copyright $year
-         * @license   MIT License
-         * @link      http://example.com/
-         */
-
-        EOT;
+            $content = str_replace("{{" . $key . "}}", $value, $content);
+        }
+        return $content;
     }
 }
