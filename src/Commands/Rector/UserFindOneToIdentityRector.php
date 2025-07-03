@@ -45,7 +45,15 @@ class UserFindOneToIdentityRector extends AbstractRector
             return null;
         }
 
-        if ($this->isYiiUserIdPropertyFetch($args[0]->value)) {
+        $value = $args[0]->value;
+
+        // User::findOne(Yii::$app->user->id)
+        if ($this->isYiiUserIdPropertyFetch($value)) {
+            return $this->createYiiUserIdentityPropertyFetch();
+        }
+
+        // User::findOne([Yii::$app->user->id])
+        if ($this->isArrayOfSingleYiiUserId($value)) {
             return $this->createYiiUserIdentityPropertyFetch();
         }
 
@@ -76,6 +84,18 @@ class UserFindOneToIdentityRector extends AbstractRector
             && $expr->var->var instanceof StaticPropertyFetch
             && $this->isName($expr->var->var->class, 'Yii')
             && $this->isName($expr->var->var->name, 'app');
+    }
+
+    private function isArrayOfSingleYiiUserId(Expr $expr): bool
+    {
+        if ($expr instanceof \PhpParser\Node\Expr\Array_ && count($expr->items) === 1) {
+            $item = $expr->items[0];
+            if ($item && $item->value && $this->isYiiUserIdPropertyFetch($item->value)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function createYiiUserIdentityPropertyFetch(): PropertyFetch
