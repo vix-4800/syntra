@@ -45,8 +45,6 @@ class UserFindOneToIdentityRector extends AbstractRector
             return null;
         }
 
-        $argValue = $args[0]->value;
-
         if ($this->isYiiUserIdPropertyFetch($args[0]->value)) {
             return $this->createYiiUserIdentityPropertyFetch();
         }
@@ -56,12 +54,10 @@ class UserFindOneToIdentityRector extends AbstractRector
 
     private function isUserFindOneCall(StaticCall $node): bool
     {
-        // Проверяем что метод называется findOne
         if (!$this->isName($node->name, 'findOne')) {
             return false;
         }
 
-        // Проверяем что класс - User (базовое имя без неймспейса)
         if ($node->class instanceof Name) {
             $className = $this->getName($node->class);
             $baseName = $className ? basename(str_replace('\\', '/', $className)) : null;
