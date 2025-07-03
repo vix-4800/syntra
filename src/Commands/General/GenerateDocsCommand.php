@@ -109,14 +109,48 @@ class GenerateDocsCommand extends SyntraCommand
             return Command::SUCCESS;
         }
 
-        $md = "# Route documentation (Yii)\n\n";
-        foreach ($routes as $r) {
-            $desc = $r['desc'] ? " — {$r['desc']}" : '';
-            $md .= "- **`{$r['route']}`**{$desc}\n";
+        $routesGrouped = [];
+        foreach ($routes as $route) {
+            [$controller, $action] = explode('/', $route['route']);
+            $routesGrouped[$controller][] = [
+                'action' => $action,
+                'desc' => $route['desc'],
+            ];
         }
 
-        $this->output->writeln($md);
+        $mdFile = $this->writeToMarkdown("$projectRoot/docs", $routesGrouped);
+
+        $this->output->success("Routes successfully saved to $mdFile");
 
         return Command::SUCCESS;
+    }
+
+    private function writeToMarkdown(string $filePath, array $routes): string
+    {
+        $md = "# 📘 Route documentation (Yii)\n\n";
+        ksort($routes);
+
+        foreach ($routes as $controller => $actions) {
+            $md .= "## `$controller`\n\n";
+            $md .= "| Method                    | Description                                        |\n";
+            $md .= "|---------------------------|----------------------------------------------------|\n";
+
+            foreach ($actions as $a) {
+                $method = "`{$a['action']}`";
+                $desc = $a['desc'] ?: '';
+                $md .= sprintf("| %-25s | %-50s |\n", $method, $desc);
+            }
+
+            $md .= "\n";
+        }
+
+        if (!is_dir($filePath)) {
+            mkdir($filePath, 0777, true);
+        }
+
+        $mdFile = "$filePath/routes.md";
+        file_put_contents($mdFile, $md);
+
+        return $mdFile;
     }
 }
