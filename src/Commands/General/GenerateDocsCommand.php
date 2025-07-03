@@ -59,7 +59,8 @@ class GenerateDocsCommand extends SyntraCommand
                         && str_ends_with($node->name->name, 'Controller')
                     ) {
                         $short = $node->name->name;
-                        $ctrl = strtolower(preg_replace('/Controller$/', '', $short));
+                        $ctrl = preg_replace('/Controller$/', '', $short);
+                        $ctrl = strtolower(preg_replace('/([a-z])([A-Z])/', '$1-$2', $ctrl));
 
                         foreach ($node->getMethods() as $method) {
                             if (! $method->isPublic()) {
