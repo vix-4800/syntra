@@ -6,8 +6,6 @@ use Vix\Syntra\Commands\Analyze\FindBadPracticesCommand;
 use Vix\Syntra\Commands\Analyze\FindDebugCallsCommand;
 use Vix\Syntra\Commands\Analyze\FindLongMethodsCommand;
 use Vix\Syntra\Commands\Analyze\FindTodosCommand;
-use Vix\Syntra\Commands\Extension\Yii\YiiUserFindoneToIdentityCommand;
-use Vix\Syntra\Commands\General\GenerateCommandCommand;
 use Vix\Syntra\Commands\Health\ComposerChecker;
 use Vix\Syntra\Commands\Health\PhpStanChecker;
 use Vix\Syntra\Commands\Health\PhpUnitChecker;
@@ -18,6 +16,7 @@ use Vix\Syntra\Commands\Refactor\ImportRefactorer;
 use Vix\Syntra\Commands\Refactor\PhpCsFixerRefactorer;
 use Vix\Syntra\Commands\Refactor\RectorRefactorer;
 use Vix\Syntra\Commands\Refactor\VarCommentsRefactorer;
+use Vix\Syntra\Commands\Extension\Yii\YiiUserFindoneToIdentityCommand;
 use Vix\Syntra\Commands\Extension\Yii\YiiCanHelpersCommand;
 use Vix\Syntra\Commands\Extension\Yii\YiiCheckModelSchemaCommand;
 use Vix\Syntra\Commands\Extension\Yii\YiiCheckTranslationsCommand;
@@ -26,6 +25,8 @@ use Vix\Syntra\Commands\Extension\Yii\YiiDeleteShortcutCommand;
 use Vix\Syntra\Commands\Extension\Yii\YiiFindIdCommand;
 use Vix\Syntra\Commands\Extension\Yii\YiiFindShortcutsCommand;
 use Vix\Syntra\Commands\Extension\Yii\YiiUpdateShortcutCommand;
+use Vix\Syntra\Commands\General\GenerateCommandCommand;
+use Vix\Syntra\Commands\General\GenerateDocsCommand;
 
 return [
     'refactor' => [
@@ -61,6 +62,7 @@ return [
     ],
     'general' => [
         GenerateCommandCommand::class => true,
+        GenerateDocsCommand::class => true,
     ],
     'yii' => [
         YiiFindShortcutsCommand::class => true,
