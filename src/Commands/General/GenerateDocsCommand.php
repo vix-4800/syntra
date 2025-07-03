@@ -25,7 +25,7 @@ class GenerateDocsCommand extends SyntraCommand
     public function perform(): int
     {
         $projectRoot = $this->configLoader->getProjectRoot();
-        $controllerDir = "$projectRoot/controllers";
+        $controllerDir = "$projectRoot/backend/controllers";
 
         $files = (new FileHelper())->collectFiles($controllerDir);
 
