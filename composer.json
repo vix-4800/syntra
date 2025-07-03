@@ -3,7 +3,7 @@
     "description": "Syntra — unified CLI for PHP project health checks, code refactoring, and extensible framework integrations.",
     "type": "library",
     "license": "MIT",
-    "version": "1.1.0",
+    "version": "1.5.0",
     "keywords": [
         "php",
         "cli",
