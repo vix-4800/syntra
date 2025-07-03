@@ -9,6 +9,7 @@ use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Question\Question;
 use Vix\Syntra\Commands\SyntraCommand;
+use Vix\Syntra\Utils\StubHelper;
 
 class GenerateCommandCommand extends SyntraCommand
 {
@@ -57,8 +58,7 @@ class GenerateCommandCommand extends SyntraCommand
             return Command::FAILURE;
         }
 
-        $stubPath = PACKAGE_ROOT . '/stubs/command.stub';
-        $content = $this->renderStub($stubPath, [
+        $content = (new StubHelper("command"))->render([
             'namespace' => $namespace,
             'class' => $name,
             'cli_name' => $cliName,
@@ -76,18 +76,5 @@ class GenerateCommandCommand extends SyntraCommand
         $this->output->note("Don't forget to register this command in SyntraConfig!");
 
         return Command::SUCCESS;
-    }
-
-    private function renderStub(string $stubPath, array $replacements): string
-    {
-        $content = file_get_contents($stubPath);
-        foreach ($replacements as $key => $value) {
-            if (!$value) {
-                continue;
-            }
-
-            $content = str_replace("{{" . $key . "}}", $value, $content);
-        }
-        return $content;
     }
 }

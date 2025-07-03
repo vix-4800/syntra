@@ -8,6 +8,7 @@ use Symfony\Component\Console\Command\Command;
 use Vix\Syntra\Commands\SyntraRefactorCommand;
 use Vix\Syntra\Enums\DangerLevel;
 use Vix\Syntra\Utils\FileHelper;
+use Vix\Syntra\Utils\StubHelper;
 
 class DocblockRefactorer extends SyntraRefactorCommand
 {
@@ -79,9 +80,9 @@ class DocblockRefactorer extends SyntraRefactorCommand
             }
 
             if (!$hasDocBlock) {
-                $insertions[$i] = $this->renderStub(PACKAGE_ROOT . '/stubs/class-docblock.stub', [
+                $insertions[$i] = (new StubHelper("class-docblock"))->render([
                     'description' => str_replace(getcwd() . DIRECTORY_SEPARATOR, '', $filePath),
-                    'category' => 'File',
+                    'category' => 'Class',
                     'author' => 'author <author@gmail.com>',
                     'copyright' => date('Y'),
                     'link' => 'http://example.com/',
@@ -222,7 +223,7 @@ class DocblockRefactorer extends SyntraRefactorCommand
             return $content;
         }
 
-        $docBlock = $this->renderStub(PACKAGE_ROOT . '/stubs/file-docblock.stub', [
+        $docBlock = (new StubHelper("file-docblock"))->render([
             'description' => str_replace(getcwd() . DIRECTORY_SEPARATOR, '', $filePath),
             'phpVersion' => PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION,
             'category' => 'File',
@@ -232,18 +233,5 @@ class DocblockRefactorer extends SyntraRefactorCommand
         ]);
 
         return $firstToken[1] . "\n$docBlock" . $this->concatTokens(array_slice($tokens, 1));
-    }
-
-    private function renderStub(string $stubPath, array $replacements): string
-    {
-        $content = file_get_contents($stubPath);
-        foreach ($replacements as $key => $value) {
-            if (!$value) {
-                continue;
-            }
-
-            $content = str_replace("{{" . $key . "}}", $value, $content);
-        }
-        return $content;
     }
 }
