@@ -9,9 +9,9 @@ use PhpParser\ParserFactory;
 use Vix\Syntra\Commands\SyntraCommand;
 use Symfony\Component\Console\Command\Command;
 use Throwable;
-use Vix\Syntra\Commands\Analyze\BadPractice\AssignmentInConditionVisitor;
-use Vix\Syntra\Commands\Analyze\BadPractice\NestedTernaryVisitor;
-use Vix\Syntra\Commands\Analyze\BadPractice\ReturnThrowVisitor;
+use Vix\Syntra\NodeVisitors\AssignmentInConditionVisitor;
+use Vix\Syntra\NodeVisitors\NestedTernaryVisitor;
+use Vix\Syntra\NodeVisitors\ReturnThrowVisitor;
 use Vix\Syntra\Utils\FileHelper;
 
 class FindBadPracticesCommand extends SyntraCommand

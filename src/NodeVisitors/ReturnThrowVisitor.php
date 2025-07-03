@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vix\Syntra\Commands\Analyze\BadPractice;
+namespace Vix\Syntra\NodeVisitors;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr\Throw_;

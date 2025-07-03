@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace Vix\Syntra\Commands\Analyze;
 
-use PhpParser\Node;
-use PhpParser\Node\Stmt\Class_;
-use PhpParser\Node\Stmt\ClassMethod;
-use PhpParser\Node\Stmt\Function_;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitorAbstract;
 use PhpParser\ParserFactory;
@@ -15,6 +11,7 @@ use Vix\Syntra\Commands\SyntraCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Throwable;
+use Vix\Syntra\NodeVisitors\LongMethodVisitor;
 use Vix\Syntra\Utils\FileHelper;
 
 class FindLongMethodsCommand extends SyntraCommand
@@ -54,51 +51,7 @@ class FindLongMethodsCommand extends SyntraCommand
             }
 
             $traverser = new NodeTraverser();
-            $visitor = new class($filePath, $maxLength, $longMethods) extends NodeVisitorAbstract {
-                private string $filePath;
-                private int $maxLength;
-                public array $results;
-
-                public function __construct($filePath, $maxLength, &$results)
-                {
-                    $this->filePath = $filePath;
-                    $this->maxLength = $maxLength;
-                    $this->results = &$results;
-                }
-
-                public function enterNode(Node $node): void
-                {
-                    if (
-                        $node instanceof ClassMethod ||
-                        $node instanceof Function_
-                    ) {
-                        $startLine = $node->getStartLine();
-                        $endLine = $node->getEndLine();
-                        $length = $endLine - $startLine + 1;
-
-                        if ($length > $this->maxLength) {
-                            $class = $node instanceof ClassMethod && $node->getAttribute('parent') instanceof Class_
-                                ? $node->getAttribute('parent')->name->toString()
-                                : '';
-
-                            $this->results[] = [
-                                $this->filePath,
-                                $class,
-                                $node->name->toString(),
-                                $length,
-                                $startLine,
-                                $endLine,
-                            ];
-                        }
-                    }
-
-                    if ($node instanceof Class_) {
-                        foreach ($node->getMethods() as $method) {
-                            $method->setAttribute('parent', $node);
-                        }
-                    }
-                }
-            };
+            $visitor = new LongMethodVisitor($filePath, $maxLength, $longMethods);
 
             $traverser->addVisitor($visitor);
             $traverser->traverse($stmts);
