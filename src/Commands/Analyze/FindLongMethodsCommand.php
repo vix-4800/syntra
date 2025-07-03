@@ -38,7 +38,7 @@ class FindLongMethodsCommand extends SyntraCommand
 
         $maxLength = (int) $this->input->getOption('max');
 
-        $parser = (new ParserFactory())->createForNewestSupportedVersion();
+        $parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
         $longMethods = [];
 
         foreach ($files as $filePath) {
@@ -92,7 +92,6 @@ class FindLongMethodsCommand extends SyntraCommand
                         }
                     }
 
-                    // Для корректного вывода имени класса добавим ссылку на parent в дочерних узлах
                     if ($node instanceof Class_) {
                         foreach ($node->getMethods() as $method) {
                             $method->setAttribute('parent', $node);
@@ -107,10 +106,10 @@ class FindLongMethodsCommand extends SyntraCommand
 
         if (empty($longMethods)) {
             $this->output->success("No methods/functions longer than $maxLength lines found. 👍");
-            return 0;
+            return Command::SUCCESS;
         }
 
-        usort($longMethods, fn($a, $b) => [$a[0], $a[1], $a[2]] <=> [$b[0], $b[1], $b[2]]);
+        usort($longMethods, fn($a, $b): int => [$a[0], $a[1], $a[2]] <=> [$b[0], $b[1], $b[2]]);
 
         $this->table(
             ['File', 'Class', 'Method', 'Length', 'Start', 'End'],
@@ -119,6 +118,6 @@ class FindLongMethodsCommand extends SyntraCommand
 
         $this->output->warning(count($longMethods) . " method(s)/function(s) longer than $maxLength lines found.");
 
-        return Command::SUCCESS;
+        return Command::FAILURE;
     }
 }
