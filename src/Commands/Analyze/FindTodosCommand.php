@@ -46,6 +46,8 @@ class FindTodosCommand extends SyntraCommand
         $allTags = implode('|', array_map('preg_quote', self::$TAGS));
         $pattern = "/(?:\/\/|#|\*|\s)\s*($allTags)\b(.*)/i";
 
+        $this->startProgress(count($files));
+
         foreach ($files as $filePath) {
             if (str_contains($filePath, "TodoReportCommand")) {
                 continue;
@@ -69,7 +71,11 @@ class FindTodosCommand extends SyntraCommand
                     ];
                 }
             }
+
+            $this->advance();
         }
+
+        $this->finishProgress();
 
         if (!$matches) {
             $this->output->success('No TODO or special tags found! Clean code 👌');

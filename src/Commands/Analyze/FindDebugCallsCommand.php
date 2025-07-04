@@ -47,6 +47,8 @@ class FindDebugCallsCommand extends SyntraCommand
         $matches = [];
         $pattern = '/(?<![\w\$])(' . implode('|', array_map('preg_quote', self::$DEBUG_FUNCTIONS)) . ')\s*\(/i';
 
+        $this->startProgress(count($files));
+
         foreach ($files as $filePath) {
             if (str_contains($filePath, "FindDebugCallsCommand")) {
                 continue;
@@ -70,7 +72,11 @@ class FindDebugCallsCommand extends SyntraCommand
                     ];
                 }
             }
+
+            $this->advance();
         }
+
+        $this->finishProgress();
 
         if (!$matches) {
             $this->output->success('No debug calls or comments found! Code is clean 👌');

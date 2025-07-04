@@ -39,6 +39,9 @@ class GenerateDocsCommand extends SyntraCommand
         $routes = [];
 
         $files = $fileHelper->collectFiles($controllerDir);
+
+        $this->startProgress(count($files));
+
         foreach ($files as $file) {
             $code = file_get_contents($file);
             if ($code === false) {
@@ -58,7 +61,11 @@ class GenerateDocsCommand extends SyntraCommand
             $traverser->traverse($ast);
 
             $routes = array_merge($routes, $visitor->routes);
+
+            $this->advance();
         }
+
+        $this->finishProgress();
 
         if (empty($routes)) {
             $this->output->warning("Controllers with action methods not found.");

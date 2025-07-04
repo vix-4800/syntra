@@ -33,6 +33,8 @@ class ImportRefactorer extends SyntraRefactorCommand
         $fileHelper = $this->getService(FileHelper::class, fn(): FileHelper => new FileHelper());
         $files = $fileHelper->collectFiles($this->configLoader->getProjectRoot());
 
+        $this->startProgress(count($files));
+
         foreach ($files as $filePath) {
             $content = file_get_contents($filePath);
 
@@ -41,8 +43,11 @@ class ImportRefactorer extends SyntraRefactorCommand
             if (!$this->dryRun) {
                 $fileHelper->writeChanges($filePath, $content, $newContent);
             }
-            // $this->progressBar->advance();
+
+            $this->advance();
         }
+
+        $this->finishProgress();
 
         return Command::SUCCESS;
     }

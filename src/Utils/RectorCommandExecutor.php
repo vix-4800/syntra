@@ -18,7 +18,9 @@ class RectorCommandExecutor
     public function __construct(
         private readonly ConfigLoader $configLoader,
         private readonly ProcessRunner $processRunner
-    ) {}
+    ) {
+        //
+    }
 
     /**
      * Execute a specific Rector rule
@@ -73,6 +75,7 @@ class RectorCommandExecutor
     {
         try {
             $this->findRectorBinary();
+
             return true;
         } catch (MissingBinaryException) {
             return false;

@@ -43,6 +43,8 @@ class FindLongMethodsCommand extends SyntraCommand
 
         $longMethods = [];
 
+        $this->startProgress(count($files));
+
         foreach ($files as $filePath) {
             $code = file_get_contents($filePath);
             if ($code === false) {
@@ -60,7 +62,11 @@ class FindLongMethodsCommand extends SyntraCommand
 
             $traverser->addVisitor($visitor);
             $traverser->traverse($stmts);
+
+            $this->advance();
         }
+
+        $this->finishProgress();
 
         if (empty($longMethods)) {
             $this->output->success("No methods/functions longer than $maxLength lines found. 👍");
