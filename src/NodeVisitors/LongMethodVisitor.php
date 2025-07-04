@@ -12,14 +12,10 @@ use PhpParser\Node\Stmt\Function_;
 
 class LongMethodVisitor extends NodeVisitorAbstract
 {
-    private string $filePath;
-    private int $maxLength;
     public array $results;
 
-    public function __construct($filePath, $maxLength, &$results)
+    public function __construct(private readonly string $filePath, private readonly int $maxLength, &$results)
     {
-        $this->filePath = $filePath;
-        $this->maxLength = $maxLength;
         $this->results = &$results;
     }
 

@@ -58,7 +58,7 @@ class WebApplication
         $requestMethod = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
         // Remove query string from URI
-        $path = parse_url($requestUri, PHP_URL_PATH);
+        $path = parse_url((string) $requestUri, PHP_URL_PATH);
 
         // Simple routing
         switch ($path) {
@@ -209,7 +209,7 @@ class WebApplication
                     'description' => $instance->getDescription(),
                     'group' => $this->getCommandGroup($class),
                 ];
-            } catch (Exception $e) {
+            } catch (Exception) {
                 // Skip commands that can't be instantiated
                 continue;
             }

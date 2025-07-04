@@ -19,9 +19,9 @@ use Vix\Syntra\Utils\ProcessRunner;
 class CommandExecutor
 {
     public function __construct(
-        private ConfigLoader $configLoader,
-        private ProcessRunner $processRunner,
-        private ExtensionManager $extensionManager
+        private readonly ConfigLoader $configLoader,
+        private readonly ProcessRunner $processRunner,
+        private readonly ExtensionManager $extensionManager
     ) {
         //
     }
@@ -76,7 +76,7 @@ class CommandExecutor
 
                 // Run the command
                 $exitCode = $app->run($input, $output);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $exitCode = 1;
                 $output->writeln('<error>Command failed: ' . $e->getMessage() . '</error>');
             }
@@ -155,7 +155,7 @@ class CommandExecutor
             }
 
             // Detect table headers (lines with |)
-            if (strpos($cleanLine, '|') !== false && preg_match('/^\|.*\|$/', $cleanLine)) {
+            if (str_contains($cleanLine, '|') && preg_match('/^\|.*\|$/', $cleanLine)) {
                 if ($currentTable === null) {
                     $currentTable = count($parsed['tables']);
                     $parsed['tables'][$currentTable] = [

@@ -48,7 +48,7 @@ class FindDebugCallsCommand extends SyntraCommand
         $pattern = '/(?<![\w\$])(' . implode('|', array_map('preg_quote', self::$DEBUG_FUNCTIONS)) . ')\s*\(/i';
 
         foreach ($files as $filePath) {
-            if (strpos($filePath, "FindDebugCallsCommand") !== false) {
+            if (str_contains($filePath, "FindDebugCallsCommand")) {
                 continue;
             }
 

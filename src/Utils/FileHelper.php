@@ -28,7 +28,7 @@ class FileHelper
             }
 
             foreach ($excludeDirs as $dir) {
-                if (strpos($file->getPathname(), DIRECTORY_SEPARATOR . $dir . DIRECTORY_SEPARATOR) !== false) {
+                if (str_contains($file->getPathname(), DIRECTORY_SEPARATOR . $dir . DIRECTORY_SEPARATOR)) {
                     continue 2;
                 }
             }

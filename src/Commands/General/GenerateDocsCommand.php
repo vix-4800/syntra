@@ -47,7 +47,7 @@ class GenerateDocsCommand extends SyntraCommand
 
             try {
                 $ast = $parser->parse($code);
-            } catch (Throwable $e) {
+            } catch (Throwable) {
                 continue;
             }
 
@@ -67,7 +67,7 @@ class GenerateDocsCommand extends SyntraCommand
 
         $routesGrouped = [];
         foreach ($routes as $route) {
-            [$controller, $action] = explode('/', $route['route']);
+            [$controller, $action] = explode('/', (string) $route['route']);
             $routesGrouped[$controller][] = [
                 'action' => $action,
                 'desc' => $route['desc'],

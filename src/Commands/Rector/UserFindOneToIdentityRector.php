@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Vix\Syntra\Commands\Rector;
 
+use PhpParser\Node\Expr\Array_;
 use PhpParser\Node;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Name;
@@ -88,7 +89,7 @@ class UserFindOneToIdentityRector extends AbstractRector
 
     private function isArrayOfSingleYiiUserId(Expr $expr): bool
     {
-        if ($expr instanceof \PhpParser\Node\Expr\Array_ && count($expr->items) === 1) {
+        if ($expr instanceof Array_ && count($expr->items) === 1) {
             $item = $expr->items[0];
             if ($item && $item->value && $this->isYiiUserIdPropertyFetch($item->value)) {
                 return true;
