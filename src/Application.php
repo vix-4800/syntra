@@ -20,7 +20,8 @@ class Application extends SymfonyApplication
     public static function getPackageVersion(): string
     {
         if (self::$packageVersion === null) {
-            $composerFile = dirname(__DIR__) . '/composer.json';
+            $composerFile = PACKAGE_ROOT . '/composer.json';
+
             if (is_readable($composerFile)) {
                 $data = json_decode((string) file_get_contents($composerFile), true);
                 self::$packageVersion = $data['version'] ?? '0.0.0';
