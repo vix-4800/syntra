@@ -64,7 +64,6 @@ vendor/bin/syntra refactor:cs-fixer --dry-run
 
 # Generate a new command
 vendor/bin/syntra general:generate-command --group=analyze --cli-name=analyze:custom
-
 ```
 
 ### Common Options
