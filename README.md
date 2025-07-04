@@ -90,9 +90,12 @@ All commands support these standard options:
 
 ### 🏥 Health
 
-| Command          | Description                                               | Options               |
-| ---------------- | --------------------------------------------------------- | --------------------- |
-| `health:project` | Run basic health checks: composer, phpstan, phpunit, etc. | `--path`, `--dry-run` |
+| Command           | Description                                        | Options               |
+| ----------------- | -------------------------------------------------- | --------------------- |
+| `health:composer` | Check Composer dependencies for updates            | `--path`, `--dry-run` |
+| `health:phpstan`  | Run PHPStan static analysis                        | `--path`, `--dry-run` |
+| `health:phpunit`  | Execute PHPUnit tests                              | `--path`, `--dry-run` |
+| `health:project`  | Run all health checks (composer, phpstan, phpunit) | `--path`, `--dry-run` |
 
 ### 🔧 Refactor
 
@@ -214,7 +217,13 @@ See `web/README.md` for detailed setup and configuration instructions.
 1. **Daily Health Checks**:
 
     ```bash
+    # Run everything
     vendor/bin/syntra health:project
+
+    # Or individually
+    vendor/bin/syntra health:composer
+    vendor/bin/syntra health:phpstan
+    vendor/bin/syntra health:phpunit
     ```
 
 2. **Code Analysis Before Refactoring**:

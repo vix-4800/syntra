@@ -29,7 +29,6 @@ return [
         CommandClass::class => [
             'enabled' => true,           // Console access (required)
             'web_enabled' => true,       // Web access (optional, defaults to true)
-            'require_dry_run' => false,  // Force dry-run in web interface
             'config' => '/path/to/config', // Command-specific config file
             // ... other command-specific options
         ],
@@ -62,12 +61,11 @@ Each command can be configured using either:
 
 #### Common Command Options
 
-| Option            | Type     | Default | Description                              |
-| ----------------- | -------- | ------- | ---------------------------------------- |
-| `enabled`         | `bool`   | -       | **Required**: Enable command for console |
-| `web_enabled`     | `bool`   | `true`  | Enable command for web interface         |
-| `require_dry_run` | `bool`   | `false` | Force dry-run mode in web interface      |
-| `config`          | `string` | -       | Path to command-specific config file     |
+| Option        | Type     | Default | Description                              |
+| ------------- | -------- | ------- | ---------------------------------------- |
+| `enabled`     | `bool`   | -       | **Required**: Enable command for console |
+| `web_enabled` | `bool`   | `true`  | Enable command for web interface         |
+| `config`      | `string` | -       | Path to command-specific config file     |
 
 ## Examples
 
@@ -107,7 +105,6 @@ return [
         RectorRefactorer::class => [
             'enabled' => true,
             'web_enabled' => true,
-            'require_dry_run' => true, // Force dry-run in web
         ],
     ],
 ];
@@ -166,7 +163,6 @@ Refactor commands modify your code files. For production use:
     RectorRefactorer::class => [
         'enabled' => true,
         'web_enabled' => false,        // Disable web access
-        'require_dry_run' => true,     // Or force dry-run
     ],
 ],
 ```
@@ -247,10 +243,9 @@ vendor/bin/syntra analyze:find-todos --dry-run
 ## Best Practices
 
 1. **Start Conservative**: Begin with `web_enabled => false` for refactor commands
-2. **Use Dry-Run**: Set `require_dry_run => true` for destructive commands
-3. **Regular Review**: Periodically review and update your configuration
-4. **Version Control**: Keep `config.php` in version control
-5. **Environment Specific**: Consider different configs for dev/staging/production
+2. **Regular Review**: Periodically review and update your configuration
+3. **Version Control**: Keep `config.php` in version control
+4. **Environment Specific**: Consider different configs for dev/staging/production
 
 ## Troubleshooting
 

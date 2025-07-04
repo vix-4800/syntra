@@ -6,11 +6,11 @@ use Vix\Syntra\Commands\Analyze\FindBadPracticesCommand;
 use Vix\Syntra\Commands\Analyze\FindDebugCallsCommand;
 use Vix\Syntra\Commands\Analyze\FindLongMethodsCommand;
 use Vix\Syntra\Commands\Analyze\FindTodosCommand;
-use Vix\Syntra\Commands\Health\ComposerChecker;
-use Vix\Syntra\Commands\Health\PhpStanChecker;
-use Vix\Syntra\Commands\Health\PhpUnitChecker;
 use Vix\Syntra\Commands\Health\ProjectCheckCommand;
 use Vix\Syntra\Commands\Health\SecurityChecker;
+use Vix\Syntra\Commands\Health\ComposerCheckCommand;
+use Vix\Syntra\Commands\Health\PhpStanCheckCommand;
+use Vix\Syntra\Commands\Health\PhpUnitCheckCommand;
 use Vix\Syntra\Commands\Refactor\DocblockRefactorer;
 use Vix\Syntra\Commands\Refactor\ImportRefactorer;
 use Vix\Syntra\Commands\Refactor\PhpCsFixerRefactorer;
@@ -85,17 +85,17 @@ return [
         ],
     ],
     'health' => [
-        ComposerChecker::class => [
+        ComposerCheckCommand::class => [
             'enabled' => true,
             'web_enabled' => true,
         ],
-        PhpStanChecker::class => [
+        PhpStanCheckCommand::class => [
             'enabled' => true,
             'web_enabled' => true,
             'config' => PACKAGE_ROOT . '/phpstan.neon',
-            'level' => 5
+            'level' => 5,
         ],
-        PhpUnitChecker::class => [
+        PhpUnitCheckCommand::class => [
             'enabled' => true,
             'web_enabled' => true,
         ],
