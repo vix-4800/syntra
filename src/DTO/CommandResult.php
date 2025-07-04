@@ -29,7 +29,7 @@ class CommandResult implements ArrayAccess
 
     public static function error(array $messages): self
     {
-        return new self(CommandStatus::WARNING, $messages);
+        return new self(CommandStatus::ERROR, $messages);
     }
 
     public function offsetExists($offset): bool
