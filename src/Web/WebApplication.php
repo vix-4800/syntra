@@ -7,11 +7,8 @@ namespace Vix\Syntra\Web;
 use Exception;
 use ReflectionClass;
 use Vix\Syntra\Commands\SyntraCommand;
-use Vix\Syntra\DI\Container;
 use Vix\Syntra\DI\ContainerInterface;
-use Vix\Syntra\DI\Providers\ApplicationServiceProvider;
-use Vix\Syntra\DI\Providers\HealthServiceProvider;
-use Vix\Syntra\DI\Providers\ParserServiceProvider;
+use Vix\Syntra\DI\ContainerFactory;
 use Vix\Syntra\Utils\ConfigLoader;
 
 class WebApplication
@@ -21,35 +18,8 @@ class WebApplication
 
     public function __construct()
     {
-        $this->container = $this->setupContainer();
+        $this->container = ContainerFactory::create();
         $this->loadCommands();
-    }
-
-    /**
-     * Set up the dependency injection container
-     */
-    private function setupContainer(): ContainerInterface
-    {
-        $container = new Container();
-
-        // Register service providers
-        $providers = [
-            new ApplicationServiceProvider(),
-            new HealthServiceProvider(),
-            new ParserServiceProvider(),
-        ];
-
-        // Register all services
-        foreach ($providers as $provider) {
-            $provider->register($container);
-        }
-
-        // Boot all services
-        foreach ($providers as $provider) {
-            $provider->boot($container);
-        }
-
-        return $container;
     }
 
     public function run(): void
