@@ -48,8 +48,6 @@ use Vix\Syntra\Commands\General\GenerateDocsCommand;
  * Global web settings:
  * 'web' => [
  *     'enabled' => bool: Global web interface toggle
- *     'require_auth' => bool: Whether authentication is required
- *     'allowed_ips' => array: List of allowed IP addresses (empty = all)
  * ]
  */
 
@@ -57,8 +55,6 @@ return [
     // Global web interface settings
     'web' => [
         'enabled' => true,
-        'require_auth' => false,
-        'allowed_ips' => [], // Empty array = allow all IPs
     ],
 
     // Command configurations
