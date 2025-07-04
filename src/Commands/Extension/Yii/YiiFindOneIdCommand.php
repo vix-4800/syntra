@@ -7,16 +7,16 @@ namespace Vix\Syntra\Commands\Extension\Yii;
 use Vix\Syntra\Commands\RectorRunnerCommand;
 use Vix\Syntra\Commands\Rector\FindOneIdShortcutRector;
 
-class YiiFindIdCommand extends RectorRunnerCommand
+class YiiFindOneIdCommand extends RectorRunnerCommand
 {
     protected function configure(): void
     {
         parent::configure();
 
         $this
-            ->setName('yii:find-id')
+            ->setName('yii:find-one-id')
             ->setDescription('Replaces Model::findOne([\'id\' => $id]) with Model::findOne($id)')
-            ->setHelp('Usage: vendor/bin/syntra yii:find-id');
+            ->setHelp('Usage: vendor/bin/syntra yii:find-one-id');
     }
 
     protected function getRectorRules(): string

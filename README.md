@@ -120,7 +120,8 @@ All commands support these standard options:
 | ------------------------------ | ---------------------------------------------------------------------------------------------------- | ------------ | -------------------------------- |
 | `yii:all`                      | Runs all Yii-specific Rector refactorings in sequence                                                | 🟢 LOW       | `--path`, `--dry-run`, `--force` |
 | `yii:find-shortcuts`           | Converts `Model::find()->where([...])->one()/all()` into `Model::findOne([...])` or `findAll([...])` | 🟢 LOW       | `--path`, `--dry-run`, `--force` |
-| `yii:find-id`                  | Replaces `Model::findOne(['id' => $id])` with `Model::findOne($id)`                                  | 🟢 LOW       | `--path`, `--dry-run`, `--force` |
+| `yii:find-one-id`              | Replaces `Model::findOne(['id' => $id])` with `Model::findOne($id)`                                  | 🟢 LOW       | `--path`, `--dry-run`, `--force` |
+| `yii:find-all-id`              | Replaces `Model::findAll(['id' => $id]) with Model::findAll($id)`                                    | 🟢 LOW       | `--path`, `--dry-run`, `--force` |
 | `yii:update-shortcut`          | Replaces `Model::find()->where([...])->update([...])` with `Model::updateAll([...], [...])`          | 🟢 LOW       | `--path`, `--dry-run`, `--force` |
 | `yii:delete-shortcut`          | Replaces `Model::find()->where([...])->delete()` with `Model::deleteAll([...])`                      | 🟢 LOW       | `--path`, `--dry-run`, `--force` |
 | `yii:can-helpers`              | Replaces `can()/!can()` chains with `canAny()`, `canAll()`, `cannotAny()`, or `cannotAll()`          | 🟢 LOW       | `--path`, `--dry-run`, `--force` |
@@ -250,7 +251,7 @@ See `web/README.md` for detailed setup and configuration instructions.
 4. **Framework-Specific Optimizations** (Yii example):
     ```bash
     vendor/bin/syntra yii:find-shortcuts --dry-run
-    vendor/bin/syntra yii:find-id --dry-run
+    vendor/bin/syntra yii:find-one-id --dry-run
     vendor/bin/syntra yii:check-translations
     ```
 

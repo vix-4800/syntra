@@ -12,6 +12,8 @@ use PhpParser\Node\Expr\Array_;
 use Rector\Rector\AbstractRector;
 use PhpParser\Node\Scalar\String_;
 use PhpParser\Node\Expr\StaticCall;
+use Rector\ValueObject\PhpVersionFeature;
+use Rector\VersionBonding\Contract\MinPhpVersionInterface;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 /**
@@ -23,7 +25,7 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  *
  * This only applies when the array contains a single key 'id'.
  */
-class FindOneIdShortcutRector extends AbstractRector
+class FindOneIdShortcutRector extends AbstractRector implements MinPhpVersionInterface
 {
     /**
      * Provides documentation and example code for the rule.
@@ -89,5 +91,10 @@ class FindOneIdShortcutRector extends AbstractRector
             new Identifier('findOne'),
             [new Arg($item->value)]
         );
+    }
+
+    public function provideMinPhpVersion(): int
+    {
+        return PhpVersionFeature::TYPED_PROPERTIES;
     }
 }
