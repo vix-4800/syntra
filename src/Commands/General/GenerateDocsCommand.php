@@ -25,7 +25,7 @@ class GenerateDocsCommand extends SyntraCommand
         $this
             ->setName('general:generate-docs')
             ->setDescription('Scans Yii controllers and generates a markdown file listing all action routes with optional descriptions.')
-            ->setHelp('');
+            ->setHelp('Usage: vendor/bin/syntra general:generate-docs');
     }
 
     public function perform(): int

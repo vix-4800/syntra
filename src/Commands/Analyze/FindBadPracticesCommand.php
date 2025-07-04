@@ -26,7 +26,7 @@ class FindBadPracticesCommand extends SyntraCommand
         $this
             ->setName('analyze:find-bad-practices')
             ->setDescription('Detects bad practices in code like magic numbers, nested ternaries, and assignments in conditions.')
-            ->setHelp('');
+            ->setHelp('Usage: vendor/bin/syntra analyze:find-bad-practices');
     }
 
     public function perform(): int

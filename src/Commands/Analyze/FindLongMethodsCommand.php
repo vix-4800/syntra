@@ -26,7 +26,7 @@ class FindLongMethodsCommand extends SyntraCommand
         $this
             ->setName('analyze:find-long-methods')
             ->setDescription('Finds all methods or functions that exceed a specified number of lines, highlighting candidates for refactoring.')
-            ->setHelp('')
+            ->setHelp('Usage: vendor/bin/syntra analyze:find-long-methods [--max=LINES]')
             ->addOption('max', null, InputOption::VALUE_OPTIONAL, 'Max allowed method length (lines)', 75);
     }
 

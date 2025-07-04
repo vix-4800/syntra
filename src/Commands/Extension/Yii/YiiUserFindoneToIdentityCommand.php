@@ -16,7 +16,7 @@ class YiiUserFindoneToIdentityCommand extends RectorRunnerCommand
         $this
             ->setName('yii:user-findone-to-identity')
             ->setDescription('Replaces redundant User::findOne(...) lookups for current user with Yii::$app->user->identity')
-            ->setHelp('');
+            ->setHelp('Usage: vendor/bin/syntra yii:user-findone-to-identity');
     }
 
     protected function getRectorRules(): string

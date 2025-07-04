@@ -16,7 +16,7 @@ class YiiDeleteShortcutCommand extends RectorRunnerCommand
         $this
             ->setName('yii:delete-shortcut')
             ->setDescription('Replaces Model::find()->where([...])->delete() with Model::deleteAll([...])')
-            ->setHelp('');
+            ->setHelp('Usage: vendor/bin/syntra yii:delete-shortcut');
     }
 
     protected function getRectorRules(): string

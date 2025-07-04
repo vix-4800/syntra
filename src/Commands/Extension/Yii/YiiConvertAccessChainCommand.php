@@ -16,7 +16,7 @@ class YiiConvertAccessChainCommand extends RectorRunnerCommand
         $this
             ->setName('yii:convert-access-chain')
             ->setDescription('Replaces user->identity->hasAccessChain/hasNoAccessChain with user->canAny/cannotAny')
-            ->setHelp('');
+            ->setHelp('Usage: vendor/bin/syntra yii:convert-access-chain');
     }
 
     protected function getRectorRules(): string

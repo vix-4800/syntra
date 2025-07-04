@@ -16,7 +16,7 @@ class YiiFindIdCommand extends RectorRunnerCommand
         $this
             ->setName('yii:find-id')
             ->setDescription('Replaces Model::findOne([\'id\' => $id]) with Model::findOne($id)')
-            ->setHelp('');
+            ->setHelp('Usage: vendor/bin/syntra yii:find-id');
     }
 
     protected function getRectorRules(): string

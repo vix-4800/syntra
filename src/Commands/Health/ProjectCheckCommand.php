@@ -22,7 +22,8 @@ class ProjectCheckCommand extends SyntraCommand
         parent::configure();
 
         $this->setName('health:project')
-            ->setDescription('Run basic health checks: composer, phpstan, phpunit, etc.');
+            ->setDescription('Run basic health checks: composer, phpstan, phpunit, etc.')
+            ->setHelp('Usage: vendor/bin/syntra health:project');
     }
 
     public function perform(): int

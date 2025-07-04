@@ -25,7 +25,7 @@ class VarCommentsRefactorer extends SyntraRefactorCommand
 
         $this->setName('refactor:var-comments')
             ->setDescription('Standardizes @var comments to /** @var Type $var */')
-            ->setHelp('Transforms all single-line @var annotations such as /* @var ... */ to PHPDoc-style /** @var Type $var */');
+            ->setHelp('Transforms all single-line @var annotations such as /* @var ... */ to PHPDoc-style /** @var Type $var */. Usage: vendor/bin/syntra refactor:var-comments [--dry-run] [--force]');
     }
 
     public function perform(): int

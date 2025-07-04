@@ -33,7 +33,7 @@ class FindDebugCallsCommand extends SyntraCommand
         $this
             ->setName('analyze:find-debug-calls')
             ->setDescription('Checks that var_dump, dd, print_r, eval, and other calls prohibited in production are not used.')
-            ->setHelp('');
+            ->setHelp('Usage: vendor/bin/syntra analyze:find-debug-calls');
     }
 
     public function perform(): int
