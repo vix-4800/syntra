@@ -36,13 +36,9 @@ class ProjectCheckCommand extends SyntraCommand
         ];
 
         $hasErrors = false;
-        $hasWarnings = false;
-
         foreach ($checks as $item) {
-            $name = $item['name'];
-
             try {
-                $result = $this->runHealthCommand($item['class']);
+                $exitCode = $this->runCommand($item['class']);
             } catch (MissingBinaryException $e) {
                 $this->output->error($e->getMessage());
 
@@ -69,20 +65,8 @@ class ProjectCheckCommand extends SyntraCommand
                 continue;
             }
 
-            if ($result->isOk()) {
-                $this->output->success("$name: OK");
-            } elseif ($result->hasWarnings()) {
-                $hasWarnings = true;
-                $this->output->warning("$name: warning(s)");
-                foreach ($result->messages as $msg) {
-                    $this->output->writeln("  - $msg");
-                }
-            } else {
+            if ($exitCode !== self::SUCCESS) {
                 $hasErrors = true;
-                $this->output->error("$name: ERROR");
-                foreach ($result->messages as $msg) {
-                    $this->output->writeln("  - $msg");
-                }
             }
         }
 
