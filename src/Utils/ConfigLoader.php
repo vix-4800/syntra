@@ -67,6 +67,8 @@ class ConfigLoader
 
     private function filterEnabledCommands(bool $core): array
     {
+        $result = [];
+        
         foreach ($this->commands as $group => $commands) {
             $isCoreGroup = in_array($group, $this->coreGroups, true);
             if ($core !== $isCoreGroup) {
