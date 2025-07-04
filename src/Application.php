@@ -7,31 +7,66 @@ namespace Vix\Syntra;
 use ReflectionClass;
 use Symfony\Component\Console\Application as SymfonyApplication;
 use Vix\Syntra\Commands\SyntraCommand;
+use Vix\Syntra\DI\Container;
+use Vix\Syntra\DI\ContainerInterface;
+use Vix\Syntra\DI\Providers\ApplicationServiceProvider;
+use Vix\Syntra\DI\Providers\HealthServiceProvider;
+use Vix\Syntra\DI\Providers\ParserServiceProvider;
 use Vix\Syntra\Utils\ConfigLoader;
-use Vix\Syntra\Utils\ExtensionManager;
-use Vix\Syntra\Utils\ProcessRunner;
 
 class Application extends SymfonyApplication
 {
-    private readonly ConfigLoader $configLoader;
-    private readonly ProcessRunner $processRunner;
-    private readonly ExtensionManager $extensionManager;
+    private readonly ContainerInterface $container;
 
     public function __construct(string $name = 'Syntra', string $version = '1.0.0')
     {
         parent::__construct($name, $version);
 
-        $this->configLoader = new ConfigLoader();
-        $this->processRunner = new ProcessRunner();
-        $this->extensionManager = new ExtensionManager($this->configLoader);
-
+        $this->container = $this->setupContainer();
         $this->registerCommands();
         $this->registerExtensionCommands();
     }
 
+    /**
+     * Set up the dependency injection container
+     */
+    private function setupContainer(): ContainerInterface
+    {
+        $container = new Container();
+
+        // Register service providers
+        $providers = [
+            new ApplicationServiceProvider(),
+            new HealthServiceProvider(),
+            new ParserServiceProvider(),
+        ];
+
+        // Register all services
+        foreach ($providers as $provider) {
+            $provider->register($container);
+        }
+
+        // Boot all services
+        foreach ($providers as $provider) {
+            $provider->boot($container);
+        }
+
+        return $container;
+    }
+
+    /**
+     * Get the DI container
+     */
+    public function getContainer(): ContainerInterface
+    {
+        return $this->container;
+    }
+
     private function registerCommands(): void
     {
-        foreach ($this->configLoader->getEnabledCommands() as $class) {
+        $configLoader = $this->container->get(ConfigLoader::class);
+
+        foreach ($configLoader->getEnabledCommands() as $class) {
             if (!class_exists($class)) {
                 continue;
             }
@@ -43,12 +78,7 @@ class Application extends SymfonyApplication
                 is_subclass_of($class, SyntraCommand::class)
                 && !$reflectionClass->isAbstract()
             ) {
-                $instance = $reflectionClass->newInstance(
-                    $this->configLoader,
-                    $this->processRunner,
-                    $this->extensionManager
-                );
-
+                $instance = $this->container->make($class);
                 $this->add($instance);
             }
         }
@@ -56,7 +86,9 @@ class Application extends SymfonyApplication
 
     private function registerExtensionCommands(): void
     {
-        foreach ($this->configLoader->getEnabledExtensionCommands() as $class) {
+        $configLoader = $this->container->get(ConfigLoader::class);
+
+        foreach ($configLoader->getEnabledExtensionCommands() as $class) {
             if (!class_exists($class)) {
                 continue;
             }
@@ -67,12 +99,7 @@ class Application extends SymfonyApplication
                 is_subclass_of($class, SyntraCommand::class)
                 && !$reflectionClass->isAbstract()
             ) {
-                $instance = new $class(
-                    $this->configLoader,
-                    $this->processRunner,
-                    $this->extensionManager
-                );
-
+                $instance = $this->container->make($class);
                 $this->add($instance);
             }
         }
