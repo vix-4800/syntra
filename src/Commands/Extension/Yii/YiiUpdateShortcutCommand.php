@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Vix\Syntra\Commands\Extension\Yii;
 
+use Vix\Syntra\Commands\RectorRunnerCommand;
 use Vix\Syntra\Commands\Rector\UpdateAllShortcutRector;
 
-class YiiUpdateShortcutCommand extends YiiRectorCommand
+class YiiUpdateShortcutCommand extends RectorRunnerCommand
 {
     protected function configure(): void
     {
