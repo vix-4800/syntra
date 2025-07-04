@@ -1,10 +1,10 @@
 <?php
+
 namespace Vix\Syntra\Tests\Commands;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 use Vix\Syntra\Application;
-use Vix\Syntra\Commands\Analyze\FindTodosCommand;
 use Vix\Syntra\Utils\ConfigLoader;
 
 class FindTodosCommandTest extends TestCase
