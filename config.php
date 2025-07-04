@@ -18,7 +18,6 @@ use Vix\Syntra\Commands\Refactor\RectorRefactorer;
 use Vix\Syntra\Commands\Refactor\VarCommentsRefactorer;
 use Vix\Syntra\Commands\Extension\Yii\YiiUserFindoneToIdentityCommand;
 use Vix\Syntra\Commands\Extension\Yii\YiiCanHelpersCommand;
-use Vix\Syntra\Commands\Extension\Yii\YiiCheckModelSchemaCommand;
 use Vix\Syntra\Commands\Extension\Yii\YiiCheckTranslationsCommand;
 use Vix\Syntra\Commands\Extension\Yii\YiiConvertAccessChainCommand;
 use Vix\Syntra\Commands\Extension\Yii\YiiDeleteShortcutCommand;
@@ -28,52 +27,151 @@ use Vix\Syntra\Commands\Extension\Yii\YiiUpdateShortcutCommand;
 use Vix\Syntra\Commands\General\GenerateCommandCommand;
 use Vix\Syntra\Commands\General\GenerateDocsCommand;
 
+/**
+ * Syntra Configuration
+ *
+ * This file controls both console and web interface settings.
+ *
+ * Structure:
+ * - [group] => [
+ *     [CommandClass] => bool|array: Command configuration
+ * ]
+ *
+ * For detailed command config:
+ * [CommandClass] => [
+ *     'enabled' => bool: Enable/disable for console
+ *     'web_enabled' => bool: Enable/disable for web interface
+ *     'config' => string: Path to command-specific config file
+ *     // ... other command-specific options
+ * ]
+ *
+ * Global web settings:
+ * 'web' => [
+ *     'enabled' => bool: Global web interface toggle
+ *     'require_auth' => bool: Whether authentication is required
+ *     'allowed_ips' => array: List of allowed IP addresses (empty = all)
+ * ]
+ */
+
 return [
+    // Global web interface settings
+    'web' => [
+        'enabled' => true,
+        'require_auth' => false,
+        'allowed_ips' => [], // Empty array = allow all IPs
+    ],
+
+    // Command configurations
     'refactor' => [
-        DocblockRefactorer::class => true,
-        ImportRefactorer::class => true,
+        DocblockRefactorer::class => [
+            'enabled' => true,
+            'web_enabled' => true,
+        ],
+        ImportRefactorer::class => [
+            'enabled' => true,
+            'web_enabled' => true,
+        ],
         PhpCsFixerRefactorer::class => [
             'enabled' => true,
+            'web_enabled' => true,
             'config' => PACKAGE_ROOT . '/php_cs_fixer.php',
         ],
-        VarCommentsRefactorer::class => true,
+        VarCommentsRefactorer::class => [
+            'enabled' => true,
+            'web_enabled' => true,
+        ],
         RectorRefactorer::class => [
             'enabled' => true,
+            'web_enabled' => true,
             'config' => PACKAGE_ROOT . '/rector.php',
             'commands_config' => PACKAGE_ROOT . '/rector_only_custom.php',
         ],
     ],
     'health' => [
-        ComposerChecker::class => true,
+        ComposerChecker::class => [
+            'enabled' => true,
+            'web_enabled' => true,
+        ],
         PhpStanChecker::class => [
             'enabled' => true,
+            'web_enabled' => true,
             'config' => PACKAGE_ROOT . '/phpstan.neon',
             'level' => 5
         ],
-        PhpUnitChecker::class => false,
-        SecurityChecker::class => false,
-        ProjectCheckCommand::class => true,
+        PhpUnitChecker::class => [
+            'enabled' => false,
+            'web_enabled' => false,
+        ],
+        SecurityChecker::class => [
+            'enabled' => false,
+            'web_enabled' => false,
+        ],
+        ProjectCheckCommand::class => [
+            'enabled' => true,
+            'web_enabled' => true,
+        ],
     ],
     'analyze' => [
-        FindTodosCommand::class => true,
-        FindDebugCallsCommand::class => true,
-        FindLongMethodsCommand::class => true,
-        FindBadPracticesCommand::class => true,
+        FindTodosCommand::class => [
+            'enabled' => true,
+            'web_enabled' => true,
+        ],
+        FindDebugCallsCommand::class => [
+            'enabled' => true,
+            'web_enabled' => true,
+        ],
+        FindLongMethodsCommand::class => [
+            'enabled' => true,
+            'web_enabled' => true,
+        ],
+        FindBadPracticesCommand::class => [
+            'enabled' => true,
+            'web_enabled' => true,
+        ],
     ],
     'general' => [
-        GenerateCommandCommand::class => true,
-        GenerateDocsCommand::class => true,
+        GenerateCommandCommand::class => [
+            'enabled' => true,
+            'web_enabled' => true,
+        ],
+        GenerateDocsCommand::class => [
+            'enabled' => true,
+            'web_enabled' => true,
+        ],
     ],
     'yii' => [
-        YiiFindShortcutsCommand::class => true,
-        YiiFindIdCommand::class => true,
-        YiiUpdateShortcutCommand::class => true,
-        YiiDeleteShortcutCommand::class => true,
-        YiiCanHelpersCommand::class => true,
-        YiiCheckTranslationsCommand::class => true,
-        YiiCheckModelSchemaCommand::class => false,
-        YiiConvertAccessChainCommand::class => true,
-        YiiUserFindoneToIdentityCommand::class => true,
+        YiiFindShortcutsCommand::class => [
+            'enabled' => true,
+            'web_enabled' => true,
+        ],
+        YiiFindIdCommand::class => [
+            'enabled' => true,
+            'web_enabled' => true,
+        ],
+        YiiUpdateShortcutCommand::class => [
+            'enabled' => true,
+            'web_enabled' => true,
+        ],
+        YiiDeleteShortcutCommand::class => [
+            'enabled' => true,
+            'web_enabled' => true,
+        ],
+        YiiCanHelpersCommand::class => [
+            'enabled' => true,
+            'web_enabled' => true,
+        ],
+        YiiCheckTranslationsCommand::class => [
+            'enabled' => true,
+            'web_enabled' => true,
+        ],
+        YiiConvertAccessChainCommand::class => [
+            'enabled' => true,
+            'web_enabled' => true,
+        ],
+        YiiUserFindoneToIdentityCommand::class => [
+            'enabled' => true,
+            'web_enabled' => true,
+        ],
     ],
     'laravel' => [
         //
