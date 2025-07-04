@@ -23,6 +23,7 @@ use Vix\Syntra\Commands\Extension\Yii\YiiConvertAccessChainCommand;
 use Vix\Syntra\Commands\Extension\Yii\YiiDeleteShortcutCommand;
 use Vix\Syntra\Commands\Extension\Yii\YiiFindIdCommand;
 use Vix\Syntra\Commands\Extension\Yii\YiiFindShortcutsCommand;
+use Vix\Syntra\Commands\Extension\Yii\YiiAllCommand;
 use Vix\Syntra\Commands\Extension\Yii\YiiUpdateShortcutCommand;
 use Vix\Syntra\Commands\General\GenerateCommandCommand;
 use Vix\Syntra\Commands\General\GenerateDocsCommand;
@@ -136,6 +137,10 @@ return [
         ],
     ],
     'yii' => [
+        YiiAllCommand::class => [
+            'enabled' => true,
+            'web_enabled' => true,
+        ],
         YiiFindShortcutsCommand::class => [
             'enabled' => true,
             'web_enabled' => true,
