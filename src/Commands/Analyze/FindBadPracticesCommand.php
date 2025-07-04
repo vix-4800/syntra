@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Vix\Syntra\Commands\Analyze;
 
 use PhpParser\NodeTraverser;
+use PhpParser\Parser;
 use PhpParser\ParserFactory;
 use Vix\Syntra\Commands\SyntraCommand;
 use Symfony\Component\Console\Command\Command;
@@ -12,10 +13,13 @@ use Throwable;
 use Vix\Syntra\NodeVisitors\AssignmentInConditionVisitor;
 use Vix\Syntra\NodeVisitors\NestedTernaryVisitor;
 use Vix\Syntra\NodeVisitors\ReturnThrowVisitor;
+use Vix\Syntra\Traits\ContainerAwareTrait;
 use Vix\Syntra\Utils\FileHelper;
 
 class FindBadPracticesCommand extends SyntraCommand
 {
+    use ContainerAwareTrait;
+
     protected function configure(): void
     {
         parent::configure();
@@ -29,10 +33,13 @@ class FindBadPracticesCommand extends SyntraCommand
     public function perform(): int
     {
         $projectRoot = $this->configLoader->getProjectRoot();
-        $fileHelper = new FileHelper();
-        $files = $fileHelper->collectFiles($projectRoot);
 
-        $parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
+        // Use dependency injection to get services
+        $fileHelper = $this->getFileHelper();
+        $parser = $this->getParser();
+        $traverserFactory = $this->getTraverserFactory();
+
+        $files = $fileHelper->collectFiles($projectRoot);
 
         $rows = [];
         foreach ($files as $file) {
@@ -47,26 +54,27 @@ class FindBadPracticesCommand extends SyntraCommand
                 continue;
             }
 
-            $visitors = [
-                new NestedTernaryVisitor(),
-                new AssignmentInConditionVisitor(),
-                // new ReturnThrowVisitor(),
+            // Use visitor classes through DI
+            $visitorClasses = [
+                NestedTernaryVisitor::class,
+                AssignmentInConditionVisitor::class,
+                // ReturnThrowVisitor::class,
             ];
 
-            $traverser = new NodeTraverser();
-            foreach ($visitors as $v) {
-                $traverser->addVisitor($v);
-            }
+            $traverser = $traverserFactory($visitorClasses);
             $traverser->traverse($ast);
 
-            foreach ($visitors as $v) {
-                foreach ($v->findings as $finding) {
-                    $rows[] = [
-                        $file,
-                        $finding['line'],
-                        $this->snippet($finding['code'] ?? ''),
-                        $finding['message'] ?? '',
-                    ];
+            // Get findings from visitors
+            foreach ($traverser->getVisitors() as $visitor) {
+                if (property_exists($visitor, 'findings')) {
+                    foreach ($visitor->findings as $finding) {
+                        $rows[] = [
+                            $file,
+                            $finding['line'],
+                            $this->snippet($finding['code'] ?? ''),
+                            $finding['message'] ?? '',
+                        ];
+                    }
                 }
             }
         }
@@ -82,6 +90,46 @@ class FindBadPracticesCommand extends SyntraCommand
         );
 
         return Command::FAILURE;
+    }
+
+    /**
+     * Get FileHelper from DI container or create new instance
+     */
+    private function getFileHelper(): FileHelper
+    {
+        return $this->getService(FileHelper::class, function () {
+            return new FileHelper();
+        });
+    }
+
+    /**
+     * Get Parser from DI container or create new instance
+     */
+    private function getParser(): Parser
+    {
+        return $this->getService(Parser::class, function () {
+            return (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
+        });
+    }
+
+    /**
+     * Get Traverser Factory from DI container or create new instance
+     */
+    private function getTraverserFactory(): callable
+    {
+        return $this->getNamedService('parser.traverser_factory', function () {
+            // Fallback factory
+            return function (array $visitorClasses = []): NodeTraverser {
+                $traverser = new NodeTraverser();
+
+                foreach ($visitorClasses as $visitorClass) {
+                    $visitor = new $visitorClass();
+                    $traverser->addVisitor($visitor);
+                }
+
+                return $traverser;
+            };
+        });
     }
 
     private function snippet(string $code, int $maxLen = 60): string
