@@ -59,9 +59,9 @@ class WebApplication
 
     private function handleHome(): void
     {
-        $html = $this->renderTemplate('index.html', [
+        $html = $this->renderTemplate('index.php', [
             'title' => 'Syntra Web Interface',
-            'version' => Application::getPackageVersion()
+            'version' => Application::getPackageVersion(),
         ]);
 
         header('Content-Type: text/html');
