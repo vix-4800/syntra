@@ -36,7 +36,6 @@ class FindBadPracticesCommand extends SyntraCommand
         // Use dependency injection to get services
         $fileHelper = $this->getService(FileHelper::class, fn(): FileHelper => new FileHelper());
         $parser = $this->getService(Parser::class, fn(): Parser => (new ParserFactory())->create(ParserFactory::PREFER_PHP7));
-        $traverserFactory = $this->getTraverserFactory();
 
         $files = $fileHelper->collectFiles($projectRoot);
 
@@ -55,6 +54,9 @@ class FindBadPracticesCommand extends SyntraCommand
                 continue;
             }
 
+            $visitors = [];
+            $traverser = new NodeTraverser();
+
             // Use visitor classes through DI
             $visitorClasses = [
                 NestedTernaryVisitor::class,
@@ -62,11 +64,16 @@ class FindBadPracticesCommand extends SyntraCommand
                 // ReturnThrowVisitor::class,
             ];
 
-            $traverser = $traverserFactory($visitorClasses);
+            foreach ($visitorClasses as $visitorClass) {
+                $visitor = new $visitorClass();
+                $visitors[] = $visitor;
+                $traverser->addVisitor($visitor);
+            }
+
             $traverser->traverse($ast);
 
             // Get findings from visitors
-            foreach ($traverser->getVisitors() as $visitor) {
+            foreach ($visitors as $visitor) {
                 if (property_exists($visitor, 'findings')) {
                     foreach ($visitor->findings as $finding) {
                         $rows[] = [
@@ -95,23 +102,6 @@ class FindBadPracticesCommand extends SyntraCommand
         );
 
         return Command::FAILURE;
-    }
-
-    /**
-     * Get Traverser Factory from DI container or create new instance
-     */
-    private function getTraverserFactory(): callable
-    {
-        return $this->getNamedService('parser.traverser_factory', fn(): callable => function (array $visitorClasses = []): NodeTraverser {
-            $traverser = new NodeTraverser();
-
-            foreach ($visitorClasses as $visitorClass) {
-                $visitor = new $visitorClass();
-                $traverser->addVisitor($visitor);
-            }
-
-            return $traverser;
-        });
     }
 
     private function snippet(string $code, int $maxLen = 60): string

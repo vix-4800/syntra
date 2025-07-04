@@ -83,7 +83,7 @@ class FindDebugCallsCommand extends SyntraCommand
             return Command::SUCCESS;
         }
 
-        usort($matches, fn($a, $b) => [$a[0], $a[1]] <=> [$b[0], $b[1]]);
+        usort($matches, fn($a, $b): int => [$a[0], $a[1]] <=> [$b[0], $b[1]]);
 
         $this->table(
             ['File', 'Line', 'Type', 'Code'],
