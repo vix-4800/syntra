@@ -11,6 +11,9 @@ use Vix\Syntra\Commands\Health\PhpStanChecker;
 use Vix\Syntra\Commands\Health\PhpUnitChecker;
 use Vix\Syntra\Commands\Health\ProjectCheckCommand;
 use Vix\Syntra\Commands\Health\SecurityChecker;
+use Vix\Syntra\Commands\Health\ComposerCheckCommand;
+use Vix\Syntra\Commands\Health\PhpStanCheckCommand;
+use Vix\Syntra\Commands\Health\PhpUnitCheckCommand;
 use Vix\Syntra\Commands\Refactor\DocblockRefactorer;
 use Vix\Syntra\Commands\Refactor\ImportRefactorer;
 use Vix\Syntra\Commands\Refactor\PhpCsFixerRefactorer;
@@ -96,6 +99,18 @@ return [
             'level' => 5
         ],
         PhpUnitChecker::class => [
+            'enabled' => true,
+            'web_enabled' => true,
+        ],
+        ComposerCheckCommand::class => [
+            'enabled' => true,
+            'web_enabled' => true,
+        ],
+        PhpStanCheckCommand::class => [
+            'enabled' => true,
+            'web_enabled' => true,
+        ],
+        PhpUnitCheckCommand::class => [
             'enabled' => true,
             'web_enabled' => true,
         ],
