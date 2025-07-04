@@ -43,12 +43,12 @@ class HealthServiceProvider implements ServiceProviderInterface
         });
 
         // Register PhpUnitChecker factory
-        $container->bind('health.phpunit_checker', function (ContainerInterface $container): void {
+        $container->bind('health.phpunit_checker', function (ContainerInterface $container): PhpUnitChecker {
             $processRunner = $container->get(ProcessRunner::class);
             $configLoader = $container->get(ConfigLoader::class);
             $projectRoot = $configLoader->getProjectRoot();
 
-            // return new PhpUnitChecker($processRunner, $projectRoot);
+            return new PhpUnitChecker($processRunner, $projectRoot);
         });
 
         // Register SecurityChecker factory
