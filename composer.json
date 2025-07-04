@@ -35,7 +35,10 @@
     "autoload": {
         "psr-4": {
             "Vix\\Syntra\\": "src/"
-        }
+        },
+        "files": [
+            "./helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
