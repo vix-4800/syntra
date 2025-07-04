@@ -38,14 +38,10 @@ class PhpStanCheckCommand extends SyntraCommand implements HealthCheckCommandInt
             '--error-format=json',
             '--no-progress',
             '--configuration=' . $this->configLoader->getCommandOption('health', self::class, 'config', 'phpstan.neon'),
-            'src',
+            $this->configLoader->getProjectRoot()
         ];
 
-        $result = $this->processRunner->run(
-            $binary,
-            $args,
-            ['working_dir' => $this->configLoader->getProjectRoot()]
-        );
+        $result = $this->processRunner->run($binary, $args);
 
         if ($result->exitCode !== 0 && empty($result->output)) {
             return CommandResult::error(["PHPStan crashed:\n$result->stderr"]);
