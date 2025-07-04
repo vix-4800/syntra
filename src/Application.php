@@ -15,9 +15,26 @@ class Application extends SymfonyApplication
 {
     private readonly ContainerInterface $container;
 
-    public function __construct(string $name = 'Syntra', string $version = '1.0.0')
+    private static ?string $packageVersion = null;
+
+    public static function getPackageVersion(): string
     {
-        parent::__construct($name, $version);
+        if (self::$packageVersion === null) {
+            $composerFile = dirname(__DIR__) . '/composer.json';
+            if (is_readable($composerFile)) {
+                $data = json_decode((string) file_get_contents($composerFile), true);
+                self::$packageVersion = $data['version'] ?? '0.0.0';
+            } else {
+                self::$packageVersion = '0.0.0';
+            }
+        }
+
+        return self::$packageVersion;
+    }
+
+    public function __construct(string $name = 'Syntra', string $version = '')
+    {
+        parent::__construct($name, $version ?: self::getPackageVersion());
 
         $this->container = ContainerFactory::create();
         $this->registerCommands();

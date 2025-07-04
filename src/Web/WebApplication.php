@@ -6,6 +6,7 @@ namespace Vix\Syntra\Web;
 
 use Exception;
 use ReflectionClass;
+use Vix\Syntra\Application;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\DI\ContainerInterface;
 use Vix\Syntra\DI\ContainerFactory;
@@ -60,7 +61,7 @@ class WebApplication
     {
         $html = $this->renderTemplate('index.html', [
             'title' => 'Syntra Web Interface',
-            'version' => '1.5.0'
+            'version' => Application::getPackageVersion()
         ]);
 
         header('Content-Type: text/html');
