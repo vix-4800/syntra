@@ -16,8 +16,7 @@ class RectorRefactorer extends SyntraRefactorCommand
 
         $this->setName('refactor:rector')
             ->setDescription('Runs Rector for automated refactoring')
-            ->setDangerLevel(DangerLevel::HIGH)
-            ->addForceOption();
+            ->setDangerLevel(DangerLevel::HIGH);
     }
 
     public function perform(): int

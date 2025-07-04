@@ -14,8 +14,7 @@ class PhpCsFixerRefactorer extends SyntraRefactorCommand
         parent::configure();
 
         $this->setName('refactor:cs-fixer')
-            ->setDescription('Fixes code style using php-cs-fixer for the selected files')
-            ->addForceOption();
+            ->setDescription('Fixes code style using php-cs-fixer for the selected files');
     }
 
     public function perform(): int
