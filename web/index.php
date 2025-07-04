@@ -2,23 +2,7 @@
 
 declare(strict_types=1);
 
-define('PACKAGE_ROOT', dirname(__DIR__));
-
-if (!file_exists(PACKAGE_ROOT . '/bin/bootstrap.php')) {
-    fwrite(STDERR, "Bootstrap file missing. Reinstall package.\n");
-    exit(1);
-}
-
-require_once PACKAGE_ROOT . '/bin/bootstrap.php';
-
-$autoload = find_composer_autoload(PACKAGE_ROOT);
-if ($autoload === null) {
-    fwrite(STDERR, "ERROR: Composer autoloader not found.\n");
-    fwrite(STDERR, "Run 'composer install' in the project root.\n");
-    exit(1);
-}
-
-require_once $autoload;
+require_once dirname(__DIR__) . '/bootstrap.php';
 
 use Vix\Syntra\Web\WebApplication;
 
