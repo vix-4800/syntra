@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-define('PACKAGE_ROOT', dirname(__DIR__));
-
 /**
  * Find composer autoloader
  */

@@ -3,6 +3,8 @@
 
 declare(strict_types=1);
 
+define('PACKAGE_ROOT', dirname(__DIR__));
+
 if (!file_exists(__DIR__ . '/bootstrap.php')) {
     fwrite(STDERR, "Bootstrap file missing. Reinstall package.\n");
     exit(1);
@@ -17,7 +19,7 @@ if ($autoload === null) {
     exit(1);
 }
 
-require $autoload;
+require_once $autoload;
 
 use Vix\Syntra\Application;
 
