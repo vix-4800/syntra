@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Vix\Syntra\Commands\Analyze;
 
 use PhpParser\NodeTraverser;
-use PhpParser\NodeVisitorAbstract;
 use PhpParser\ParserFactory;
 use Vix\Syntra\Commands\SyntraCommand;
 use Symfony\Component\Console\Command\Command;
