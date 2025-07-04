@@ -8,7 +8,7 @@ require_once dirname(__DIR__) . '/bootstrap.php';
 use Vix\Syntra\Application;
 
 try {
-    $application = new Application(version: '1.5.0');
+    $application = new Application(version: Application::getPackageVersion());
     $application->run();
 } catch (Throwable $e) {
     fwrite(STDERR, "CRITICAL ERROR: " . $e->getMessage() . "\n");
