@@ -4,44 +4,22 @@ declare(strict_types=1);
 
 namespace Vix\Syntra\Commands\Extension\Yii;
 
-use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Commands\Rector\UserFindOneToIdentityRector;
-use Vix\Syntra\Commands\Refactor\RectorRefactorer;
-use Vix\Syntra\Exceptions\MissingBinaryException;
 
-class YiiUserFindoneToIdentityCommand extends SyntraCommand
+class YiiUserFindoneToIdentityCommand extends YiiRectorCommand
 {
-	protected function configure(): void
-	{
-		parent::configure();
+    protected function configure(): void
+    {
+        parent::configure();
 
-		$this
-			->setName('yii:user-findone-to-identity')
-			->setDescription('Replaces redundant User::findOne(...) lookups for current user with Yii::$app->user->identity')
-			->setHelp('');
-	}
+        $this
+            ->setName('yii:user-findone-to-identity')
+            ->setDescription('Replaces redundant User::findOne(...) lookups for current user with Yii::$app->user->identity')
+            ->setHelp('');
+    }
 
-	public function perform(): int
-	{
-		$binary = find_composer_bin('rector', $this->configLoader->getProjectRoot());
-
-		if (!$binary) {
-			throw new MissingBinaryException("rector", "composer require --dev rector/rector");
-		}
-
-		$result = $this->processRunner->run($binary, [
-			$this->configLoader->getProjectRoot(),
-			"--config=" . $this->configLoader->getCommandOption('refactor', RectorRefactorer::class, 'commands_config'),
-			"--only=" . str_replace("::class", "", UserFindOneToIdentityRector::class),
-			"--clear-cache",
-		]);
-
-		if ($result->exitCode === 0) {
-			$this->output->success('Rector refactoring completed.');
-		} else {
-			$this->output->error('Rector refactoring crashed.');
-		}
-
-		return $result->exitCode;
-	}
+    protected function getRectorRules(): string
+    {
+        return UserFindOneToIdentityRector::class;
+    }
 }

@@ -5,11 +5,8 @@ declare(strict_types=1);
 namespace Vix\Syntra\Commands\Extension\Yii;
 
 use Vix\Syntra\Commands\Rector\UpdateAllShortcutRector;
-use Vix\Syntra\Commands\Refactor\RectorRefactorer;
-use Vix\Syntra\Commands\SyntraRefactorCommand;
-use Vix\Syntra\Exceptions\MissingBinaryException;
 
-class YiiUpdateShortcutCommand extends SyntraRefactorCommand
+class YiiUpdateShortcutCommand extends YiiRectorCommand
 {
     protected function configure(): void
     {
@@ -21,27 +18,8 @@ class YiiUpdateShortcutCommand extends SyntraRefactorCommand
             ->setHelp('');
     }
 
-    public function perform(): int
+    protected function getRectorRules(): string
     {
-        $binary = find_composer_bin('rector', $this->configLoader->getProjectRoot());
-
-        if (!$binary) {
-            throw new MissingBinaryException("rector", "composer require --dev rector/rector");
-        }
-
-        $result = $this->processRunner->run($binary, [
-            $this->configLoader->getProjectRoot(),
-            "--config=" . $this->configLoader->getCommandOption('refactor', RectorRefactorer::class, 'commands_config'),
-            "--only=" . str_replace("::class", "", UpdateAllShortcutRector::class),
-            "--clear-cache",
-        ]);
-
-        if ($result->exitCode === 0) {
-            $this->output->success('Rector refactoring completed.');
-        } else {
-            $this->output->error('Rector refactoring crashed.');
-        }
-
-        return $result->exitCode;
+        return UpdateAllShortcutRector::class;
     }
 }
