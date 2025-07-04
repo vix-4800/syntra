@@ -96,8 +96,8 @@ return [
             'level' => 5
         ],
         PhpUnitChecker::class => [
-            'enabled' => false,
-            'web_enabled' => false,
+            'enabled' => true,
+            'web_enabled' => true,
         ],
         SecurityChecker::class => [
             'enabled' => false,
