@@ -81,12 +81,8 @@ Registers core application services:
 
 ### HealthServiceProvider
 
-Registers health checker services:
-
--   `health.composer_checker` - Composer validation
--   `health.phpstan_checker` - PHPStan analysis
--   `health.phpunit_checker` - PHPUnit testing
--   `health.security_checker` - Security analysis
+Provides bindings for health-related commands. You can extend it to register
+additional checks such as a security scanner.
 
 ### ParserServiceProvider
 

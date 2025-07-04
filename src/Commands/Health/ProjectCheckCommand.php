@@ -6,13 +6,17 @@ namespace Vix\Syntra\Commands\Health;
 
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
-use Vix\Syntra\Application;
 use Vix\Syntra\Exceptions\CommandException;
 use Vix\Syntra\Exceptions\MissingBinaryException;
 use Vix\Syntra\Commands\SyntraCommand;
+use Vix\Syntra\Commands\Health\ComposerCheckCommand;
+use Vix\Syntra\Commands\Health\PhpStanCheckCommand;
+use Vix\Syntra\Commands\Health\PhpUnitCheckCommand;
+use Vix\Syntra\Traits\CommandRunnerTrait;
 
 class ProjectCheckCommand extends SyntraCommand
 {
+    use CommandRunnerTrait;
     protected function configure(): void
     {
         parent::configure();
@@ -25,16 +29,16 @@ class ProjectCheckCommand extends SyntraCommand
     {
         $this->output->section('Starting project health check...');
 
-        $checks = $this->getHealthCheckers();
+        $checks = [
+            ['name' => 'Composer', 'class' => ComposerCheckCommand::class],
+            ['name' => 'PHPStan', 'class' => PhpStanCheckCommand::class],
+            ['name' => 'PHPUnit', 'class' => PhpUnitCheckCommand::class],
+        ];
 
         $hasErrors = false;
-        $hasWarnings = false;
-
         foreach ($checks as $item) {
-            $name = $item['name'];
-
             try {
-                $result = $item['checker']->run();
+                $exitCode = $this->runCommand($item['class']);
             } catch (MissingBinaryException $e) {
                 $this->output->error($e->getMessage());
 
@@ -61,20 +65,8 @@ class ProjectCheckCommand extends SyntraCommand
                 continue;
             }
 
-            if ($result->isOk()) {
-                $this->output->success("$name: OK");
-            } elseif ($result->hasWarnings()) {
-                $hasWarnings = true;
-                $this->output->warning("$name: warning(s)");
-                foreach ($result->messages as $msg) {
-                    $this->output->writeln("  - $msg");
-                }
-            } else {
+            if ($exitCode !== self::SUCCESS) {
                 $hasErrors = true;
-                $this->output->error("$name: ERROR");
-                foreach ($result->messages as $msg) {
-                    $this->output->writeln("  - $msg");
-                }
             }
         }
 
@@ -86,51 +78,4 @@ class ProjectCheckCommand extends SyntraCommand
         return self::SUCCESS;
     }
 
-    /**
-     * Get configured health checkers from DI container
-     *
-     * @return array<array{name: string, checker: object}>
-     */
-    private function getHealthCheckers(): array
-    {
-        $checks = [];
-
-        // Get checkers from application container if available
-        if (
-            method_exists($this, 'getApplication') &&
-            $this->getApplication() instanceof Application
-        ) {
-            $container = $this->getApplication()->getContainer();
-
-            $checks[] = [
-                'name' => 'Composer',
-                'checker' => $container->get('health.composer_checker'),
-            ];
-
-            $checks[] = [
-                'name' => 'PHPStan',
-                'checker' => $container->get('health.phpstan_checker'),
-            ];
-        } else {
-            // Fallback to manual instantiation for backwards compatibility
-            $projectRoot = $this->configLoader->getProjectRoot();
-
-            $checks[] = [
-                'name' => 'Composer',
-                'checker' => new ComposerChecker($this->processRunner, $projectRoot),
-            ];
-
-            $checks[] = [
-                'name' => 'PHPStan',
-                'checker' => new PhpStanChecker(
-                    $this->processRunner,
-                    $projectRoot,
-                    (int) $this->configLoader->getCommandOption('health', PhpStanChecker::class, 'level'),
-                    $this->configLoader->getCommandOption('health', PhpStanChecker::class, 'config'),
-                ),
-            ];
-        }
-
-        return $checks;
-    }
 }
