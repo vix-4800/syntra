@@ -64,6 +64,23 @@ vendor/bin/syntra refactor:cs-fixer --dry-run
 
 # Generate a new command
 vendor/bin/syntra general:generate-command --group=analyze --cli-name=analyze:custom
+
+```
+
+# Call another command programmatically
+```php
+use Vix\Syntra\Commands\Health\ComposerCheckCommand;
+use Vix\Syntra\Traits\CommandRunnerTrait;
+
+class MyCommand extends SyntraCommand
+{
+    use CommandRunnerTrait;
+
+    public function perform(): int
+    {
+        return $this->runCommand(ComposerCheckCommand::class);
+    }
+}
 ```
 
 ### Common Options
