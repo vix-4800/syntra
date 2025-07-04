@@ -5,16 +5,20 @@ declare(strict_types=1);
 namespace Vix\Syntra\Commands\Analyze;
 
 use PhpParser\NodeTraverser;
+use PhpParser\Parser;
 use PhpParser\ParserFactory;
 use Vix\Syntra\Commands\SyntraCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Throwable;
 use Vix\Syntra\NodeVisitors\LongMethodVisitor;
+use Vix\Syntra\Traits\ContainerAwareTrait;
 use Vix\Syntra\Utils\FileHelper;
 
 class FindLongMethodsCommand extends SyntraCommand
 {
+    use ContainerAwareTrait;
+
     protected function configure(): void
     {
         parent::configure();
@@ -29,12 +33,14 @@ class FindLongMethodsCommand extends SyntraCommand
     public function perform(): int
     {
         $projectRoot = $this->configLoader->getProjectRoot();
-        $fileHelper = new FileHelper();
+
+        $fileHelper = $this->getService(FileHelper::class, fn(): FileHelper => new FileHelper());
+        $parser = $this->getService(Parser::class, fn(): Parser => (new ParserFactory())->create(ParserFactory::PREFER_PHP7));
+
         $files = $fileHelper->collectFiles($projectRoot);
 
         $maxLength = (int) $this->input->getOption('max');
 
-        $parser = (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
         $longMethods = [];
 
         foreach ($files as $filePath) {

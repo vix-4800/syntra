@@ -6,6 +6,7 @@ namespace Vix\Syntra\Commands\Refactor;
 
 use Symfony\Component\Console\Command\Command;
 use Vix\Syntra\Commands\SyntraRefactorCommand;
+use Vix\Syntra\Traits\ContainerAwareTrait;
 use Vix\Syntra\Utils\FileHelper;
 
 /**
@@ -16,6 +17,8 @@ use Vix\Syntra\Utils\FileHelper;
  */
 class VarCommentsRefactorer extends SyntraRefactorCommand
 {
+    use ContainerAwareTrait;
+
     protected function configure(): void
     {
         parent::configure();
@@ -28,7 +31,7 @@ class VarCommentsRefactorer extends SyntraRefactorCommand
 
     public function perform(): int
     {
-        $fileHelper = new FileHelper();
+        $fileHelper = $this->getService(FileHelper::class, fn(): FileHelper => new FileHelper());
         $files = $fileHelper->collectFiles($this->configLoader->getProjectRoot());
 
         foreach ($files as $filePath) {

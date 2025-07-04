@@ -35,8 +35,8 @@ class FindBadPracticesCommand extends SyntraCommand
         $projectRoot = $this->configLoader->getProjectRoot();
 
         // Use dependency injection to get services
-        $fileHelper = $this->getFileHelper();
-        $parser = $this->getParser();
+        $fileHelper = $this->getService(FileHelper::class, fn(): FileHelper => new FileHelper());
+        $parser = $this->getService(Parser::class, fn(): Parser => (new ParserFactory())->create(ParserFactory::PREFER_PHP7));
         $traverserFactory = $this->getTraverserFactory();
 
         $files = $fileHelper->collectFiles($projectRoot);
@@ -93,42 +93,19 @@ class FindBadPracticesCommand extends SyntraCommand
     }
 
     /**
-     * Get FileHelper from DI container or create new instance
-     */
-    private function getFileHelper(): FileHelper
-    {
-        return $this->getService(FileHelper::class, function () {
-            return new FileHelper();
-        });
-    }
-
-    /**
-     * Get Parser from DI container or create new instance
-     */
-    private function getParser(): Parser
-    {
-        return $this->getService(Parser::class, function () {
-            return (new ParserFactory())->create(ParserFactory::PREFER_PHP7);
-        });
-    }
-
-    /**
      * Get Traverser Factory from DI container or create new instance
      */
     private function getTraverserFactory(): callable
     {
-        return $this->getNamedService('parser.traverser_factory', function () {
-            // Fallback factory
-            return function (array $visitorClasses = []): NodeTraverser {
-                $traverser = new NodeTraverser();
+        return $this->getNamedService('parser.traverser_factory', fn(): callable => function (array $visitorClasses = []): NodeTraverser {
+            $traverser = new NodeTraverser();
 
-                foreach ($visitorClasses as $visitorClass) {
-                    $visitor = new $visitorClass();
-                    $traverser->addVisitor($visitor);
-                }
+            foreach ($visitorClasses as $visitorClass) {
+                $visitor = new $visitorClass();
+                $traverser->addVisitor($visitor);
+            }
 
-                return $traverser;
-            };
+            return $traverser;
         });
     }
 

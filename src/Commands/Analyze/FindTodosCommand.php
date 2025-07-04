@@ -6,10 +6,13 @@ namespace Vix\Syntra\Commands\Analyze;
 
 use Vix\Syntra\Commands\SyntraCommand;
 use Symfony\Component\Console\Command\Command;
+use Vix\Syntra\Traits\ContainerAwareTrait;
 use Vix\Syntra\Utils\FileHelper;
 
 class FindTodosCommand extends SyntraCommand
 {
+    use ContainerAwareTrait;
+
     protected static array $TAGS = [
         'TODO',
         'FIXME',
@@ -36,7 +39,7 @@ class FindTodosCommand extends SyntraCommand
     {
         $projectRoot = $this->configLoader->getProjectRoot();
 
-        $fileHelper = new FileHelper();
+        $fileHelper = $this->getService(FileHelper::class, fn(): FileHelper => new FileHelper());
         $files = $fileHelper->collectFiles($projectRoot);
 
         $matches = [];

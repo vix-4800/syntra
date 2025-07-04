@@ -7,11 +7,14 @@ namespace Vix\Syntra\Commands\Refactor;
 use Symfony\Component\Console\Command\Command;
 use Vix\Syntra\Commands\SyntraRefactorCommand;
 use Vix\Syntra\Enums\DangerLevel;
+use Vix\Syntra\Traits\ContainerAwareTrait;
 use Vix\Syntra\Utils\FileHelper;
 use Vix\Syntra\Utils\StubHelper;
 
 class DocblockRefactorer extends SyntraRefactorCommand
 {
+    use ContainerAwareTrait;
+
     protected function configure(): void
     {
         parent::configure();
@@ -24,7 +27,7 @@ class DocblockRefactorer extends SyntraRefactorCommand
 
     public function perform(): int
     {
-        $fileHelper = new FileHelper();
+        $fileHelper = $this->getService(FileHelper::class, fn(): FileHelper => new FileHelper());
         $files = $fileHelper->collectFiles($this->configLoader->getProjectRoot());
 
         foreach ($files as $filePath) {

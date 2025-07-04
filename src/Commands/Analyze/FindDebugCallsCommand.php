@@ -6,10 +6,13 @@ namespace Vix\Syntra\Commands\Analyze;
 
 use Vix\Syntra\Commands\SyntraCommand;
 use Symfony\Component\Console\Command\Command;
+use Vix\Syntra\Traits\ContainerAwareTrait;
 use Vix\Syntra\Utils\FileHelper;
 
 class FindDebugCallsCommand extends SyntraCommand
 {
+    use ContainerAwareTrait;
+
     protected static array $DEBUG_FUNCTIONS = [
         'var_dump',
         'print_r',
@@ -37,7 +40,8 @@ class FindDebugCallsCommand extends SyntraCommand
     {
         $projectRoot = $this->configLoader->getProjectRoot();
 
-        $fileHelper = new FileHelper();
+        $fileHelper = $this->getService(FileHelper::class, fn(): FileHelper => new FileHelper());
+
         $files = $fileHelper->collectFiles($projectRoot);
 
         $matches = [];
