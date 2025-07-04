@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace Vix\Syntra\Commands\Extension\Yii;
+use Vix\Syntra\Commands\RectorRunnerCommand;
 
 use Vix\Syntra\Commands\Rector\CanHelpersRector;
 use Vix\Syntra\Commands\Rector\ConvertAccessChainRector;
@@ -12,7 +13,7 @@ use Vix\Syntra\Commands\Rector\FindOneIdShortcutRector;
 use Vix\Syntra\Commands\Rector\UpdateAllShortcutRector;
 use Vix\Syntra\Commands\Rector\UserFindOneToIdentityRector;
 
-class YiiAllCommand extends YiiRectorCommand
+class YiiAllCommand extends RectorRunnerCommand
 {
     protected function configure(): void
     {

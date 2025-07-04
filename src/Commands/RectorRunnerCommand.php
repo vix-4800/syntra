@@ -2,19 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Vix\Syntra\Commands\Extension\Yii;
+namespace Vix\Syntra\Commands;
 
 use Exception;
-use Vix\Syntra\Commands\SyntraRefactorCommand;
 use Vix\Syntra\Utils\ConfigLoader;
 use Vix\Syntra\Utils\ExtensionManager;
 use Vix\Syntra\Utils\ProcessRunner;
 use Vix\Syntra\Utils\RectorCommandExecutor;
 
 /**
- * Base class for Yii commands that use Rector rules
+ * Generic command base for running specific Rector rules.
  */
-abstract class YiiRectorCommand extends SyntraRefactorCommand
+abstract class RectorRunnerCommand extends SyntraRefactorCommand
 {
     protected RectorCommandExecutor $rectorExecutor;
 
@@ -28,14 +27,14 @@ abstract class YiiRectorCommand extends SyntraRefactorCommand
     }
 
     /**
-     * Get the Rector rule class(es) to execute
+     * Return Rector rule class(es) to execute.
      *
-     * @return string|array Single Rector class or array of classes
+     * @return string|array
      */
     abstract protected function getRectorRules(): string|array;
 
     /**
-     * Get additional Rector arguments (optional override)
+     * Build additional Rector CLI arguments.
      */
     protected function getAdditionalArgs(): array
     {
@@ -49,7 +48,7 @@ abstract class YiiRectorCommand extends SyntraRefactorCommand
     }
 
     /**
-     * Get success message (optional override)
+     * Message shown when Rector succeeds.
      */
     protected function getSuccessMessage(): string
     {
@@ -57,7 +56,7 @@ abstract class YiiRectorCommand extends SyntraRefactorCommand
     }
 
     /**
-     * Get error message (optional override)
+     * Message shown when Rector fails.
      */
     protected function getErrorMessage(): string
     {
@@ -65,7 +64,7 @@ abstract class YiiRectorCommand extends SyntraRefactorCommand
     }
 
     /**
-     * Perform the Rector refactoring
+     * Execute the Rector rule(s).
      */
     public function perform(): int
     {
@@ -85,7 +84,7 @@ abstract class YiiRectorCommand extends SyntraRefactorCommand
 
             return $result->exitCode;
         } catch (Exception $e) {
-            $this->output->error("Failed to execute Rector: " . $e->getMessage());
+            $this->output->error('Failed to execute Rector: ' . $e->getMessage());
             return self::FAILURE;
         }
     }

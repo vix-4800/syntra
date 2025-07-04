@@ -3,10 +3,11 @@
 declare(strict_types=1);
 
 namespace Vix\Syntra\Commands\Extension\Yii;
+use Vix\Syntra\Commands\RectorRunnerCommand;
 
 use Vix\Syntra\Commands\Rector\FindOneIdShortcutRector;
 
-class YiiFindIdCommand extends YiiRectorCommand
+class YiiFindIdCommand extends RectorRunnerCommand
 {
     protected function configure(): void
     {

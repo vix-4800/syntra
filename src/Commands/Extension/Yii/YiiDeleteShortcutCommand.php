@@ -3,10 +3,11 @@
 declare(strict_types=1);
 
 namespace Vix\Syntra\Commands\Extension\Yii;
+use Vix\Syntra\Commands\RectorRunnerCommand;
 
 use Vix\Syntra\Commands\Rector\DeleteAllShortcutRector;
 
-class YiiDeleteShortcutCommand extends YiiRectorCommand
+class YiiDeleteShortcutCommand extends RectorRunnerCommand
 {
     protected function configure(): void
     {
