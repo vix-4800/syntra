@@ -256,6 +256,14 @@ Add to your CI pipeline:
       vendor/bin/syntra analyze:find-debug-calls
 ```
 
+### Running Tests
+
+Execute the PHPUnit test suite locally or in CI:
+
+```bash
+vendor/bin/phpunit
+```
+
 ## 🤝 Contributing
 
 Feel free to fork and contribute your own health checks, refactorers, or extensions via pull requests!
