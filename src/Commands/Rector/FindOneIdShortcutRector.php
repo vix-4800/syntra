@@ -6,14 +6,12 @@ namespace Vix\Syntra\Commands\Rector;
 
 use PhpParser\Node;
 use PhpParser\Node\Arg;
-use PhpParser\Node\ArrayItem;
 use PhpParser\Node\Identifier;
 use PhpParser\Node\Expr\Array_;
+use PhpParser\Node\Expr\ArrayItem;
 use Rector\Rector\AbstractRector;
 use PhpParser\Node\Scalar\String_;
 use PhpParser\Node\Expr\StaticCall;
-use Rector\ValueObject\PhpVersionFeature;
-use Rector\VersionBonding\Contract\MinPhpVersionInterface;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 /**
@@ -25,7 +23,7 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  *
  * This only applies when the array contains a single key 'id'.
  */
-class FindOneIdShortcutRector extends AbstractRector implements MinPhpVersionInterface
+class FindOneIdShortcutRector extends AbstractRector
 {
     /**
      * Provides documentation and example code for the rule.
@@ -91,10 +89,5 @@ class FindOneIdShortcutRector extends AbstractRector implements MinPhpVersionInt
             new Identifier('findOne'),
             [new Arg($item->value)]
         );
-    }
-
-    public function provideMinPhpVersion(): int
-    {
-        return PhpVersionFeature::TYPED_PROPERTIES;
     }
 }

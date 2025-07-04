@@ -12,11 +12,9 @@ use PhpParser\Node\Expr\StaticCall;
 use PhpParser\Node\Identifier;
 use PhpParser\Node\Scalar\String_;
 use Rector\Rector\AbstractRector;
-use Rector\ValueObject\PhpVersionFeature;
-use Rector\VersionBonding\Contract\MinPhpVersionInterface;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
-class FindAllIdShortcutRector extends AbstractRector implements MinPhpVersionInterface
+class FindAllIdShortcutRector extends AbstractRector
 {
     public function getRuleDefinition(): RuleDefinition
     {
@@ -66,10 +64,5 @@ class FindAllIdShortcutRector extends AbstractRector implements MinPhpVersionInt
 
         $node->args = [new Arg($firstItem->value)];
         return $node;
-    }
-
-    public function provideMinPhpVersion(): int
-    {
-        return PhpVersionFeature::TYPED_PROPERTIES;
     }
 }
