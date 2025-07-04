@@ -6,6 +6,7 @@ namespace Vix\Syntra\Commands\Health;
 
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Vix\Syntra\Application;
 use Vix\Syntra\Exceptions\CommandException;
 use Vix\Syntra\Exceptions\MissingBinaryException;
 use Vix\Syntra\Commands\SyntraCommand;
@@ -24,24 +25,7 @@ class ProjectCheckCommand extends SyntraCommand
     {
         $this->output->section('Starting project health check...');
 
-        $projectRoot = $this->configLoader->getProjectRoot();
-
-        $checks = [];
-
-        $checks[] = [
-            'name' => 'Composer',
-            'checker' => new ComposerChecker($this->processRunner, $projectRoot),
-        ];
-
-        $checks[] = [
-            'name' => 'PHPStan',
-            'checker' => new PhpStanChecker(
-                $this->processRunner,
-                $projectRoot,
-                (int) $this->configLoader->getCommandOption('health', PhpStanChecker::class, 'level'),
-                $this->configLoader->getCommandOption('health', PhpStanChecker::class, 'config'),
-            ),
-        ];
+        $checks = $this->getHealthCheckers();
 
         $hasErrors = false;
         $hasWarnings = false;
@@ -100,5 +84,53 @@ class ProjectCheckCommand extends SyntraCommand
 
         $this->output->success('Project check completed without critical errors.');
         return self::SUCCESS;
+    }
+
+    /**
+     * Get configured health checkers from DI container
+     *
+     * @return array<array{name: string, checker: object}>
+     */
+    private function getHealthCheckers(): array
+    {
+        $checks = [];
+
+        // Get checkers from application container if available
+        if (
+            method_exists($this, 'getApplication') &&
+            $this->getApplication() instanceof Application
+        ) {
+            $container = $this->getApplication()->getContainer();
+
+            $checks[] = [
+                'name' => 'Composer',
+                'checker' => $container->get('health.composer_checker'),
+            ];
+
+            $checks[] = [
+                'name' => 'PHPStan',
+                'checker' => $container->get('health.phpstan_checker'),
+            ];
+        } else {
+            // Fallback to manual instantiation for backwards compatibility
+            $projectRoot = $this->configLoader->getProjectRoot();
+
+            $checks[] = [
+                'name' => 'Composer',
+                'checker' => new ComposerChecker($this->processRunner, $projectRoot),
+            ];
+
+            $checks[] = [
+                'name' => 'PHPStan',
+                'checker' => new PhpStanChecker(
+                    $this->processRunner,
+                    $projectRoot,
+                    (int) $this->configLoader->getCommandOption('health', PhpStanChecker::class, 'level'),
+                    $this->configLoader->getCommandOption('health', PhpStanChecker::class, 'config'),
+                ),
+            ];
+        }
+
+        return $checks;
     }
 }
