@@ -8,6 +8,7 @@ use Vix\Syntra\Commands\RectorRunnerCommand;
 use Vix\Syntra\Commands\Rector\CanHelpersRector;
 use Vix\Syntra\Commands\Rector\ConvertAccessChainRector;
 use Vix\Syntra\Commands\Rector\DeleteAllShortcutRector;
+use Vix\Syntra\Commands\Rector\FindAllIdShortcutRector;
 use Vix\Syntra\Commands\Rector\FindOneFindAllShortcutRector;
 use Vix\Syntra\Commands\Rector\FindOneIdShortcutRector;
 use Vix\Syntra\Commands\Rector\UpdateAllShortcutRector;
@@ -30,6 +31,7 @@ class YiiAllCommand extends RectorRunnerCommand
         return [
             FindOneFindAllShortcutRector::class,
             FindOneIdShortcutRector::class,
+            FindAllIdShortcutRector::class,
             UpdateAllShortcutRector::class,
             DeleteAllShortcutRector::class,
             CanHelpersRector::class,
