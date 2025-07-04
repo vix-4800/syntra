@@ -22,7 +22,7 @@ class YiiAllCommand extends RectorRunnerCommand
         $this
             ->setName('yii:all')
             ->setDescription('Runs all Yii-specific Rector refactorings in sequence')
-            ->setHelp('');
+            ->setHelp('Usage: vendor/bin/syntra yii:all');
     }
 
     protected function getRectorRules(): array

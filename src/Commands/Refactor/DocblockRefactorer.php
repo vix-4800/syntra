@@ -21,6 +21,7 @@ class DocblockRefactorer extends SyntraRefactorCommand
 
         $this->setName('refactor:docblocks')
             ->setDescription('Adds a file-level PHPDoc block to the beginning of the file and a PHPDoc block to each class if it is missing')
+            ->setHelp('Usage: vendor/bin/syntra refactor:docblocks [--dry-run] [--force]')
             ->setDangerLevel(DangerLevel::MEDIUM)
             ->addForceOption();
     }

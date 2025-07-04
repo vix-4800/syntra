@@ -16,7 +16,7 @@ class YiiFindShortcutsCommand extends RectorRunnerCommand
         $this
             ->setName('yii:find-shortcuts')
             ->setDescription('Converts Model::find()->where([...])->one()/all() into Model::findOne([...]) or findAll([...])')
-            ->setHelp('');
+            ->setHelp('Usage: vendor/bin/syntra yii:find-shortcuts');
     }
 
     protected function getRectorRules(): string

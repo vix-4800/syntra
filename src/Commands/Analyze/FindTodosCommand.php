@@ -32,7 +32,7 @@ class FindTodosCommand extends SyntraCommand
         $this
             ->setName('analyze:find-todos')
             ->setDescription('Scans project files and collects all TODO, FIXME, @todo, @deprecated and other important comments for further review and refactoring.')
-            ->setHelp('');
+            ->setHelp('Usage: vendor/bin/syntra analyze:find-todos');
     }
 
     public function perform(): int

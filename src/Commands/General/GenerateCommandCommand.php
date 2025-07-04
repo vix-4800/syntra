@@ -20,6 +20,7 @@ class GenerateCommandCommand extends SyntraCommand
         $this
             ->setName('general:generate-command')
             ->setDescription('Generates a scaffold for a new Symfony Console command')
+            ->setHelp('Usage: vendor/bin/syntra general:generate-command [--group=GROUP] [--cli-name=NAME] [--desc=TEXT]')
             ->addOption('group', null, InputOption::VALUE_OPTIONAL, 'The command group')
             ->addOption('cli-name', null, InputOption::VALUE_OPTIONAL, 'The CLI name of the command (e.g. refactor:custom)')
             ->addOption('desc', null, InputOption::VALUE_OPTIONAL, 'Description of the command');

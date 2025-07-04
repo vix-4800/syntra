@@ -16,7 +16,7 @@ class YiiUpdateShortcutCommand extends RectorRunnerCommand
         $this
             ->setName('yii:update-shortcut')
             ->setDescription('Replaces Model::find()->where([...])->update([...]) with Model::updateAll([...], [...])')
-            ->setHelp('');
+            ->setHelp('Usage: vendor/bin/syntra yii:update-shortcut');
     }
 
     protected function getRectorRules(): string

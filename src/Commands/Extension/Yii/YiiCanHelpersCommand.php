@@ -16,7 +16,7 @@ class YiiCanHelpersCommand extends RectorRunnerCommand
         $this
             ->setName('yii:can-helpers')
             ->setDescription('Replaces can()/!can() chains with canAny(), canAll(), cannotAny(), or cannotAll()')
-            ->setHelp('');
+            ->setHelp('Usage: vendor/bin/syntra yii:can-helpers');
     }
 
     protected function getRectorRules(): string

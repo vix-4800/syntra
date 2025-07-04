@@ -21,7 +21,7 @@ class YiiCheckTranslationsCommand extends SyntraCommand
         $this
             ->setName('yii:check-translations')
             ->setDescription('Checks Yii::t translations: finds missing and unused keys across all categories.')
-            ->setHelp('')
+            ->setHelp('Usage: vendor/bin/syntra yii:check-translations [--lang=LANG]')
             ->addOption('lang', null, InputOption::VALUE_OPTIONAL, 'Language to check (default: all found)', null);
     }
 
