@@ -36,7 +36,13 @@ composer require vix/syntra
     vendor/bin/syntra list
     ```
 
-## Usage
+4. **Try the web interface** (optional):
+    ```bash
+    php web/start-server.php
+    # Open http://localhost:8000 in your browser
+    ```
+
+## 📋 Usage
 
 Run Syntra commands using the CLI:
 
@@ -135,6 +141,64 @@ return [
     ],
 ];
 ```
+
+## 🌐 Web Interface
+
+Syntra now includes a modern web interface for running commands directly from your browser!
+
+### Quick Start
+
+Start the development server:
+
+```bash
+php web/start-server.php
+```
+
+Then open your browser to `http://localhost:8000`
+
+### Features
+
+-   **Beautiful UI**: Modern, responsive design
+-   **Real-time Execution**: Execute commands and see results instantly
+-   **Formatted Output**: Nicely formatted command output with syntax highlighting
+-   **Security**: Configurable command access control via `web-config.php`
+-   **Command Groups**: Commands organized by categories
+-   **Options Support**: Full support for `--path` and `--dry-run` options
+
+### Security Configuration
+
+Control which commands are available via web in the main `config.php`:
+
+```php
+return [
+    // Global web interface settings
+    'web' => [
+        'enabled' => true,
+        'require_auth' => false,
+        'allowed_ips' => [], // Empty = allow all IPs
+    ],
+
+    // Command configurations (both console and web)
+    'health' => [
+        ProjectCheckCommand::class => [
+            'enabled' => true,        // Console access
+            'web_enabled' => true,    // Web access
+        ],
+    ],
+    'refactor' => [
+        PhpCsFixerRefactorer::class => [
+            'enabled' => true,
+            'web_enabled' => true,
+            'require_dry_run' => false, // Set to true to force dry-run
+        ],
+    ],
+];
+```
+
+**⚠️ Security Note**: For production use, implement proper authentication and consider disabling commands that modify files.
+
+See `web/README.md` for detailed setup and configuration instructions.
+
 ## 💡 Tips & Best Practices
 
 ### Safety First

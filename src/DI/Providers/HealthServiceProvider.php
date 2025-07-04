@@ -6,8 +6,6 @@ namespace Vix\Syntra\DI\Providers;
 
 use Vix\Syntra\Commands\Health\ComposerChecker;
 use Vix\Syntra\Commands\Health\PhpStanChecker;
-use Vix\Syntra\Commands\Health\PhpUnitChecker;
-use Vix\Syntra\Commands\Health\SecurityChecker;
 use Vix\Syntra\DI\ContainerInterface;
 use Vix\Syntra\DI\ServiceProviderInterface;
 use Vix\Syntra\Utils\ConfigLoader;

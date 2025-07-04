@@ -47,7 +47,7 @@ class FindTodosCommand extends SyntraCommand
         $pattern = "/(?:\/\/|#|\*|\s)\s*($allTags)\b(.*)/i";
 
         foreach ($files as $filePath) {
-            if (strpos($filePath, "TodoReportCommand") !== false) {
+            if (str_contains($filePath, "TodoReportCommand")) {
                 continue;
             }
 

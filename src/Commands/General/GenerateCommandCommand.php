@@ -32,11 +32,11 @@ class GenerateCommandCommand extends SyntraCommand
 
         $group = $this->input->getOption('group')
             ?? $helper->ask($this->input, $this->output, new Question('Command group (refactor/health/...): '));
-        if (!$group || !preg_match('/^[a-zA-Z0-9_]+$/', $group)) {
+        if (!$group || !preg_match('/^[a-zA-Z0-9_]+$/', (string) $group)) {
             $this->output->error('Invalid group');
             return Command::FAILURE;
         }
-        $group = strtolower($group);
+        $group = strtolower((string) $group);
 
         $cliName = $this->input->getOption('cli-name')
             ?? $helper->ask($this->input, $this->output, new Question('CLI name (e.g. my-cool): '));
@@ -48,7 +48,7 @@ class GenerateCommandCommand extends SyntraCommand
         $desc = $this->input->getOption('desc')
             ?? $helper->ask($this->input, $this->output, new Question('Description: '));
 
-        $name = str_replace('-', '', ucwords($cliName, '-')) . 'Command';
+        $name = str_replace('-', '', ucwords((string) $cliName, '-')) . 'Command';
         $namespace = 'Vix\Syntra\Commands\\' . ucfirst($group);
         $fileDir = PACKAGE_ROOT . '/src/Commands/' . ucfirst($group);
         $filePath = "$fileDir/$name.php";

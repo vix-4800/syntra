@@ -21,7 +21,7 @@ class DocsVisitor extends NodeVisitorAbstract
         ) {
             $short = $node->name->name;
             $ctrl = preg_replace('/Controller$/', '', $short);
-            $ctrl = strtolower(preg_replace('/([a-z])([A-Z])/', '$1-$2', $ctrl));
+            $ctrl = strtolower((string) preg_replace('/([a-z])([A-Z])/', '$1-$2', (string) $ctrl));
 
             foreach ($node->getMethods() as $method) {
                 if (! $method->isPublic()) {
@@ -32,7 +32,7 @@ class DocsVisitor extends NodeVisitorAbstract
                 if (str_starts_with($mName, 'action')) {
                     $actionRaw = substr($mName, 6);
                     $action  = strtolower(
-                        preg_replace('/([a-z])([A-Z])/', '$1-$2', $actionRaw)
+                        (string) preg_replace('/([a-z])([A-Z])/', '$1-$2', $actionRaw)
                     );
                     $route = "$ctrl/$action";
 

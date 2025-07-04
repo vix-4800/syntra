@@ -16,8 +16,8 @@ use Vix\Syntra\Utils\ProcessRunner;
 class RectorCommandExecutor
 {
     public function __construct(
-        private ConfigLoader $configLoader,
-        private ProcessRunner $processRunner
+        private readonly ConfigLoader $configLoader,
+        private readonly ProcessRunner $processRunner
     ) {}
 
     /**

@@ -12,7 +12,6 @@ use Symfony\Component\Console\Command\Command;
 use Throwable;
 use Vix\Syntra\NodeVisitors\AssignmentInConditionVisitor;
 use Vix\Syntra\NodeVisitors\NestedTernaryVisitor;
-use Vix\Syntra\NodeVisitors\ReturnThrowVisitor;
 use Vix\Syntra\Traits\ContainerAwareTrait;
 use Vix\Syntra\Utils\FileHelper;
 
@@ -111,7 +110,7 @@ class FindBadPracticesCommand extends SyntraCommand
 
     private function snippet(string $code, int $maxLen = 60): string
     {
-        $code = trim(preg_replace('/\s+/', ' ', $code));
+        $code = trim((string) preg_replace('/\s+/', ' ', $code));
 
         if (mb_strlen($code) > $maxLen) {
             return mb_substr($code, 0, $maxLen - 3) . '...';

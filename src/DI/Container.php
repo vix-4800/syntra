@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Vix\Syntra\DI;
 
+use ReflectionNamedType;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionParameter;
@@ -230,7 +231,7 @@ class Container implements ContainerInterface
         $type = $parameter->getType();
 
         // Handle union types and built-in types
-        if (!$type instanceof \ReflectionNamedType || $type->isBuiltin()) {
+        if (!$type instanceof ReflectionNamedType || $type->isBuiltin()) {
             return $this->resolveNonClassDependency($parameter);
         }
 
@@ -269,7 +270,7 @@ class Container implements ContainerInterface
         }
 
         $type = $parameter->getType();
-        $typeName = $type instanceof \ReflectionNamedType ? $type->getName() : 'unknown';
+        $typeName = $type instanceof ReflectionNamedType ? $type->getName() : 'unknown';
 
         throw new ContainerException(
             "Cannot resolve primitive dependency '{$parameter->getName()}' of type '$typeName'"

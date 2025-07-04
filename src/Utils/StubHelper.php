@@ -6,7 +6,7 @@ namespace Vix\Syntra\Utils;
 
 class StubHelper
 {
-    private string $stubPath;
+    private readonly string $stubPath;
 
     public function __construct(string $stubName)
     {
