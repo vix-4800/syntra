@@ -67,22 +67,6 @@ vendor/bin/syntra general:generate-command --group=analyze --cli-name=analyze:cu
 
 ```
 
-# Call another command programmatically
-```php
-use Vix\Syntra\Commands\Health\ComposerCheckCommand;
-use Vix\Syntra\Traits\CommandRunnerTrait;
-
-class MyCommand extends SyntraCommand
-{
-    use CommandRunnerTrait;
-
-    public function perform(): int
-    {
-        return $this->runCommand(ComposerCheckCommand::class);
-    }
-}
-```
-
 ### Common Options
 
 All commands support these standard options:
@@ -107,12 +91,12 @@ All commands support these standard options:
 
 ### 🏥 Health
 
-| Command          | Description                                               | Options               |
-| ---------------- | --------------------------------------------------------- | --------------------- |
-| `health:composer` | Check Composer dependencies for updates | `--path`, `--dry-run` |
-| `health:phpstan`  | Run PHPStan static analysis | `--path`, `--dry-run` |
-| `health:phpunit`  | Execute PHPUnit tests | `--path`, `--dry-run` |
-| `health:project` | Run all health checks (composer, phpstan, phpunit) | `--path`, `--dry-run` |
+| Command           | Description                                        | Options               |
+| ----------------- | -------------------------------------------------- | --------------------- |
+| `health:composer` | Check Composer dependencies for updates            | `--path`, `--dry-run` |
+| `health:phpstan`  | Run PHPStan static analysis                        | `--path`, `--dry-run` |
+| `health:phpunit`  | Execute PHPUnit tests                              | `--path`, `--dry-run` |
+| `health:project`  | Run all health checks (composer, phpstan, phpunit) | `--path`, `--dry-run` |
 
 ### 🔧 Refactor
 
