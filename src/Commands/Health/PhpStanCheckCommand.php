@@ -5,15 +5,17 @@ declare(strict_types=1);
 namespace Vix\Syntra\Commands\Health;
 
 use Vix\Syntra\Commands\SyntraCommand;
+use Vix\Syntra\Commands\Health\HealthCheckCommandInterface;
+use Vix\Syntra\DTO\CommandResult;
 use Vix\Syntra\Exceptions\CommandException;
 use Vix\Syntra\Exceptions\MissingBinaryException;
 use Vix\Syntra\Traits\ContainerAwareTrait;
-use Vix\Syntra\Traits\RunsCheckerTrait;
+use Vix\Syntra\Traits\HandlesResultTrait;
 
-class PhpStanCheckCommand extends SyntraCommand
+class PhpStanCheckCommand extends SyntraCommand implements HealthCheckCommandInterface
 {
     use ContainerAwareTrait;
-    use RunsCheckerTrait;
+    use HandlesResultTrait;
 
     protected function configure(): void
     {
@@ -22,24 +24,66 @@ class PhpStanCheckCommand extends SyntraCommand
             ->setDescription('Runs PHPStan static analysis.');
     }
 
+    public function runCheck(): CommandResult
+    {
+        $binary = find_composer_bin('phpstan', $this->configLoader->getProjectRoot());
+
+        if (!$binary) {
+            throw new MissingBinaryException('phpstan', 'composer require --dev phpstan/phpstan');
+        }
+
+        $args = [
+            'analyse',
+            '--level=' . (int) $this->configLoader->getCommandOption('health', self::class, 'level', 0),
+            '--error-format=json',
+            '--no-progress',
+            '--configuration=' . $this->configLoader->getCommandOption('health', self::class, 'config', 'phpstan.neon'),
+            'src',
+        ];
+
+        $result = $this->processRunner->run(
+            $binary,
+            $args,
+            ['working_dir' => $this->configLoader->getProjectRoot()]
+        );
+
+        if ($result->exitCode !== 0 && empty($result->output)) {
+            return CommandResult::error(["PHPStan crashed:\n$result->stderr"]);
+        }
+
+        $json = @json_decode($result->output, true);
+        if (!$json || !isset($json['totals'])) {
+            return CommandResult::error(['PHPStan output is not parseable.']);
+        }
+
+        if ($json['totals']['errors'] === 0) {
+            return CommandResult::ok(['No errors found by PHPStan.']);
+        }
+
+        $messages = [];
+        foreach ($json['files'] ?? [] as $file => $data) {
+            foreach ($data['messages'] ?? [] as $msg) {
+                $messages[] = "$file: $msg";
+            }
+        }
+        foreach ($json['errors'] ?? [] as $err) {
+            $messages[] = "General: $err";
+        }
+
+        return CommandResult::warning($messages);
+    }
+
     public function perform(): int
     {
-        $checker = $this->getNamedService('health.phpstan_checker', function () {
-            $root = $this->configLoader->getProjectRoot();
-            $level = (int) $this->configLoader->getCommandOption('health', PhpStanChecker::class, 'level', 0);
-            $config = $this->configLoader->getCommandOption('health', PhpStanChecker::class, 'config');
-            return new PhpStanChecker($this->processRunner, $root, $level, $config);
-        });
-
         $this->output->section('Running PHPStan...');
 
         try {
-            $result = $checker->run();
+            $result = $this->runCheck();
         } catch (MissingBinaryException|CommandException $e) {
             $this->output->error($e->getMessage());
             return self::FAILURE;
         }
 
-        return $this->handleCheckerResult($result, 'PHPStan analysis completed.');
+        return $this->handleResult($result, 'PHPStan analysis completed.');
     }
 }

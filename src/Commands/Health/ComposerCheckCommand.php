@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace Vix\Syntra\Commands\Health;
 
 use Vix\Syntra\Commands\SyntraCommand;
-use Vix\Syntra\Exceptions\CommandException;
-use Vix\Syntra\Exceptions\MissingBinaryException;
+use Vix\Syntra\Commands\Health\HealthCheckCommandInterface;
+use Vix\Syntra\DTO\CommandResult;
 use Vix\Syntra\Traits\ContainerAwareTrait;
-use Vix\Syntra\Traits\RunsCheckerTrait;
+use Vix\Syntra\Traits\HandlesResultTrait;
 
-class ComposerCheckCommand extends SyntraCommand
+class ComposerCheckCommand extends SyntraCommand implements HealthCheckCommandInterface
 {
     use ContainerAwareTrait;
-    use RunsCheckerTrait;
+    use HandlesResultTrait;
 
     protected function configure(): void
     {
@@ -22,22 +22,37 @@ class ComposerCheckCommand extends SyntraCommand
             ->setDescription('Checks Composer dependencies for updates.');
     }
 
-    public function perform(): int
+    public function runCheck(): CommandResult
     {
-        $checker = $this->getNamedService('health.composer_checker', function () {
-            $root = $this->configLoader->getProjectRoot();
-            return new ComposerChecker($this->processRunner, $root);
-        });
+        $result = $this->processRunner->run(
+            'composer',
+            ['outdated', '--direct', '--format=json'],
+            ['working_dir' => $this->configLoader->getProjectRoot()]
+        );
 
-        $this->output->section('Running Composer check...');
-
-        try {
-            $result = $checker->run();
-        } catch (MissingBinaryException|CommandException $e) {
-            $this->output->error($e->getMessage());
-            return self::FAILURE;
+        if ($result->exitCode !== 0) {
+            return CommandResult::error(["Composer errored out:\n$result->stderr"]);
         }
 
-        return $this->handleCheckerResult($result, 'Composer check completed.');
+        $json = json_decode($result->output, true);
+        if (!isset($json['installed']) || count($json['installed']) === 0) {
+            return CommandResult::ok(['All packages are up to date.']);
+        }
+
+        $packages = array_map(
+            fn($pkg): string => "{$pkg['name']} ({$pkg['version']} → {$pkg['latest']})",
+            $json['installed']
+        );
+
+        return CommandResult::warning($packages);
+    }
+
+    public function perform(): int
+    {
+        $this->output->section('Running Composer check...');
+
+        $result = $this->runCheck();
+
+        return $this->handleResult($result, 'Composer check completed.');
     }
 }

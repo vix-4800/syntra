@@ -9,11 +9,11 @@ use Vix\Syntra\DTO\CommandResult;
 use Vix\Syntra\Enums\CommandStatus;
 
 /**
- * Helper trait for health check commands.
+ * Helper trait for displaying command results consistently.
  */
-trait RunsCheckerTrait
+trait HandlesResultTrait
 {
-    protected function handleCheckerResult(CommandResult $result, string $successMessage): int
+    protected function handleResult(CommandResult $result, string $successMessage): int
     {
         if ($result->status === CommandStatus::OK) {
             $this->output->success($successMessage);
