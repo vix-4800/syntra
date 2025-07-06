@@ -5,8 +5,10 @@ namespace Vix\Syntra\Tests\Commands;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use Vix\Syntra\Commands\Health\SecurityCheckCommand;
+use Vix\Syntra\DI\Container;
 use Vix\Syntra\DTO\ProcessResult;
 use Vix\Syntra\Enums\CommandStatus;
+use Vix\Syntra\Facades\Facade;
 use Vix\Syntra\Utils\ConfigLoader;
 use Vix\Syntra\Utils\ProcessRunner;
 
@@ -46,7 +48,11 @@ class SecurityCheckerTest extends TestCase
             }
         };
 
-        return new SecurityCheckCommand(self::$config, $runner);
+        $container = new Container();
+        $container->instance(ConfigLoader::class, self::$config);
+        $container->instance(ProcessRunner::class, $runner);
+        Facade::setContainer($container);
+        return new SecurityCheckCommand();
     }
 
     public function testOkWhenNoAdvisories(): void

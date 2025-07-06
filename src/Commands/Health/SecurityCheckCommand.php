@@ -7,12 +7,12 @@ namespace Vix\Syntra\Commands\Health;
 use Vix\Syntra\Commands\Health\HealthCheckCommandInterface;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\DTO\CommandResult;
-use Vix\Syntra\Traits\ContainerAwareTrait;
+use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Facades\Process;
 use Vix\Syntra\Traits\HandlesResultTrait;
 
 class SecurityCheckCommand extends SyntraCommand implements HealthCheckCommandInterface
 {
-    use ContainerAwareTrait;
     use HandlesResultTrait;
 
     protected function configure(): void
@@ -24,10 +24,10 @@ class SecurityCheckCommand extends SyntraCommand implements HealthCheckCommandIn
 
     public function runCheck(): CommandResult
     {
-        $result = $this->processRunner->run(
+        $result = Process::run(
             'composer',
             ['audit', '--format=json'],
-            ['working_dir' => $this->configLoader->getProjectRoot()]
+            ['working_dir' => Config::getProjectRoot()]
         );
 
         if ($result->exitCode !== 0) {

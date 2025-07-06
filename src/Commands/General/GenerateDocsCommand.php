@@ -11,10 +11,11 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Throwable;
 use Vix\Syntra\Commands\SyntraCommand;
+use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Facades\File;
 use Vix\Syntra\NodeVisitors\DocsVisitor;
 use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
 use Vix\Syntra\Traits\ContainerAwareTrait;
-use Vix\Syntra\Utils\FileHelper;
 use Vix\Syntra\Utils\ProjectDetector;
 
 class GenerateDocsCommand extends SyntraCommand
@@ -36,7 +37,7 @@ class GenerateDocsCommand extends SyntraCommand
 
     public function perform(): int
     {
-        $projectRoot = $this->configLoader->getProjectRoot();
+        $projectRoot = Config::getProjectRoot();
 
         $detector = $this->getService(ProjectDetector::class, fn (): ProjectDetector => new ProjectDetector());
         $type = $detector->detect($projectRoot);
@@ -55,12 +56,11 @@ class GenerateDocsCommand extends SyntraCommand
         $controllerDirArg = $this->input->getArgument('controllerDir');
         $controllerDir = $projectRoot . '/' . ltrim((string) ($controllerDirArg ?? 'backend/controllers'), '/');
 
-        $fileHelper = $this->getService(FileHelper::class, fn (): FileHelper => new FileHelper());
         $parser = $this->getService(Parser::class, fn (): Parser => (new ParserFactory())->create(ParserFactory::PREFER_PHP7));
 
         $routes = [];
 
-        $files = $fileHelper->collectFiles($controllerDir);
+        $files = File::collectFiles($controllerDir);
 
         $this->setProgressMax(count($files));
         $this->startProgress();

@@ -12,6 +12,7 @@
 -   **In-Memory Caching**: Reuses previously scanned file lists for faster repeated command execution.
 -   **Cache Reset**: Call `FileHelper::clearCache()` to manually reset cached file lists when working with temporary directories or tests.
 -   **No-Cache Option**: Use `--no-cache` to disable caching for a single command run.
+-   **Facades**: Convenient static access to common services.
 
 ## 📦 Installation
 
