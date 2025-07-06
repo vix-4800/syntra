@@ -16,6 +16,7 @@ use Vix\Syntra\Commands\Extension\Yii\YiiFindOneIdCommand;
 use Vix\Syntra\Commands\Extension\Yii\YiiFindShortcutsCommand;
 use Vix\Syntra\Commands\Extension\Yii\YiiUpdateShortcutCommand;
 use Vix\Syntra\Commands\Extension\Yii\YiiUserFindoneToIdentityCommand;
+use Vix\Syntra\Commands\Extension\Laravel\LaravelToRouteCommand;
 use Vix\Syntra\Commands\General\GenerateCommandCommand;
 use Vix\Syntra\Commands\General\GenerateDocsCommand;
 use Vix\Syntra\Commands\Health\ComposerCheckCommand;
@@ -180,6 +181,9 @@ return [
         ],
     ],
     'laravel' => [
-        //
+        LaravelToRouteCommand::class => [
+            'enabled' => true,
+            'web_enabled' => true,
+        ],
     ],
 ];

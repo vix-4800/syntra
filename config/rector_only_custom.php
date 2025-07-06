@@ -29,4 +29,5 @@ return RectorConfig::configure()
         UserFindOneToIdentityRector::class, // Replaces redundant User::findOne(...) lookups for current user with Yii::$app->user->identity
 
         // Laravel Specific
+        \Vix\Syntra\Commands\Rector\RedirectToRouteRector::class,
     ]);
