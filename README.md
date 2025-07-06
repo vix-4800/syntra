@@ -4,7 +4,7 @@
 
 ## 🚀 Features
 
--   **Health Checks**: Verify project stability with Composer, PHPStan, PHPUnit, and more.
+-   **Health Checks**: Verify project stability with Composer, PHPStan, PHPUnit, and security audits.
 -   **Code Refactoring**: Automatically fix code with custom refactorers, Rector, and PHP-CS-Fixer.
 -   **Static Analysis**: Detect todos, long methods, and unsafe debug calls.
 -   **Framework Support**: Built-in tooling for Yii (Laravel, Symfony planned).
@@ -91,7 +91,8 @@ All commands support these standard options:
 | `health:composer` | Check Composer dependencies for updates            | `--path`, `--dry-run` |
 | `health:phpstan`  | Run PHPStan static analysis                        | `--path`, `--dry-run` |
 | `health:phpunit`  | Execute PHPUnit tests                              | `--path`, `--dry-run` |
-| `health:project`  | Run all health checks (composer, phpstan, phpunit) | `--path`, `--dry-run` |
+| `health:security` | Check Composer dependencies for known vulnerabilities | `--path`, `--dry-run` |
+| `health:project`  | Run all health checks (composer, phpstan, phpunit, security) | `--path`, `--dry-run` |
 
 ### 🔧 Refactor
 
@@ -164,6 +165,7 @@ return [
     vendor/bin/syntra health:composer
     vendor/bin/syntra health:phpstan
     vendor/bin/syntra health:phpunit
+    vendor/bin/syntra health:security
     ```
 
 2. **Code Analysis Before Refactoring**:
