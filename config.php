@@ -72,7 +72,7 @@ return [
         PhpCsFixerRefactorer::class => [
             'enabled' => true,
             'web_enabled' => true,
-            'config' => PACKAGE_ROOT . '/php_cs_fixer.php',
+            'config' => PACKAGE_ROOT . '/config/php_cs_fixer.php',
         ],
         VarCommentsRefactorer::class => [
             'enabled' => true,
@@ -81,8 +81,8 @@ return [
         RectorRefactorer::class => [
             'enabled' => true,
             'web_enabled' => true,
-            'config' => PACKAGE_ROOT . '/rector.php',
-            'commands_config' => PACKAGE_ROOT . '/rector_only_custom.php',
+            'config' => PACKAGE_ROOT . '/config/rector.php',
+            'commands_config' => PACKAGE_ROOT . '/config/rector_only_custom.php',
         ],
     ],
     'health' => [
@@ -93,7 +93,7 @@ return [
         PhpStanCheckCommand::class => [
             'enabled' => true,
             'web_enabled' => true,
-            'config' => PACKAGE_ROOT . '/phpstan.neon',
+            'config' => PACKAGE_ROOT . '/config/phpstan.neon',
             'level' => 5,
         ],
         PhpUnitCheckCommand::class => [
