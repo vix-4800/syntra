@@ -49,6 +49,7 @@ class FindTodosCommand extends SyntraCommand
         $allTags = implode('|', array_map('preg_quote', self::$TAGS));
         $pattern = "/(?:\/\/|#|\*|\s)\s*($allTags)\b(.*)/i";
 
+        $this->setProgressMax(count($files));
         $this->startProgress();
 
         foreach ($files as $filePath) {

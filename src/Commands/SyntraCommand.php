@@ -28,6 +28,8 @@ abstract class SyntraCommand extends Command
 
     protected string $progressType = ProgressIndicatorFactory::TYPE_SPINNER;
 
+    protected int $progressMax = 0;
+
     public function __construct(
         protected ConfigLoader $configLoader,
         protected ProcessRunner $processRunner,
@@ -56,7 +58,8 @@ abstract class SyntraCommand extends Command
 
         $this->progressIndicator = ProgressIndicatorFactory::create(
             $this->progressType,
-            $this->output
+            $this->output,
+            $this->progressMax,
         );
     }
 
@@ -80,5 +83,10 @@ abstract class SyntraCommand extends Command
     protected function finishProgress(): void
     {
         $this->progressIndicator->finish();
+    }
+
+    protected function setProgressMax(int $max): void
+    {
+        $this->progressMax = $max;
     }
 }

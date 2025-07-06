@@ -42,6 +42,7 @@ class FindBadPracticesCommand extends SyntraCommand
 
         $files = $fileHelper->collectFiles($projectRoot);
 
+        $this->setProgressMax(count($files));
         $this->startProgress();
 
         $rows = [];

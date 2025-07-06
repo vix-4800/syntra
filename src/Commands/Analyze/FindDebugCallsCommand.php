@@ -50,6 +50,7 @@ class FindDebugCallsCommand extends SyntraCommand
         $matches = [];
         $pattern = '/(?<![\w\$])(' . implode('|', array_map('preg_quote', self::$DEBUG_FUNCTIONS)) . ')\s*\(/i';
 
+        $this->setProgressMax(count($files));
         $this->startProgress();
 
         foreach ($files as $filePath) {

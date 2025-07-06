@@ -46,6 +46,7 @@ class FindLongMethodsCommand extends SyntraCommand
 
         $longMethods = [];
 
+        $this->setProgressMax(count($files));
         $this->startProgress();
 
         foreach ($files as $filePath) {

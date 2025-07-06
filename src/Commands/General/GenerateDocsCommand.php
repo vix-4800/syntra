@@ -43,6 +43,7 @@ class GenerateDocsCommand extends SyntraCommand
 
         $files = $fileHelper->collectFiles($controllerDir);
 
+        $this->setProgressMax(count($files));
         $this->startProgress();
 
         foreach ($files as $file) {

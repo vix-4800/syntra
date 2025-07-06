@@ -33,6 +33,7 @@ class DocblockRefactorer extends SyntraRefactorCommand
         $fileHelper = $this->getService(FileHelper::class, fn (): FileHelper => new FileHelper());
         $files = $fileHelper->collectFiles($this->configLoader->getProjectRoot());
 
+        $this->setProgressMax(count($files));
         $this->startProgress();
 
         foreach ($files as $filePath) {
