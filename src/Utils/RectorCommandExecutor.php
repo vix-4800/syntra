@@ -32,12 +32,12 @@ class RectorCommandExecutor
      *
      * @throws MissingBinaryException
      */
-    public function executeRule(string $rectorClass, array $additionalArgs = []): ProcessResult
+    public function executeRule(string $rectorClass, array $additionalArgs = [], ?callable $outputCallback = null): ProcessResult
     {
         $binary = $this->findRectorBinary();
         $args = $this->buildRectorArgs($rectorClass, $additionalArgs);
 
-        return $this->processRunner->run($binary, $args);
+        return $this->processRunner->run($binary, $args, callback: $outputCallback);
     }
 
     /**
@@ -50,14 +50,14 @@ class RectorCommandExecutor
      *
      * @throws MissingBinaryException
      */
-    public function executeRules(array $rectorClasses, array $additionalArgs = []): ProcessResult
+    public function executeRules(array $rectorClasses, array $additionalArgs = [], ?callable $outputCallback = null): ProcessResult
     {
         $binary = $this->findRectorBinary();
         $result = null;
 
         foreach ($rectorClasses as $rectorClass) {
             $args = $this->buildRectorArgs($rectorClass, $additionalArgs);
-            $result = $this->processRunner->run($binary, $args);
+            $result = $this->processRunner->run($binary, $args, callback: $outputCallback);
 
             // Stop on first failure
             if ($result->exitCode !== 0) {

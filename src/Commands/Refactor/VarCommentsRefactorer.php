@@ -33,7 +33,7 @@ class VarCommentsRefactorer extends SyntraRefactorCommand
         $fileHelper = $this->getService(FileHelper::class, fn(): FileHelper => new FileHelper());
         $files = $fileHelper->collectFiles($this->configLoader->getProjectRoot());
 
-        $this->startProgress(count($files));
+        $this->startProgress();
 
         foreach ($files as $filePath) {
             $content = file_get_contents($filePath);
@@ -44,7 +44,7 @@ class VarCommentsRefactorer extends SyntraRefactorCommand
                 $fileHelper->writeChanges($filePath, $content, $newContent);
             }
 
-            $this->advance();
+            $this->advanceProgress();
         }
 
         $this->finishProgress();

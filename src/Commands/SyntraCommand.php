@@ -9,7 +9,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Vix\Syntra\Traits\HasProgressBar;
+use Vix\Syntra\ProgressIndicator\ProgressIndicatorInterface;
+use Vix\Syntra\ProgressIndicator\ProgressIndicatorFactory;
 use Vix\Syntra\Traits\HasStyledOutput;
 use Vix\Syntra\Utils\ConfigLoader;
 use Vix\Syntra\Utils\ExtensionManager;
@@ -18,11 +19,12 @@ use Vix\Syntra\Utils\ProcessRunner;
 abstract class SyntraCommand extends Command
 {
     use HasStyledOutput;
-    use HasProgressBar;
 
     protected InputInterface $input;
 
     protected bool $dryRun = false;
+
+    protected ProgressIndicatorInterface $progressIndicator;
 
     public function __construct(
         protected ConfigLoader $configLoader,
@@ -49,6 +51,11 @@ abstract class SyntraCommand extends Command
         if ($input->getOption('path')) {
             $this->configLoader->setProjectRoot((string) $input->getOption('path'));
         }
+
+        $this->progressIndicator = ProgressIndicatorFactory::create(
+            ProgressIndicatorFactory::TYPE_SPINNER,
+            $this->output
+        );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -57,4 +64,19 @@ abstract class SyntraCommand extends Command
     }
 
     abstract public function perform(): int;
+
+    protected function startProgress(): void
+    {
+        $this->progressIndicator->start();
+    }
+
+    protected function advanceProgress(): void
+    {
+        $this->progressIndicator->advance();
+    }
+
+    protected function finishProgress(): void
+    {
+        $this->progressIndicator->finish();
+    }
 }

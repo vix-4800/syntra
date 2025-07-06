@@ -43,7 +43,7 @@ class FindLongMethodsCommand extends SyntraCommand
 
         $longMethods = [];
 
-        $this->startProgress(count($files));
+        $this->startProgress();
 
         foreach ($files as $filePath) {
             $code = file_get_contents($filePath);
@@ -63,7 +63,7 @@ class FindLongMethodsCommand extends SyntraCommand
             $traverser->addVisitor($visitor);
             $traverser->traverse($stmts);
 
-            $this->advance();
+            $this->advanceProgress();
         }
 
         $this->finishProgress();

@@ -71,21 +71,28 @@ abstract class RectorRunnerCommand extends SyntraRefactorCommand
         $rules = $this->getRectorRules();
         $additionalArgs = $this->getAdditionalArgs();
 
+        $this->startProgress();
+
+        $outputCallback = function (): void {
+            $this->advanceProgress();
+        };
+
         try {
             $result = is_array($rules)
-                ? $this->rectorExecutor->executeRules($rules, $additionalArgs)
-                : $this->rectorExecutor->executeRule($rules, $additionalArgs);
+                ? $this->rectorExecutor->executeRules($rules, $additionalArgs, $outputCallback)
+                : $this->rectorExecutor->executeRule($rules, $additionalArgs, $outputCallback);
 
-            if ($result->exitCode === 0) {
-                $this->output->success($this->getSuccessMessage());
-            } else {
-                $this->output->error($this->getErrorMessage());
-            }
+            $this->progressIndicator->setMessage(
+                $result->exitCode === 0 ? $this->getSuccessMessage() : $this->getErrorMessage()
+            );
 
             return $result->exitCode;
         } catch (Exception $e) {
+            $this->progressIndicator->setMessage('Error!');
             $this->output->error('Failed to execute Rector: ' . $e->getMessage());
             return self::FAILURE;
+        } finally {
+            $this->finishProgress();
         }
     }
 }

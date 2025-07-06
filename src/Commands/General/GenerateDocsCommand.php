@@ -40,7 +40,7 @@ class GenerateDocsCommand extends SyntraCommand
 
         $files = $fileHelper->collectFiles($controllerDir);
 
-        $this->startProgress(count($files));
+        $this->startProgress();
 
         foreach ($files as $file) {
             $code = file_get_contents($file);
@@ -62,7 +62,7 @@ class GenerateDocsCommand extends SyntraCommand
 
             $routes = array_merge($routes, $visitor->routes);
 
-            $this->advance();
+            $this->advanceProgress();
         }
 
         $this->finishProgress();

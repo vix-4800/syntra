@@ -20,7 +20,7 @@ class ProcessRunner
      *
      * @throws MissingBinaryException
      */
-    public function run(string $command, array $args = [], array $options = []): ProcessResult
+    public function run(string $command, array $args = [], array $options = [], ?callable $callback = null): ProcessResult
     {
         $cmd = array_merge([$command], $args);
 
@@ -28,7 +28,7 @@ class ProcessRunner
         $process->setTimeout($options['timeout'] ?? 300);
 
         try {
-            $process->mustRun();
+            $process->mustRun($callback);
 
             return new ProcessResult(
                 $process->getExitCode() ?? 0,

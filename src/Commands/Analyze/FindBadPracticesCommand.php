@@ -39,7 +39,7 @@ class FindBadPracticesCommand extends SyntraCommand
 
         $files = $fileHelper->collectFiles($projectRoot);
 
-        $this->startProgress(count($files));
+        $this->startProgress();
 
         $rows = [];
         foreach ($files as $file) {
@@ -86,7 +86,7 @@ class FindBadPracticesCommand extends SyntraCommand
                 }
             }
 
-            $this->advance();
+            $this->advanceProgress();
         }
 
         $this->finishProgress();
