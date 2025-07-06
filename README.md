@@ -105,10 +105,10 @@ All commands support these standard options:
 
 ### 🧠 General
 
-| Command                    | Description                                                                   | Options                                                  |
-| -------------------------- | ----------------------------------------------------------------------------- | -------------------------------------------------------- |
-| `general:generate-command` | Generates a scaffold for a new Symfony Console command                        | `--path`, `--dry-run`, `--group`, `--cli-name`, `--desc` |
-| `general:generate-docs`    | Scans project controllers and generates a markdown file listing all action routes (framework detected automatically) | `--path`, `--dry-run`, `[controllerDir]`         |
+| Command                    | Description                                                                                                          | Options                                                  |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| `general:generate-command` | Generates a scaffold for a new Symfony Console command                                                               | `--path`, `--dry-run`, `--group`, `--cli-name`, `--desc` |
+| `general:generate-docs`    | Scans project controllers and generates a markdown file listing all action routes (framework detected automatically) | `--path`, `--dry-run`, `[controllerDir]`                 |
 
 ### 🧩 Yii Framework Extensions
 

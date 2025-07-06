@@ -14,6 +14,7 @@ class FileHelper
      * @var array<string, string[]>
      */
     private static array $filesCache = [];
+
     /**
      * @param string[] $extensions
      * @param string[] $excludeDirs
