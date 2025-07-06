@@ -38,7 +38,7 @@ class GenerateDocsCommand extends SyntraCommand
     {
         $projectRoot = $this->configLoader->getProjectRoot();
 
-        $detector = $this->getService(ProjectDetector::class, fn () => new ProjectDetector());
+        $detector = $this->getService(ProjectDetector::class, fn (): ProjectDetector => new ProjectDetector());
         $type = $detector->detect($projectRoot);
 
         if ($type === ProjectDetector::TYPE_YII) {
