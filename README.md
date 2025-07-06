@@ -101,7 +101,7 @@ All commands support these standard options:
 | `refactor:cs-fixer`     | Fixes code style using php-cs-fixer for the selected files        | 🟢 LOW       | `--path`, `--dry-run`, `--force` |
 | `refactor:imports`      | Fixes incorrect order of docblocks and import statements          | 🟢 LOW       | `--path`, `--dry-run`, `--force` |
 | `refactor:var-comments` | Standardizes @var comments to `/** @var Type $var */`             | 🟢 LOW       | `--path`, `--dry-run`, `--force` |
-| `refactor:docblocks`    | Adds a file-level PHPDoc block and class PHPDoc blocks if missing | 🟡 MEDIUM    | `--path`, `--dry-run`, `--force` |
+| `refactor:docblocks`    | Adds a file-level PHPDoc block and class PHPDoc blocks if missing | 🟡 MEDIUM    | `--path`, `--dry-run`, `--force`, `--author`, `--link`, `--category` |
 | `refactor:rector`       | Runs Rector for automated refactoring                             | 🔴 HIGH      | `--path`, `--dry-run`, `--force` |
 
 ### 🧠 General

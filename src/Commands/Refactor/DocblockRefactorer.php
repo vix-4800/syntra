@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Vix\Syntra\Commands\Refactor;
 
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputOption;
 use Vix\Syntra\Commands\SyntraRefactorCommand;
 use Vix\Syntra\Enums\DangerLevel;
 use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
@@ -24,7 +25,10 @@ class DocblockRefactorer extends SyntraRefactorCommand
 
         $this->setName('refactor:docblocks')
             ->setDescription('Adds a file-level PHPDoc block to the beginning of the file and a PHPDoc block to each class if it is missing')
-            ->setHelp('Usage: vendor/bin/syntra refactor:docblocks [--dry-run] [--force]')
+            ->setHelp('Usage: vendor/bin/syntra refactor:docblocks [--dry-run] [--force] [--author=NAME] [--link=URL] [--category=CATEGORY]')
+            ->addOption('author', null, InputOption::VALUE_OPTIONAL, 'Value for the @author tag')
+            ->addOption('link', null, InputOption::VALUE_OPTIONAL, 'URL used for the @link tag')
+            ->addOption('category', null, InputOption::VALUE_OPTIONAL, 'Value for the @category tag')
             ->setDangerLevel(DangerLevel::MEDIUM);
     }
 
@@ -94,10 +98,10 @@ class DocblockRefactorer extends SyntraRefactorCommand
             if (!$hasDocBlock) {
                 $insertions[$i] = (new StubHelper("class-docblock"))->render([
                     'description' => str_replace(getcwd() . DIRECTORY_SEPARATOR, '', $filePath),
-                    'category' => 'Class',
-                    'author' => 'author <author@gmail.com>',
+                    'category' => (string) ($this->input->getOption('category') ?: 'Class'),
+                    'author' => (string) ($this->input->getOption('author') ?: 'author <author@gmail.com>'),
                     'copyright' => date('Y'),
-                    'link' => 'http://example.com/',
+                    'link' => (string) ($this->input->getOption('link') ?: 'http://example.com/'),
                 ]);
             }
         }
@@ -236,10 +240,10 @@ class DocblockRefactorer extends SyntraRefactorCommand
         $docBlock = (new StubHelper("file-docblock"))->render([
             'description' => str_replace(getcwd() . DIRECTORY_SEPARATOR, '', $filePath),
             'phpVersion' => PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION,
-            'category' => 'File',
-            'author' => 'author <author@gmail.com>',
+            'category' => (string) ($this->input->getOption('category') ?: 'File'),
+            'author' => (string) ($this->input->getOption('author') ?: 'author <author@gmail.com>'),
             'copyright' => date('Y'),
-            'link' => 'http://example.com/',
+            'link' => (string) ($this->input->getOption('link') ?: 'http://example.com/'),
         ]);
 
         return $firstToken[1] . "\n$docBlock" . $this->concatTokens(array_slice($tokens, 1));
