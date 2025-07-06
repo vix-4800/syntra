@@ -9,6 +9,7 @@ use Symfony\Component\Console\Application as SymfonyApplication;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\DI\ContainerFactory;
 use Vix\Syntra\DI\ContainerInterface;
+use Vix\Syntra\Facades\Facade;
 use Vix\Syntra\Utils\ConfigLoader;
 
 class Application extends SymfonyApplication
@@ -40,8 +41,8 @@ class Application extends SymfonyApplication
         $this->container = ContainerFactory::create();
 
         // Make the container available to facades
-        if (class_exists(\Vix\Syntra\Facades\Facade::class)) {
-            \Vix\Syntra\Facades\Facade::setContainer($this->container);
+        if (class_exists(Facade::class)) {
+            Facade::setContainer($this->container);
         }
 
         $this->registerCommands();

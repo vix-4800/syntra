@@ -6,9 +6,9 @@ namespace Vix\Syntra\Commands\Refactor;
 
 use Symfony\Component\Console\Command\Command;
 use Vix\Syntra\Commands\SyntraRefactorCommand;
-use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
 use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\File;
+use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
 
 /**
  * Fixes the order of DocBlock comments and import statements in PHP files.

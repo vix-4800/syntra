@@ -12,7 +12,6 @@ use Vix\Syntra\Facades\File;
 
 class YiiCheckTranslationsCommand extends SyntraCommand
 {
-
     protected function configure(): void
     {
         parent::configure();

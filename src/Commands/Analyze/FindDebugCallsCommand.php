@@ -6,9 +6,9 @@ namespace Vix\Syntra\Commands\Analyze;
 
 use Symfony\Component\Console\Command\Command;
 use Vix\Syntra\Commands\SyntraCommand;
-use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
 use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\File;
+use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
 
 class FindDebugCallsCommand extends SyntraCommand
 {
@@ -50,7 +50,7 @@ class FindDebugCallsCommand extends SyntraCommand
         $this->startProgress();
 
         foreach ($files as $filePath) {
-            if (str_contains($filePath, "FindDebugCallsCommand")) {
+            if (str_contains((string) $filePath, "FindDebugCallsCommand")) {
                 continue;
             }
 
