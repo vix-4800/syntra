@@ -64,6 +64,7 @@ vendor/bin/syntra general:generate-command --group=analyze --cli-name=analyze:cu
 ### Common Options
 
 All commands support these standard options (with an optional `[path]` argument to specify the project root):
+
 -   `--dry-run` / `-d`: Preview changes without applying them
 -   `--force` / `-f`: Force execution, ignore warnings (refactor commands only)
 -   `--no-progress`: Disable progress output
