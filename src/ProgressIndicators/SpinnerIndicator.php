@@ -18,7 +18,7 @@ class SpinnerIndicator extends AbstractProgressIndicator
         $this->render();
     }
 
-    public function advance(): void
+    public function advance(int $step = 1): void
     {
         if (!$this->isRunning) {
             return;

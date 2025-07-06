@@ -8,7 +8,7 @@ interface ProgressIndicatorInterface
 {
     public function start(): void;
 
-    public function advance(): void;
+    public function advance(int $step = 1): void;
 
     public function finish(): void;
 
