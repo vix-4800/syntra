@@ -78,6 +78,7 @@ Registers core application services:
 -   `ProcessRunner` - Process execution
 -   `ExtensionManager` - Extension management
 -   `FileHelper` - File operations
+    - caches results of file searches during a single run for performance
 
 ### HealthServiceProvider
 

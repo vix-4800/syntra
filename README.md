@@ -9,6 +9,7 @@
 -   **Static Analysis**: Detect todos, long methods, and unsafe debug calls.
 -   **Framework Support**: Built-in tooling for Yii (Laravel, Symfony planned).
 -   **Extensibility**: Generate and register new commands using stubs.
+-   **In-Memory Caching**: Reuses previously scanned file lists for faster repeated command execution.
 
 ## 📦 Installation
 
