@@ -92,10 +92,20 @@ All commands support these standard options (with an optional `[path]` argument 
 | Command           | Description                                                  | Options                             |
 | ----------------- | ------------------------------------------------------------ | ----------------------------------- |
 | `health:composer` | Check Composer dependencies for updates                      | `[path]`, `--dry-run`, `--no-cache` |
+| `health:php-version` | Validate PHP version requirement in composer.json
+  | `[path]`, `--dry-run`, `--no-cache` |
 | `health:phpstan`  | Run PHPStan static analysis                                  | `[path]`, `--dry-run`, `--no-cache` |
 | `health:phpunit`  | Execute PHPUnit tests                                        | `[path]`, `--dry-run`, `--no-cache` |
 | `health:security` | Check Composer dependencies for known vulnerabilities        | `[path]`, `--dry-run`, `--no-cache` |
 | `health:project`  | Run all health checks (composer, phpstan, phpunit, security) | `[path]`, `--dry-run`, `--no-cache` |
+
+#### Additional checks to consider
+
+- Ensure an `.editorconfig` file is present for consistent formatting
+- Run PHP-CS-Fixer in dry-run mode to enforce PSR-12 style
+- Check for `declare(strict_types=1)` at the top of PHP files
+- Verify Composer package licenses match your project policy
+
 
 ### 🔧 Refactor
 

@@ -9,6 +9,7 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Vix\Syntra\Commands\Health\ComposerCheckCommand;
 use Vix\Syntra\Commands\Health\PhpStanCheckCommand;
 use Vix\Syntra\Commands\Health\PhpUnitCheckCommand;
+use Vix\Syntra\Commands\Health\PhpVersionCheckCommand;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Exceptions\CommandException;
 use Vix\Syntra\Exceptions\MissingBinaryException;
@@ -31,6 +32,7 @@ class ProjectCheckCommand extends SyntraCommand
         $this->output->section('Starting project health check...');
 
         $checks = [
+            ['name' => 'PHP Version', 'class' => PhpVersionCheckCommand::class],
             ['name' => 'Composer', 'class' => ComposerCheckCommand::class],
             ['name' => 'PHPStan', 'class' => PhpStanCheckCommand::class],
             ['name' => 'PHPUnit', 'class' => PhpUnitCheckCommand::class],
