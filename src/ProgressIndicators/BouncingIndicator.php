@@ -14,7 +14,7 @@ class BouncingIndicator extends AbstractProgressIndicator
 
     private bool $isRunning = false;
 
-    public function __construct(protected SymfonyStyle $output, private int $width = 10)
+    public function __construct(protected SymfonyStyle $output, private readonly int $width = 10)
     {
         parent::__construct($output);
     }

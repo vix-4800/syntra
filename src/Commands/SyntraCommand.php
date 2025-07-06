@@ -13,8 +13,6 @@ use Vix\Syntra\Facades\Config;
 use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
 use Vix\Syntra\ProgressIndicators\ProgressIndicatorInterface;
 use Vix\Syntra\Traits\HasStyledOutput;
-use Vix\Syntra\Utils\ConfigLoader;
-use Vix\Syntra\Utils\ProcessRunner;
 use Vix\Syntra\Utils\FileHelper;
 
 abstract class SyntraCommand extends Command

@@ -3,8 +3,8 @@
 namespace Vix\Syntra\Tests\Utils;
 
 use PHPUnit\Framework\TestCase;
-use Vix\Syntra\Utils\ProjectDetector;
 use Vix\Syntra\Utils\FileHelper;
+use Vix\Syntra\Utils\ProjectDetector;
 
 class ProjectDetectorTest extends TestCase
 {
