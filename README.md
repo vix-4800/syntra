@@ -10,6 +10,7 @@
 -   **Framework Support**: Built-in tooling for Yii (Laravel, Symfony planned).
 -   **Extensibility**: Generate and register new commands using stubs.
 -   **In-Memory Caching**: Reuses previously scanned file lists for faster repeated command execution.
+-   **Cache Reset**: Call `FileHelper::clearCache()` to manually reset cached file lists when working with temporary directories or tests.
 
 ## 📦 Installation
 

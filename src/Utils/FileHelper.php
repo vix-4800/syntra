@@ -16,6 +16,14 @@ class FileHelper
     private static array $filesCache = [];
 
     /**
+     * Clears the internal files cache.
+     */
+    public static function clearCache(): void
+    {
+        self::$filesCache = [];
+    }
+
+    /**
      * @param string[] $extensions
      * @param string[] $excludeDirs
      *
