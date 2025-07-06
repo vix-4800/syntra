@@ -14,6 +14,7 @@ use Vix\Syntra\NodeVisitors\DocsVisitor;
 use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
 use Vix\Syntra\Traits\ContainerAwareTrait;
 use Vix\Syntra\Utils\FileHelper;
+use Vix\Syntra\Utils\ProjectDetector;
 
 class GenerateDocsCommand extends SyntraCommand
 {
@@ -27,13 +28,28 @@ class GenerateDocsCommand extends SyntraCommand
 
         $this
             ->setName('general:generate-docs')
-            ->setDescription('Scans Yii controllers and generates a markdown file listing all action routes with optional descriptions.')
+            ->setDescription('Scans project controllers and generates a markdown file listing all action routes (currently only Yii is supported).')
             ->setHelp('Usage: vendor/bin/syntra general:generate-docs');
     }
 
     public function perform(): int
     {
         $projectRoot = $this->configLoader->getProjectRoot();
+
+        $detector = $this->getService(ProjectDetector::class, fn () => new ProjectDetector());
+        $type = $detector->detect($projectRoot);
+
+        if ($type === ProjectDetector::TYPE_YII) {
+            return $this->generateForYii($projectRoot);
+        }
+
+        $this->output->warning('Unsupported project type or framework not detected.');
+
+        return Command::SUCCESS;
+    }
+
+    private function generateForYii(string $projectRoot): int
+    {
         $controllerDir = "$projectRoot/backend/controllers";
 
         $fileHelper = $this->getService(FileHelper::class, fn (): FileHelper => new FileHelper());
@@ -72,7 +88,7 @@ class GenerateDocsCommand extends SyntraCommand
         $this->finishProgress();
 
         if (empty($routes)) {
-            $this->output->warning("Controllers with action methods not found.");
+            $this->output->warning('Controllers with action methods not found.');
             return Command::SUCCESS;
         }
 
@@ -85,16 +101,16 @@ class GenerateDocsCommand extends SyntraCommand
             ];
         }
 
-        $mdFile = $this->writeToMarkdown("$projectRoot/docs", $routesGrouped);
+        $mdFile = $this->writeToMarkdown("$projectRoot/docs", $routesGrouped, 'Yii');
 
         $this->output->success("Routes successfully saved to $mdFile");
 
         return Command::SUCCESS;
     }
 
-    private function writeToMarkdown(string $filePath, array $routes): string
+    private function writeToMarkdown(string $filePath, array $routes, string $suffix = ''): string
     {
-        $md = "# 📘 Route documentation (Yii)\n\n";
+        $md = '# 📘 Route documentation' . ($suffix ? " ($suffix)" : '') . "\n\n";
         ksort($routes);
 
         foreach ($routes as $controller => $actions) {
