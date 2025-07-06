@@ -86,12 +86,12 @@ All commands support these standard options:
 
 ### 🏥 Health
 
-| Command           | Description                                        | Options               |
-| ----------------- | -------------------------------------------------- | --------------------- |
-| `health:composer` | Check Composer dependencies for updates            | `--path`, `--dry-run` |
-| `health:phpstan`  | Run PHPStan static analysis                        | `--path`, `--dry-run` |
-| `health:phpunit`  | Execute PHPUnit tests                              | `--path`, `--dry-run` |
-| `health:security` | Check Composer dependencies for known vulnerabilities | `--path`, `--dry-run` |
+| Command           | Description                                                  | Options               |
+| ----------------- | ------------------------------------------------------------ | --------------------- |
+| `health:composer` | Check Composer dependencies for updates                      | `--path`, `--dry-run` |
+| `health:phpstan`  | Run PHPStan static analysis                                  | `--path`, `--dry-run` |
+| `health:phpunit`  | Execute PHPUnit tests                                        | `--path`, `--dry-run` |
+| `health:security` | Check Composer dependencies for known vulnerabilities        | `--path`, `--dry-run` |
 | `health:project`  | Run all health checks (composer, phpstan, phpunit, security) | `--path`, `--dry-run` |
 
 ### 🔧 Refactor
