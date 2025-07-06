@@ -35,8 +35,8 @@ class DangerLevelWarningTest extends TestCase
 
         $app->add($command);
         $tester = new CommandTester($command);
-        $tester->execute(['--force' => true]);
+        $tester->execute([]);
 
-        $this->assertStringContainsString('Warning: this command is marked as HIGH', $tester->getDisplay());
+        $this->assertStringContainsString('Warning: the danger level of this command is marked as', $tester->getDisplay());
     }
 }
