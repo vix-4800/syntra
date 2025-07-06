@@ -33,7 +33,7 @@ class GenerateCommandCommand extends SyntraCommand
 
         $group = $this->input->getOption('group')
             ?? $helper->ask($this->input, $this->output, new Question('Command group (refactor/health/...): '));
-        if (!$group || !preg_match('/^[a-zA-Z0-9_]+$/', (string) $group)) {
+        if (!$group || !preg_match('/^\w+$/', (string) $group)) {
             $this->output->error('Invalid group');
             return Command::FAILURE;
         }

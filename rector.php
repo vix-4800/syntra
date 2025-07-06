@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use Rector\CodeQuality\Rector\Assign\CombinedAssignRector;
 use Rector\CodeQuality\Rector\BooleanNot\SimplifyDeMorganBinaryRector;
 use Rector\CodeQuality\Rector\Class_\CompleteDynamicPropertiesRector;
 use Rector\CodeQuality\Rector\Equal\UseIdenticalOverEqualWithSameTypeRector;
@@ -31,7 +30,6 @@ use Rector\DeadCode\Rector\Property\RemoveUnusedPrivatePropertyRector;
 use Rector\EarlyReturn\Rector\If_\ChangeIfElseValueAssignToEarlyReturnRector;
 use Rector\EarlyReturn\Rector\Return_\PreparedValueToEarlyReturnRector;
 use Rector\Php55\Rector\String_\StringClassNameToClassConstantRector;
-use Rector\Php81\Rector\Array_\FirstClassCallableRector;
 use Rector\TypeDeclaration\Rector\ClassMethod\AddReturnTypeDeclarationRector;
 
 return RectorConfig::configure()
@@ -75,12 +73,10 @@ return RectorConfig::configure()
         RemoveConcatAutocastRector::class,
 
         // Modern PHP constructs
-        FirstClassCallableRector::class,
         StringClassNameToClassConstantRector::class,
 
         // Arrays
         ChangeArrayPushToArrayAssignRector::class,
-        CombinedAssignRector::class,
 
         // Strings
         SimplifyStrposLowerRector::class,

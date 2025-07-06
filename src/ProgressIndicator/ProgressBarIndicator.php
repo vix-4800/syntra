@@ -9,7 +9,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ProgressBarIndicator extends AbstractProgressIndicator
 {
-    private ProgressBar $progressBar;
+    private readonly ProgressBar $progressBar;
 
     public function __construct(SymfonyStyle $output, int $maxSteps)
     {

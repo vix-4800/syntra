@@ -9,13 +9,10 @@ use Vix\Syntra\ProgressIndicator\ProgressIndicatorInterface;
 
 abstract class AbstractProgressIndicator implements ProgressIndicatorInterface
 {
-    protected SymfonyStyle $output;
-
     protected string $message;
 
-    public function __construct(SymfonyStyle $output)
+    public function __construct(protected SymfonyStyle $output)
     {
-        $this->output = $output;
         $this->message = "Processing...";
     }
 

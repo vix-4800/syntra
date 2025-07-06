@@ -111,9 +111,7 @@ class DocblockRefactorer extends SyntraRefactorCommand
             $newContent .= $docBlock;
             $currentIndex = $index;
         }
-
-        $newContent .= $this->concatTokens(array_slice($tokens, $currentIndex));
-        return $newContent;
+        return $newContent . $this->concatTokens(array_slice($tokens, $currentIndex));
     }
 
     /**
