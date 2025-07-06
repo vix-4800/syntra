@@ -28,12 +28,24 @@ class RectorRefactorer extends SyntraRefactorCommand
             throw new MissingBinaryException("rector", "composer require --dev rector/rector");
         }
 
+        $this->startProgress();
+
+        $outputCallback = function (): void {
+            $this->advanceProgress();
+        };
+
         $result = $this->processRunner->run($binary, [
             'process',
             $this->configLoader->getProjectRoot(),
             "--config=" . $this->configLoader->getCommandOption('refactor', self::class, 'config'),
             "--clear-cache",
         ]);
+
+        $this->progressIndicator->setMessage(
+            $result->exitCode === 0 ? 'Success!' : 'Error!'
+        );
+
+        $this->finishProgress();
 
         if ($result->exitCode === 0) {
             $this->output->success('Rector refactoring completed.');
