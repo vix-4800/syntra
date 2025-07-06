@@ -14,6 +14,7 @@ use Vix\Syntra\ProgressIndicators\ProgressIndicatorInterface;
 use Vix\Syntra\Traits\HasStyledOutput;
 use Vix\Syntra\Utils\ConfigLoader;
 use Vix\Syntra\Utils\ProcessRunner;
+use Vix\Syntra\Utils\FileHelper;
 
 abstract class SyntraCommand extends Command
 {
@@ -23,6 +24,7 @@ abstract class SyntraCommand extends Command
 
     protected bool $dryRun = false;
     protected bool $noProgress = false;
+    protected bool $noCache = false;
 
     protected ProgressIndicatorInterface $progressIndicator;
 
@@ -42,7 +44,8 @@ abstract class SyntraCommand extends Command
         $this
             ->addOption('path', null, InputOption::VALUE_REQUIRED, 'Root path of the project', null)
             ->addOption('dry-run', 'd', InputOption::VALUE_NONE, 'Do not apply changes, only show what would be done')
-            ->addOption('no-progress', null, InputOption::VALUE_NONE, 'Disable progress output');
+            ->addOption('no-progress', null, InputOption::VALUE_NONE, 'Disable progress output')
+            ->addOption('no-cache', null, InputOption::VALUE_NONE, 'Disable file caching');
     }
 
     protected function initialize(InputInterface $input, OutputInterface $output): void
@@ -52,6 +55,9 @@ abstract class SyntraCommand extends Command
 
         $this->dryRun = (bool) $input->getOption('dry-run');
         $this->noProgress = (bool) $input->getOption('no-progress');
+        $this->noCache = (bool) $input->getOption('no-cache');
+
+        FileHelper::setCacheEnabled(!$this->noCache);
 
         if ($input->getOption('path')) {
             $this->configLoader->setProjectRoot((string) $input->getOption('path'));
