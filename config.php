@@ -101,8 +101,8 @@ return [
             'web_enabled' => true,
         ],
         SecurityChecker::class => [
-            'enabled' => false,
-            'web_enabled' => false,
+            'enabled' => true,
+            'web_enabled' => true,
         ],
         ProjectCheckCommand::class => [
             'enabled' => true,
