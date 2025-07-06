@@ -67,6 +67,7 @@ All commands support these standard options:
 -   `--path`: Specify the root path of the project (defaults to current directory)
 -   `--dry-run` / `-d`: Preview changes without applying them
 -   `--force` / `-f`: Force execution, ignore warnings (refactor commands only)
+-   `--no-progress`: Disable progress output
 -   `--help` / `-h`: Display help for the command
 -   `--quiet` / `-q`: Only show errors
 -   `--verbose` / `-v/-vv/-vvv`: Increase verbosity level
