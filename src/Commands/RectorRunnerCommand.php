@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Vix\Syntra\Commands;
 
 use Exception;
-use Vix\Syntra\Utils\ConfigLoader;
-use Vix\Syntra\Utils\ProcessRunner;
 use Vix\Syntra\Utils\RectorCommandExecutor;
 
 /**
@@ -16,12 +14,10 @@ abstract class RectorRunnerCommand extends SyntraRefactorCommand
 {
     protected RectorCommandExecutor $rectorExecutor;
 
-    public function __construct(
-        ConfigLoader $configLoader,
-        ProcessRunner $processRunner
-    ) {
-        parent::__construct($configLoader, $processRunner);
-        $this->rectorExecutor = new RectorCommandExecutor($configLoader, $processRunner);
+    public function __construct()
+    {
+        parent::__construct();
+        $this->rectorExecutor = new RectorCommandExecutor();
     }
 
     /**

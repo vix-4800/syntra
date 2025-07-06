@@ -12,8 +12,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
 use Vix\Syntra\ProgressIndicators\ProgressIndicatorInterface;
 use Vix\Syntra\Traits\HasStyledOutput;
-use Vix\Syntra\Utils\ConfigLoader;
-use Vix\Syntra\Utils\ProcessRunner;
+use Vix\Syntra\Facades\Config;
 
 abstract class SyntraCommand extends Command
 {
@@ -30,10 +29,8 @@ abstract class SyntraCommand extends Command
 
     protected int $progressMax = 0;
 
-    public function __construct(
-        protected ConfigLoader $configLoader,
-        protected ProcessRunner $processRunner
-    ) {
+    public function __construct()
+    {
         parent::__construct();
     }
 
@@ -54,7 +51,7 @@ abstract class SyntraCommand extends Command
         $this->noProgress = (bool) $input->getOption('no-progress');
 
         if ($input->getOption('path')) {
-            $this->configLoader->setProjectRoot((string) $input->getOption('path'));
+            Config::setProjectRoot((string) $input->getOption('path'));
         }
     }
 

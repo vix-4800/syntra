@@ -13,12 +13,11 @@ use Throwable;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\NodeVisitors\LongMethodVisitor;
 use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
-use Vix\Syntra\Traits\ContainerAwareTrait;
-use Vix\Syntra\Utils\FileHelper;
+use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Facades\File;
 
 class FindLongMethodsCommand extends SyntraCommand
 {
-    use ContainerAwareTrait;
 
     protected string $progressType = ProgressIndicatorFactory::TYPE_PROGRESS_BAR;
 
@@ -35,12 +34,11 @@ class FindLongMethodsCommand extends SyntraCommand
 
     public function perform(): int
     {
-        $projectRoot = $this->configLoader->getProjectRoot();
+        $projectRoot = Config::getProjectRoot();
 
-        $fileHelper = $this->getService(FileHelper::class, fn (): FileHelper => new FileHelper());
         $parser = $this->getService(Parser::class, fn (): Parser => (new ParserFactory())->create(ParserFactory::PREFER_PHP7));
 
-        $files = $fileHelper->collectFiles($projectRoot);
+        $files = File::collectFiles($projectRoot);
 
         $maxLength = (int) $this->input->getOption('max');
 

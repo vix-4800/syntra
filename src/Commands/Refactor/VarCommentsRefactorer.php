@@ -7,8 +7,8 @@ namespace Vix\Syntra\Commands\Refactor;
 use Symfony\Component\Console\Command\Command;
 use Vix\Syntra\Commands\SyntraRefactorCommand;
 use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
-use Vix\Syntra\Traits\ContainerAwareTrait;
-use Vix\Syntra\Utils\FileHelper;
+use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Facades\File;
 
 /**
  * Refactors @var comments by standardizing the order of type and variable name.
@@ -18,7 +18,6 @@ use Vix\Syntra\Utils\FileHelper;
  */
 class VarCommentsRefactorer extends SyntraRefactorCommand
 {
-    use ContainerAwareTrait;
 
     protected string $progressType = ProgressIndicatorFactory::TYPE_PROGRESS_BAR;
 
@@ -33,8 +32,7 @@ class VarCommentsRefactorer extends SyntraRefactorCommand
 
     public function perform(): int
     {
-        $fileHelper = $this->getService(FileHelper::class, fn (): FileHelper => new FileHelper());
-        $files = $fileHelper->collectFiles($this->configLoader->getProjectRoot());
+        $files = File::collectFiles(Config::getProjectRoot());
 
         $this->setProgressMax(count($files));
         $this->startProgress();
@@ -45,7 +43,7 @@ class VarCommentsRefactorer extends SyntraRefactorCommand
             $newContent = $this->convertVarComments($content);
 
             if (!$this->dryRun) {
-                $fileHelper->writeChanges($filePath, $content, $newContent);
+                File::writeChanges($filePath, $content, $newContent);
             }
 
             $this->advanceProgress();

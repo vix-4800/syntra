@@ -7,12 +7,11 @@ namespace Vix\Syntra\Commands\Extension\Yii;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Vix\Syntra\Commands\SyntraCommand;
-use Vix\Syntra\Traits\ContainerAwareTrait;
-use Vix\Syntra\Utils\FileHelper;
+use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Facades\File;
 
 class YiiCheckTranslationsCommand extends SyntraCommand
 {
-    use ContainerAwareTrait;
 
     protected function configure(): void
     {
@@ -27,7 +26,7 @@ class YiiCheckTranslationsCommand extends SyntraCommand
 
     public function perform(): int
     {
-        $projectRoot = $this->configLoader->getProjectRoot();
+        $projectRoot = Config::getProjectRoot();
 
         $messagesDir = "$projectRoot/backend/messages";
         if (!is_dir($messagesDir)) {
@@ -82,8 +81,7 @@ class YiiCheckTranslationsCommand extends SyntraCommand
      */
     private function findUsedTranslationKeys(string $root, ?string $filterCategory = null): array
     {
-        $fileHelper = $this->getService(FileHelper::class, fn (): FileHelper => new FileHelper());
-        $files = $fileHelper->collectFiles($root);
+        $files = File::collectFiles($root);
         $used = [];
 
         $pattern = '/Yii::t\s*\(\s*[\'"]([^\'"]+)[\'"]\s*,\s*[\'"]([^\'"]+)[\'"]/';

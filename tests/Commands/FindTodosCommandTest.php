@@ -5,7 +5,7 @@ namespace Vix\Syntra\Tests\Commands;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 use Vix\Syntra\Application;
-use Vix\Syntra\Utils\ConfigLoader;
+use Vix\Syntra\Facades\Config;
 
 class FindTodosCommandTest extends TestCase
 {
@@ -16,8 +16,8 @@ class FindTodosCommandTest extends TestCase
         file_put_contents("$dir/sample.php", "<?php\n// TODO: fix me\n");
 
         $app = new Application();
-        $container = $app->getContainer();
-        $container->get(ConfigLoader::class)->setProjectRoot($dir);
+        Config::setContainer($app->getContainer());
+        Config::setProjectRoot($dir);
 
         $command = $app->find('analyze:find-todos');
         $tester = new CommandTester($command);
@@ -38,8 +38,8 @@ class FindTodosCommandTest extends TestCase
         file_put_contents("$dir/sample.php", "<?php\n// TODO: fix me\n");
 
         $app = new Application();
-        $container = $app->getContainer();
-        $container->get(ConfigLoader::class)->setProjectRoot($dir);
+        Config::setContainer($app->getContainer());
+        Config::setProjectRoot($dir);
 
         $command = $app->find('analyze:find-todos');
         $tester = new CommandTester($command);

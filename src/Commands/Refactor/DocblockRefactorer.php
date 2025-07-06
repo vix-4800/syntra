@@ -8,13 +8,12 @@ use Symfony\Component\Console\Command\Command;
 use Vix\Syntra\Commands\SyntraRefactorCommand;
 use Vix\Syntra\Enums\DangerLevel;
 use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
-use Vix\Syntra\Traits\ContainerAwareTrait;
-use Vix\Syntra\Utils\FileHelper;
+use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Facades\File;
 use Vix\Syntra\Utils\StubHelper;
 
 class DocblockRefactorer extends SyntraRefactorCommand
 {
-    use ContainerAwareTrait;
 
     protected string $progressType = ProgressIndicatorFactory::TYPE_PROGRESS_BAR;
 
@@ -30,8 +29,7 @@ class DocblockRefactorer extends SyntraRefactorCommand
 
     public function perform(): int
     {
-        $fileHelper = $this->getService(FileHelper::class, fn (): FileHelper => new FileHelper());
-        $files = $fileHelper->collectFiles($this->configLoader->getProjectRoot());
+        $files = File::collectFiles(Config::getProjectRoot());
 
         $this->setProgressMax(count($files));
         $this->startProgress();
@@ -43,7 +41,7 @@ class DocblockRefactorer extends SyntraRefactorCommand
             $newContent = $this->addFileDocBlock($newContent, $filePath);
 
             if (!$this->dryRun) {
-                $fileHelper->writeChanges($filePath, $content, $newContent);
+                File::writeChanges($filePath, $content, $newContent);
             }
 
             $this->advanceProgress();

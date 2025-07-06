@@ -13,12 +13,11 @@ use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\NodeVisitors\AssignmentInConditionVisitor;
 use Vix\Syntra\NodeVisitors\NestedTernaryVisitor;
 use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
-use Vix\Syntra\Traits\ContainerAwareTrait;
-use Vix\Syntra\Utils\FileHelper;
+use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Facades\File;
 
 class FindBadPracticesCommand extends SyntraCommand
 {
-    use ContainerAwareTrait;
 
     protected string $progressType = ProgressIndicatorFactory::TYPE_PROGRESS_BAR;
 
@@ -34,13 +33,11 @@ class FindBadPracticesCommand extends SyntraCommand
 
     public function perform(): int
     {
-        $projectRoot = $this->configLoader->getProjectRoot();
+        $projectRoot = Config::getProjectRoot();
 
-        // Use dependency injection to get services
-        $fileHelper = $this->getService(FileHelper::class, fn (): FileHelper => new FileHelper());
         $parser = $this->getService(Parser::class, fn (): Parser => (new ParserFactory())->create(ParserFactory::PREFER_PHP7));
 
-        $files = $fileHelper->collectFiles($projectRoot);
+        $files = File::collectFiles($projectRoot);
 
         $this->setProgressMax(count($files));
         $this->startProgress();
