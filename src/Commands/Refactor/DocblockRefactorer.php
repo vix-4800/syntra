@@ -7,6 +7,7 @@ namespace Vix\Syntra\Commands\Refactor;
 use Symfony\Component\Console\Command\Command;
 use Vix\Syntra\Commands\SyntraRefactorCommand;
 use Vix\Syntra\Enums\DangerLevel;
+use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
 use Vix\Syntra\Traits\ContainerAwareTrait;
 use Vix\Syntra\Utils\FileHelper;
 use Vix\Syntra\Utils\StubHelper;
@@ -14,6 +15,8 @@ use Vix\Syntra\Utils\StubHelper;
 class DocblockRefactorer extends SyntraRefactorCommand
 {
     use ContainerAwareTrait;
+
+    protected string $progressType = ProgressIndicatorFactory::TYPE_PROGRESS_BAR;
 
     protected function configure(): void
     {

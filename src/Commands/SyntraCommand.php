@@ -26,6 +26,8 @@ abstract class SyntraCommand extends Command
 
     protected ProgressIndicatorInterface $progressIndicator;
 
+    protected string $progressType = ProgressIndicatorFactory::TYPE_SPINNER;
+
     public function __construct(
         protected ConfigLoader $configLoader,
         protected ProcessRunner $processRunner,
@@ -53,7 +55,7 @@ abstract class SyntraCommand extends Command
         }
 
         $this->progressIndicator = ProgressIndicatorFactory::create(
-            ProgressIndicatorFactory::TYPE_SPINNER,
+            $this->progressType,
             $this->output
         );
     }

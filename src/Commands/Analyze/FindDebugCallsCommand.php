@@ -6,12 +6,15 @@ namespace Vix\Syntra\Commands\Analyze;
 
 use Symfony\Component\Console\Command\Command;
 use Vix\Syntra\Commands\SyntraCommand;
+use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
 use Vix\Syntra\Traits\ContainerAwareTrait;
 use Vix\Syntra\Utils\FileHelper;
 
 class FindDebugCallsCommand extends SyntraCommand
 {
     use ContainerAwareTrait;
+
+    protected string $progressType = ProgressIndicatorFactory::TYPE_PROGRESS_BAR;
 
     protected static array $DEBUG_FUNCTIONS = [
         'var_dump',

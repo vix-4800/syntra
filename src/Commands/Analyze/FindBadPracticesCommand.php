@@ -12,12 +12,15 @@ use Throwable;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\NodeVisitors\AssignmentInConditionVisitor;
 use Vix\Syntra\NodeVisitors\NestedTernaryVisitor;
+use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
 use Vix\Syntra\Traits\ContainerAwareTrait;
 use Vix\Syntra\Utils\FileHelper;
 
 class FindBadPracticesCommand extends SyntraCommand
 {
     use ContainerAwareTrait;
+
+    protected string $progressType = ProgressIndicatorFactory::TYPE_PROGRESS_BAR;
 
     protected function configure(): void
     {

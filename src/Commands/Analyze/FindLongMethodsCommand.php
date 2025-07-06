@@ -12,12 +12,15 @@ use Symfony\Component\Console\Input\InputOption;
 use Throwable;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\NodeVisitors\LongMethodVisitor;
+use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
 use Vix\Syntra\Traits\ContainerAwareTrait;
 use Vix\Syntra\Utils\FileHelper;
 
 class FindLongMethodsCommand extends SyntraCommand
 {
     use ContainerAwareTrait;
+
+    protected string $progressType = ProgressIndicatorFactory::TYPE_PROGRESS_BAR;
 
     protected function configure(): void
     {

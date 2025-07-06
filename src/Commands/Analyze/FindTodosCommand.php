@@ -6,12 +6,15 @@ namespace Vix\Syntra\Commands\Analyze;
 
 use Symfony\Component\Console\Command\Command;
 use Vix\Syntra\Commands\SyntraCommand;
+use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
 use Vix\Syntra\Traits\ContainerAwareTrait;
 use Vix\Syntra\Utils\FileHelper;
 
 class FindTodosCommand extends SyntraCommand
 {
     use ContainerAwareTrait;
+
+    protected string $progressType = ProgressIndicatorFactory::TYPE_PROGRESS_BAR;
 
     protected static array $TAGS = [
         'TODO',
@@ -49,7 +52,7 @@ class FindTodosCommand extends SyntraCommand
         $this->startProgress();
 
         foreach ($files as $filePath) {
-            if (str_contains($filePath, "TodoReportCommand")) {
+            if (str_contains($filePath, "FindTodosCommand")) {
                 continue;
             }
 
