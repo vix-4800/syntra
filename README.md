@@ -67,6 +67,7 @@ All commands support these standard options:
 -   `--path`: Specify the root path of the project (defaults to current directory)
 -   `--dry-run` / `-d`: Preview changes without applying them
 -   `--force` / `-f`: Force execution, ignore warnings (refactor commands only)
+-   `--no-progress`: Disable progress output
 -   `--help` / `-h`: Display help for the command
 -   `--quiet` / `-q`: Only show errors
 -   `--verbose` / `-v/-vv/-vvv`: Increase verbosity level
@@ -106,7 +107,7 @@ All commands support these standard options:
 | Command                    | Description                                                                   | Options                                                  |
 | -------------------------- | ----------------------------------------------------------------------------- | -------------------------------------------------------- |
 | `general:generate-command` | Generates a scaffold for a new Symfony Console command                        | `--path`, `--dry-run`, `--group`, `--cli-name`, `--desc` |
-| `general:generate-docs`    | Scans project controllers and generates a markdown file listing all action routes (framework detected automatically) | `--path`, `--dry-run`        |
+| `general:generate-docs`    | Scans project controllers and generates a markdown file listing all action routes (framework detected automatically) | `--path`, `--dry-run`, `[controllerDir]`         |
 
 ### 🧩 Yii Framework Extensions
 

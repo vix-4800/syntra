@@ -15,7 +15,7 @@ class ConfigLoader
     public function __construct(?string $projectRoot = null)
     {
         $this->projectRoot = $projectRoot ?? getcwd();
-        $this->commands = require_once PACKAGE_ROOT . '/config.php';
+        $this->commands = require PACKAGE_ROOT . '/config.php';
     }
 
     public function setProjectRoot(string $path): void
