@@ -3,7 +3,7 @@
 namespace Vix\Syntra\Tests\Commands;
 
 use PHPUnit\Framework\TestCase;
-use Vix\Syntra\Commands\Health\SecurityChecker;
+use Vix\Syntra\Commands\Health\SecurityCheckCommand;
 use Vix\Syntra\DTO\ProcessResult;
 use Vix\Syntra\Enums\CommandStatus;
 use Vix\Syntra\Utils\ConfigLoader;
@@ -33,7 +33,7 @@ class SecurityCheckerTest extends TestCase
         self::$ext = new ExtensionManager(self::$config);
     }
 
-    private function makeCommand(ProcessResult $result): SecurityChecker
+    private function makeCommand(ProcessResult $result): SecurityCheckCommand
     {
         $runner = new class($result) extends ProcessRunner {
             public function __construct(private ProcessResult $result) {}
@@ -43,7 +43,7 @@ class SecurityCheckerTest extends TestCase
             }
         };
 
-        return new SecurityChecker(self::$config, $runner, self::$ext);
+        return new SecurityCheckCommand(self::$config, $runner, self::$ext);
     }
 
     public function testOkWhenNoAdvisories(): void

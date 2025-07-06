@@ -10,7 +10,7 @@ use Vix\Syntra\DTO\CommandResult;
 use Vix\Syntra\Traits\ContainerAwareTrait;
 use Vix\Syntra\Traits\HandlesResultTrait;
 
-class SecurityChecker extends SyntraCommand implements HealthCheckCommandInterface
+class SecurityCheckCommand extends SyntraCommand implements HealthCheckCommandInterface
 {
     use ContainerAwareTrait;
     use HandlesResultTrait;
