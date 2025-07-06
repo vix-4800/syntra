@@ -13,7 +13,6 @@ use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
 use Vix\Syntra\ProgressIndicators\ProgressIndicatorInterface;
 use Vix\Syntra\Traits\HasStyledOutput;
 use Vix\Syntra\Utils\ConfigLoader;
-use Vix\Syntra\Utils\ExtensionManager;
 use Vix\Syntra\Utils\ProcessRunner;
 
 abstract class SyntraCommand extends Command
@@ -33,8 +32,7 @@ abstract class SyntraCommand extends Command
 
     public function __construct(
         protected ConfigLoader $configLoader,
-        protected ProcessRunner $processRunner,
-        protected ExtensionManager $extensionManager
+        protected ProcessRunner $processRunner
     ) {
         parent::__construct();
     }

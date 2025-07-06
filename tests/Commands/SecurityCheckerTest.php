@@ -7,13 +7,11 @@ use Vix\Syntra\Commands\Health\SecurityCheckCommand;
 use Vix\Syntra\DTO\ProcessResult;
 use Vix\Syntra\Enums\CommandStatus;
 use Vix\Syntra\Utils\ConfigLoader;
-use Vix\Syntra\Utils\ExtensionManager;
 use Vix\Syntra\Utils\ProcessRunner;
 
 class SecurityCheckerTest extends TestCase
 {
     private static ConfigLoader $config;
-    private static ExtensionManager $ext;
 
     public static function setUpBeforeClass(): void
     {
@@ -30,7 +28,6 @@ class SecurityCheckerTest extends TestCase
         $propCmd->setValue($cfg, require __DIR__ . '/../../config.php');
 
         self::$config = $cfg;
-        self::$ext = new ExtensionManager(self::$config);
     }
 
     private function makeCommand(ProcessResult $result): SecurityCheckCommand
@@ -43,7 +40,7 @@ class SecurityCheckerTest extends TestCase
             }
         };
 
-        return new SecurityCheckCommand(self::$config, $runner, self::$ext);
+        return new SecurityCheckCommand(self::$config, $runner);
     }
 
     public function testOkWhenNoAdvisories(): void
