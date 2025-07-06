@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Vix\Syntra\Commands;
 
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -39,7 +40,7 @@ abstract class SyntraCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addOption('path', null, InputOption::VALUE_REQUIRED, 'Root path of the project', null)
+            ->addArgument('path', InputArgument::OPTIONAL, 'Root path of the project', Config::getProjectRoot())
             ->addOption('dry-run', 'd', InputOption::VALUE_NONE, 'Do not apply changes, only show what would be done')
             ->addOption('no-progress', null, InputOption::VALUE_NONE, 'Disable progress output')
             ->addOption('no-cache', null, InputOption::VALUE_NONE, 'Disable file caching');
@@ -56,8 +57,9 @@ abstract class SyntraCommand extends Command
 
         FileHelper::setCacheEnabled(!$this->noCache);
 
-        if ($input->getOption('path')) {
-            Config::setProjectRoot((string) $input->getOption('path'));
+        $argPath = $input->getArgument('path');
+        if ($argPath !== null) {
+            Config::setProjectRoot((string) $argPath);
         }
     }
 

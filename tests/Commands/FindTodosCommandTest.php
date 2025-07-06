@@ -24,7 +24,7 @@ class FindTodosCommandTest extends TestCase
 
         $command = $app->find('analyze:find-todos');
         $tester = new CommandTester($command);
-        $tester->execute(['--path' => $dir]);
+        $tester->execute(['path' => $dir]);
 
         $display = $tester->getDisplay();
 
@@ -48,7 +48,7 @@ class FindTodosCommandTest extends TestCase
 
         $command = $app->find('analyze:find-todos');
         $tester = new CommandTester($command);
-        $tester->execute(['--path' => $dir, '--no-progress' => true]);
+        $tester->execute(['path' => $dir, '--no-progress' => true]);
 
         $display = $tester->getDisplay();
 
