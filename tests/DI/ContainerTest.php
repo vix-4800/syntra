@@ -4,9 +4,9 @@ namespace Vix\Syntra\Tests\DI;
 
 use PHPUnit\Framework\TestCase;
 use Vix\Syntra\DI\Container;
-use Vix\Syntra\Tests\Fixtures\FooInterface;
-use Vix\Syntra\Tests\Fixtures\Foo;
 use Vix\Syntra\Tests\Fixtures\Bar;
+use Vix\Syntra\Tests\Fixtures\Foo;
+use Vix\Syntra\Tests\Fixtures\FooInterface;
 
 class ContainerTest extends TestCase
 {

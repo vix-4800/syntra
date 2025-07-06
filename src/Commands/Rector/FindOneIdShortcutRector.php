@@ -6,12 +6,12 @@ namespace Vix\Syntra\Commands\Rector;
 
 use PhpParser\Node;
 use PhpParser\Node\Arg;
-use PhpParser\Node\Identifier;
 use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\ArrayItem;
-use Rector\Rector\AbstractRector;
-use PhpParser\Node\Scalar\String_;
 use PhpParser\Node\Expr\StaticCall;
+use PhpParser\Node\Identifier;
+use PhpParser\Node\Scalar\String_;
+use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 /**

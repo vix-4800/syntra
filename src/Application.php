@@ -7,8 +7,8 @@ namespace Vix\Syntra;
 use ReflectionClass;
 use Symfony\Component\Console\Application as SymfonyApplication;
 use Vix\Syntra\Commands\SyntraCommand;
-use Vix\Syntra\DI\ContainerInterface;
 use Vix\Syntra\DI\ContainerFactory;
+use Vix\Syntra\DI\ContainerInterface;
 use Vix\Syntra\Utils\ConfigLoader;
 
 class Application extends SymfonyApplication

@@ -25,7 +25,7 @@ class AssignmentInConditionVisitor extends NodeVisitorAbstract
                 $this->findings[] = [
                     'line' => $node->getLine(),
                     'code' => $this->prettyPrintNode($assignNode),
-                    'message' => 'Assignment in condition'
+                    'message' => 'Assignment in condition',
                 ];
             }
         }
@@ -59,6 +59,6 @@ class AssignmentInConditionVisitor extends NodeVisitorAbstract
 
     private function prettyPrintNode(Expr $node): string
     {
-        return (new Standard)->prettyPrintExpr($node);
+        return (new Standard())->prettyPrintExpr($node);
     }
 }

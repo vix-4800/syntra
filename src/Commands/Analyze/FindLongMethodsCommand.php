@@ -7,10 +7,10 @@ namespace Vix\Syntra\Commands\Analyze;
 use PhpParser\NodeTraverser;
 use PhpParser\Parser;
 use PhpParser\ParserFactory;
-use Vix\Syntra\Commands\SyntraCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Throwable;
+use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\NodeVisitors\LongMethodVisitor;
 use Vix\Syntra\Traits\ContainerAwareTrait;
 use Vix\Syntra\Utils\FileHelper;
@@ -34,8 +34,8 @@ class FindLongMethodsCommand extends SyntraCommand
     {
         $projectRoot = $this->configLoader->getProjectRoot();
 
-        $fileHelper = $this->getService(FileHelper::class, fn(): FileHelper => new FileHelper());
-        $parser = $this->getService(Parser::class, fn(): Parser => (new ParserFactory())->create(ParserFactory::PREFER_PHP7));
+        $fileHelper = $this->getService(FileHelper::class, fn (): FileHelper => new FileHelper());
+        $parser = $this->getService(Parser::class, fn (): Parser => (new ParserFactory())->create(ParserFactory::PREFER_PHP7));
 
         $files = $fileHelper->collectFiles($projectRoot);
 
@@ -73,7 +73,7 @@ class FindLongMethodsCommand extends SyntraCommand
             return Command::SUCCESS;
         }
 
-        usort($longMethods, fn($a, $b): int => [$a[0], $a[1], $a[2]] <=> [$b[0], $b[1], $b[2]]);
+        usort($longMethods, fn ($a, $b): int => [$a[0], $a[1], $a[2]] <=> [$b[0], $b[1], $b[2]]);
 
         $this->table(
             ['File', 'Class', 'Method', 'Length', 'Start', 'End'],

@@ -30,7 +30,7 @@ class ImportRefactorer extends SyntraRefactorCommand
 
     public function perform(): int
     {
-        $fileHelper = $this->getService(FileHelper::class, fn(): FileHelper => new FileHelper());
+        $fileHelper = $this->getService(FileHelper::class, fn (): FileHelper => new FileHelper());
         $files = $fileHelper->collectFiles($this->configLoader->getProjectRoot());
 
         $this->startProgress();
@@ -105,7 +105,7 @@ class ImportRefactorer extends SyntraRefactorCommand
             $ranges[] = ['pos' => $nsStart, 'len' => $nsLen];
         }
 
-        usort($ranges, fn($a, $b): int => $b['pos'] <=> $a['pos']);
+        usort($ranges, fn ($a, $b): int => $b['pos'] <=> $a['pos']);
         $clean = $content;
         foreach ($ranges as $r) {
             $clean = substr_replace($clean, '', $r['pos'], $r['len']);

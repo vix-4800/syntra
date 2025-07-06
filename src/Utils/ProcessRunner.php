@@ -12,8 +12,8 @@ use Vix\Syntra\Exceptions\MissingBinaryException;
 class ProcessRunner
 {
     /**
-     * @param string $command
-     * @param string[] $args
+     * @param string               $command
+     * @param string[]             $args
      * @param array<string, mixed> $options
      *
      * @return ProcessResult

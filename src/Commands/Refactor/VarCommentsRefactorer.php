@@ -30,7 +30,7 @@ class VarCommentsRefactorer extends SyntraRefactorCommand
 
     public function perform(): int
     {
-        $fileHelper = $this->getService(FileHelper::class, fn(): FileHelper => new FileHelper());
+        $fileHelper = $this->getService(FileHelper::class, fn (): FileHelper => new FileHelper());
         $files = $fileHelper->collectFiles($this->configLoader->getProjectRoot());
 
         $this->startProgress();
@@ -62,21 +62,21 @@ class VarCommentsRefactorer extends SyntraRefactorCommand
         // /* @var $var Type */ → /** @var Type $var */
         $newContent = preg_replace_callback(
             '/\/\*\s*@var\s+(\$[\w\[\]\'"->]+)\s+([^\s\*]+)\s*\*\//',
-            fn(array $m): string => "/** @var {$m[2]} {$m[1]} */",
+            fn (array $m): string => "/** @var {$m[2]} {$m[1]} */",
             $newContent
         );
 
         // /* @var Type $var */ → /** @var Type $var */
         $newContent = preg_replace_callback(
             '/\/\*\s*@var\s+([^\s\$][^\s\*]*)\s+(\$[\w\[\]\'"->]+)\s*\*\//',
-            fn(array $m): string => "/** @var {$m[1]} {$m[2]} */",
+            fn (array $m): string => "/** @var {$m[1]} {$m[2]} */",
             (string) $newContent
         );
 
         // /** @var $var Type */ → /** @var Type $var */
         $newContent = preg_replace_callback(
             '/\/\*\*\s*@var\s+(\$[\w\[\]\'"->]+)\s+([^\s\*]+)\s*\*\//',
-            fn(array $m): string => "/** @var {$m[2]} {$m[1]} */",
+            fn (array $m): string => "/** @var {$m[2]} {$m[1]} */",
             (string) $newContent
         );
 

@@ -15,7 +15,7 @@ use Vix\Syntra\Commands\Rector\UserFindOneToIdentityRector;
 return RectorConfig::configure()
     ->withRootFiles()
     ->withSkip([
-        'vendor'
+        'vendor',
     ])
     ->withRules([
         // Yii Specific

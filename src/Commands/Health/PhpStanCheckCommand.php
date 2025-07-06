@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Vix\Syntra\Commands\Health;
 
-use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Commands\Health\HealthCheckCommandInterface;
+use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\DTO\CommandResult;
 use Vix\Syntra\Exceptions\CommandException;
 use Vix\Syntra\Exceptions\MissingBinaryException;
@@ -38,7 +38,7 @@ class PhpStanCheckCommand extends SyntraCommand implements HealthCheckCommandInt
             '--error-format=json',
             '--no-progress',
             '--configuration=' . $this->configLoader->getCommandOption('health', self::class, 'config', 'phpstan.neon'),
-            $this->configLoader->getProjectRoot()
+            $this->configLoader->getProjectRoot(),
         ];
 
         $result = $this->processRunner->run($binary, $args);

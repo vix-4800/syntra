@@ -27,7 +27,7 @@ class DocblockRefactorer extends SyntraRefactorCommand
 
     public function perform(): int
     {
-        $fileHelper = $this->getService(FileHelper::class, fn(): FileHelper => new FileHelper());
+        $fileHelper = $this->getService(FileHelper::class, fn (): FileHelper => new FileHelper());
         $files = $fileHelper->collectFiles($this->configLoader->getProjectRoot());
 
         $this->startProgress();

@@ -23,13 +23,13 @@ class ReturnThrowVisitor extends NodeVisitorAbstract
             $this->findings[] = [
                 'line' => $node->getLine(),
                 'code' => $this->prettyPrintNode($node),
-                'message' => 'Return throw'
+                'message' => 'Return throw',
             ];
         }
     }
 
     private function prettyPrintNode($node): string
     {
-        return (new Standard)->prettyPrintExpr($node);
+        return (new Standard())->prettyPrintExpr($node);
     }
 }

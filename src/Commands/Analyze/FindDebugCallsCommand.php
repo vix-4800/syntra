@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Vix\Syntra\Commands\Analyze;
 
-use Vix\Syntra\Commands\SyntraCommand;
 use Symfony\Component\Console\Command\Command;
+use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Traits\ContainerAwareTrait;
 use Vix\Syntra\Utils\FileHelper;
 
@@ -40,7 +40,7 @@ class FindDebugCallsCommand extends SyntraCommand
     {
         $projectRoot = $this->configLoader->getProjectRoot();
 
-        $fileHelper = $this->getService(FileHelper::class, fn(): FileHelper => new FileHelper());
+        $fileHelper = $this->getService(FileHelper::class, fn (): FileHelper => new FileHelper());
 
         $files = $fileHelper->collectFiles($projectRoot);
 
@@ -68,7 +68,7 @@ class FindDebugCallsCommand extends SyntraCommand
                         $relativePath,
                         $lineNumber + 1,
                         "$fnMatch[1]()",
-                        trim($line)
+                        trim($line),
                     ];
                 }
             }
@@ -83,7 +83,7 @@ class FindDebugCallsCommand extends SyntraCommand
             return Command::SUCCESS;
         }
 
-        usort($matches, fn($a, $b): int => [$a[0], $a[1]] <=> [$b[0], $b[1]]);
+        usort($matches, fn ($a, $b): int => [$a[0], $a[1]] <=> [$b[0], $b[1]]);
 
         $this->table(
             ['File', 'Line', 'Type', 'Code'],

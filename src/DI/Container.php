@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Vix\Syntra\DI;
 
-use ReflectionNamedType;
 use ReflectionClass;
 use ReflectionException;
+use ReflectionNamedType;
 use ReflectionParameter;
 use Vix\Syntra\Exceptions\ContainerException;
 use Vix\Syntra\Exceptions\NotFoundException;
@@ -84,7 +84,7 @@ class Container implements ContainerInterface
     /**
      * Resolve a service from the container
      *
-     * @param string $id Service identifier
+     * @param  string             $id Service identifier
      * @return mixed
      * @throws ContainerException
      * @throws NotFoundException
@@ -123,7 +123,7 @@ class Container implements ContainerInterface
     /**
      * Get the concrete implementation for a service
      *
-     * @param string $id Service identifier
+     * @param  string            $id Service identifier
      * @return mixed
      * @throws NotFoundException
      */
@@ -143,7 +143,7 @@ class Container implements ContainerInterface
     /**
      * Build an instance from concrete implementation
      *
-     * @param mixed $concrete
+     * @param  mixed              $concrete
      * @return mixed
      * @throws ContainerException
      */
@@ -170,7 +170,7 @@ class Container implements ContainerInterface
     /**
      * Instantiate a class with dependency injection
      *
-     * @param string $className
+     * @param  string             $className
      * @return object
      * @throws ContainerException
      */
@@ -203,7 +203,7 @@ class Container implements ContainerInterface
     /**
      * Resolve constructor dependencies
      *
-     * @param ReflectionParameter[] $parameters
+     * @param  ReflectionParameter[] $parameters
      * @return array<mixed>
      * @throws ContainerException
      */
@@ -222,7 +222,7 @@ class Container implements ContainerInterface
     /**
      * Resolve a single dependency
      *
-     * @param ReflectionParameter $parameter
+     * @param  ReflectionParameter $parameter
      * @return mixed
      * @throws ContainerException
      */
@@ -255,7 +255,7 @@ class Container implements ContainerInterface
     /**
      * Resolve non-class dependencies (primitives, defaults)
      *
-     * @param ReflectionParameter $parameter
+     * @param  ReflectionParameter $parameter
      * @return mixed
      * @throws ContainerException
      */
@@ -280,7 +280,7 @@ class Container implements ContainerInterface
     /**
      * Check if a service is configured as singleton
      *
-     * @param string $id Service identifier
+     * @param  string $id Service identifier
      * @return bool
      */
     private function isSingleton(string $id): bool

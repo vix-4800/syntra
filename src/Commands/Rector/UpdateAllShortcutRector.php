@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Vix\Syntra\Commands\Rector;
 
 use PhpParser\Node;
-use PhpParser\Node\Identifier;
 use PhpParser\Node\Expr\Array_;
-use Rector\Rector\AbstractRector;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Expr\StaticCall;
+use PhpParser\Node\Identifier;
+use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 /**

@@ -26,13 +26,25 @@ class PhpCsFixerRefactorer extends SyntraRefactorCommand
             throw new MissingBinaryException("php-cs-fixer", "composer require --dev friendsofphp/php-cs-fixer");
         }
 
+        $this->startProgress();
+
+        $outputCallback = function (): void {
+            $this->advanceProgress();
+        };
+
         $config = $this->configLoader->getCommandOption('refactor', self::class, 'config');
 
         $result = $this->processRunner->run($binary, [
             'fix',
             $this->configLoader->getProjectRoot(),
             "--config={$config}",
-        ]);
+        ], callback: $outputCallback);
+
+        $this->progressIndicator->setMessage(
+            $result->exitCode === 0 ? 'Success!' : 'Error!'
+        );
+
+        $this->finishProgress();
 
         if ($result->exitCode === 0) {
             $this->output->success('CS Fixer refactoring completed.');

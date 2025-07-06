@@ -22,7 +22,7 @@ class NestedTernaryVisitor extends NodeVisitorAbstract
                     $this->findings[] = [
                         'line' => $node->getLine(),
                         'code' => $this->prettyPrintNode($node),
-                        'message' => 'Nested ternary operator'
+                        'message' => 'Nested ternary operator',
                     ];
                 }
             }
@@ -31,6 +31,6 @@ class NestedTernaryVisitor extends NodeVisitorAbstract
 
     private function prettyPrintNode(Expr $node): string
     {
-        return (new Standard)->prettyPrintExpr($node);
+        return (new Standard())->prettyPrintExpr($node);
     }
 }

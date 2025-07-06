@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Vix\Syntra\Commands\Analyze;
 
-use Vix\Syntra\Commands\SyntraCommand;
 use Symfony\Component\Console\Command\Command;
+use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Traits\ContainerAwareTrait;
 use Vix\Syntra\Utils\FileHelper;
 
@@ -22,7 +22,7 @@ class FindTodosCommand extends SyntraCommand
         '@note',
         // '@see',
         '@hack',
-        '@internal'
+        '@internal',
     ];
 
     protected function configure(): void
@@ -39,7 +39,7 @@ class FindTodosCommand extends SyntraCommand
     {
         $projectRoot = $this->configLoader->getProjectRoot();
 
-        $fileHelper = $this->getService(FileHelper::class, fn(): FileHelper => new FileHelper());
+        $fileHelper = $this->getService(FileHelper::class, fn (): FileHelper => new FileHelper());
         $files = $fileHelper->collectFiles($projectRoot);
 
         $matches = [];
@@ -67,7 +67,7 @@ class FindTodosCommand extends SyntraCommand
                         $relativePath,
                         $lineNumber + 1,
                         $m[1],
-                        trim($m[2])
+                        trim($m[2]),
                     ];
                 }
             }

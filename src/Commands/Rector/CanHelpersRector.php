@@ -6,18 +6,18 @@ namespace Vix\Syntra\Commands\Rector;
 
 use PhpParser\Node;
 use PhpParser\Node\Arg;
-use PhpParser\Node\Name;
 use PhpParser\Node\ArrayItem;
-use PhpParser\Node\Identifier;
 use PhpParser\Node\Expr\Array_;
-use Rector\Rector\AbstractRector;
-use PhpParser\Node\Scalar\String_;
+use PhpParser\Node\Expr\BinaryOp\BooleanAnd;
+use PhpParser\Node\Expr\BinaryOp\BooleanOr;
 use PhpParser\Node\Expr\BooleanNot;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Expr\PropertyFetch;
-use PhpParser\Node\Expr\BinaryOp\BooleanOr;
-use PhpParser\Node\Expr\BinaryOp\BooleanAnd;
 use PhpParser\Node\Expr\StaticPropertyFetch;
+use PhpParser\Node\Identifier;
+use PhpParser\Node\Name;
+use PhpParser\Node\Scalar\String_;
+use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 /**
@@ -106,7 +106,7 @@ class CanHelpersRector extends AbstractRector
         }
 
         $arrayItems = array_map(
-            fn($permission): ArrayItem => new ArrayItem(new String_($permission)),
+            fn ($permission): ArrayItem => new ArrayItem(new String_($permission)),
             $permissions
         );
 

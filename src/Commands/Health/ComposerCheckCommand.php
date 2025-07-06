@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Vix\Syntra\Commands\Health;
 
-use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Commands\Health\HealthCheckCommandInterface;
+use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\DTO\CommandResult;
 use Vix\Syntra\Traits\ContainerAwareTrait;
 use Vix\Syntra\Traits\HandlesResultTrait;
@@ -40,7 +40,7 @@ class ComposerCheckCommand extends SyntraCommand implements HealthCheckCommandIn
         }
 
         $packages = array_map(
-            fn($pkg): string => "{$pkg['name']} ({$pkg['version']} → {$pkg['latest']})",
+            fn ($pkg): string => "{$pkg['name']} ({$pkg['version']} → {$pkg['latest']})",
             $json['installed']
         );
 

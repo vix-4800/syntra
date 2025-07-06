@@ -6,8 +6,8 @@ namespace Vix\Syntra\Traits;
 
 use RuntimeException;
 use Symfony\Component\Console\Input\ArrayInput;
-use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Application;
+use Vix\Syntra\Commands\SyntraCommand;
 
 trait CommandRunnerTrait
 {
@@ -15,7 +15,7 @@ trait CommandRunnerTrait
      * Run any other Syntra command by class name.
      *
      * @param class-string<SyntraCommand> $class
-     * @param array<string, mixed> $input
+     * @param array<string, mixed>        $input
      */
     protected function runCommand(string $class, array $input = []): int
     {

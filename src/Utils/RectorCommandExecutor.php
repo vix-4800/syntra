@@ -25,8 +25,8 @@ class RectorCommandExecutor
     /**
      * Execute a specific Rector rule
      *
-     * @param string $rectorClass The Rector rule class name
-     * @param array $additionalArgs Additional arguments to pass to Rector
+     * @param string $rectorClass    The Rector rule class name
+     * @param array  $additionalArgs Additional arguments to pass to Rector
      *
      * @return ProcessResult
      *
@@ -43,7 +43,7 @@ class RectorCommandExecutor
     /**
      * Execute multiple Rector rules in sequence
      *
-     * @param array $rectorClasses Array of Rector rule class names
+     * @param array $rectorClasses  Array of Rector rule class names
      * @param array $additionalArgs Additional arguments to pass to Rector
      *
      * @return ProcessResult The result of the last executed rule

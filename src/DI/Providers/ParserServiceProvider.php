@@ -24,20 +24,20 @@ class ParserServiceProvider implements ServiceProviderInterface
     public function register(ContainerInterface $container): void
     {
         // Register PHP Parser as singleton
-        $container->singleton(Parser::class, fn(): Parser => (new ParserFactory())->create(ParserFactory::PREFER_PHP7));
+        $container->singleton(Parser::class, fn (): Parser => (new ParserFactory())->create(ParserFactory::PREFER_PHP7));
 
         // Register NodeTraverser as transient (new instance each time)
-        $container->bind(NodeTraverser::class, fn(): NodeTraverser => new NodeTraverser());
+        $container->bind(NodeTraverser::class, fn (): NodeTraverser => new NodeTraverser());
 
         // Register Node Visitors as transient services
-        $container->bind(AssignmentInConditionVisitor::class, fn(): AssignmentInConditionVisitor  =>  new AssignmentInConditionVisitor());
+        $container->bind(AssignmentInConditionVisitor::class, fn (): AssignmentInConditionVisitor =>  new AssignmentInConditionVisitor());
 
-        $container->bind(NestedTernaryVisitor::class, fn(): NestedTernaryVisitor  =>  new NestedTernaryVisitor());
+        $container->bind(NestedTernaryVisitor::class, fn (): NestedTernaryVisitor =>  new NestedTernaryVisitor());
 
-        $container->bind(ReturnThrowVisitor::class, fn(): ReturnThrowVisitor  => new ReturnThrowVisitor());
+        $container->bind(ReturnThrowVisitor::class, fn (): ReturnThrowVisitor => new ReturnThrowVisitor());
 
         // Register a factory for creating configured node traversers
-        $container->bind('parser.traverser_factory', fn(ContainerInterface $container): callable => function (array $visitorClasses = []) use ($container): NodeTraverser {
+        $container->bind('parser.traverser_factory', fn (ContainerInterface $container): callable => function (array $visitorClasses = []) use ($container): NodeTraverser {
             $traverser = $container->make(NodeTraverser::class);
 
             foreach ($visitorClasses as $visitorClass) {

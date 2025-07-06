@@ -7,9 +7,9 @@ namespace Vix\Syntra\Commands\Analyze;
 use PhpParser\NodeTraverser;
 use PhpParser\Parser;
 use PhpParser\ParserFactory;
-use Vix\Syntra\Commands\SyntraCommand;
 use Symfony\Component\Console\Command\Command;
 use Throwable;
+use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\NodeVisitors\AssignmentInConditionVisitor;
 use Vix\Syntra\NodeVisitors\NestedTernaryVisitor;
 use Vix\Syntra\Traits\ContainerAwareTrait;
@@ -34,8 +34,8 @@ class FindBadPracticesCommand extends SyntraCommand
         $projectRoot = $this->configLoader->getProjectRoot();
 
         // Use dependency injection to get services
-        $fileHelper = $this->getService(FileHelper::class, fn(): FileHelper => new FileHelper());
-        $parser = $this->getService(Parser::class, fn(): Parser => (new ParserFactory())->create(ParserFactory::PREFER_PHP7));
+        $fileHelper = $this->getService(FileHelper::class, fn (): FileHelper => new FileHelper());
+        $parser = $this->getService(Parser::class, fn (): Parser => (new ParserFactory())->create(ParserFactory::PREFER_PHP7));
 
         $files = $fileHelper->collectFiles($projectRoot);
 

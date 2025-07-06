@@ -1,4 +1,5 @@
 <?php
+
 namespace Vix\Syntra\Tests\Utils;
 
 use PHPUnit\Framework\TestCase;

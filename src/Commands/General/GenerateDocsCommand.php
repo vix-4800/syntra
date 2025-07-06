@@ -7,9 +7,9 @@ namespace Vix\Syntra\Commands\General;
 use PhpParser\NodeTraverser;
 use PhpParser\Parser;
 use PhpParser\ParserFactory;
-use Vix\Syntra\Commands\SyntraCommand;
 use Symfony\Component\Console\Command\Command;
 use Throwable;
+use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\NodeVisitors\DocsVisitor;
 use Vix\Syntra\Traits\ContainerAwareTrait;
 use Vix\Syntra\Utils\FileHelper;
@@ -33,8 +33,8 @@ class GenerateDocsCommand extends SyntraCommand
         $projectRoot = $this->configLoader->getProjectRoot();
         $controllerDir = "$projectRoot/backend/controllers";
 
-        $fileHelper = $this->getService(FileHelper::class, fn(): FileHelper => new FileHelper());
-        $parser = $this->getService(Parser::class, fn(): Parser => (new ParserFactory())->create(ParserFactory::PREFER_PHP7));
+        $fileHelper = $this->getService(FileHelper::class, fn (): FileHelper => new FileHelper());
+        $parser = $this->getService(Parser::class, fn (): Parser => (new ParserFactory())->create(ParserFactory::PREFER_PHP7));
 
         $routes = [];
 
@@ -54,7 +54,7 @@ class GenerateDocsCommand extends SyntraCommand
                 continue;
             }
 
-            $visitor = new DocsVisitor;
+            $visitor = new DocsVisitor();
 
             $traverser = new NodeTraverser();
             $traverser->addVisitor($visitor);

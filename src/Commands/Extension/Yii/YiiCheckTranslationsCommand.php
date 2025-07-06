@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Vix\Syntra\Commands\Extension\Yii;
 
-use Vix\Syntra\Commands\SyntraCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
+use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Traits\ContainerAwareTrait;
 use Vix\Syntra\Utils\FileHelper;
 
@@ -78,11 +78,11 @@ class YiiCheckTranslationsCommand extends SyntraCommand
     /**
      * Find all Yii::t('category', 'message') used in the project.
      *
-     * @return array<string, string[]>  category => [key, ...]
+     * @return array<string, string[]> category => [key, ...]
      */
     private function findUsedTranslationKeys(string $root, ?string $filterCategory = null): array
     {
-        $fileHelper = $this->getService(FileHelper::class, fn(): FileHelper => new FileHelper());
+        $fileHelper = $this->getService(FileHelper::class, fn (): FileHelper => new FileHelper());
         $files = $fileHelper->collectFiles($root);
         $used = [];
 

@@ -12,7 +12,7 @@ trait HasStyledOutput
     protected SymfonyStyle $output;
 
     /**
-     * @param array<int, string> $headers
+     * @param array<int, string>             $headers
      * @param array<int, array<int, string>> $rows
      */
     protected function table(array $headers, array $rows): void

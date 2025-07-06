@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Vix\Syntra\NodeVisitors;
 
 use PhpParser\Node;
-use PhpParser\NodeVisitorAbstract;
 use PhpParser\Node\Stmt\Class_;
+use PhpParser\NodeVisitorAbstract;
 
 class DocsVisitor extends NodeVisitorAbstract
 {

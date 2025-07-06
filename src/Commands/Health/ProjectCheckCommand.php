@@ -6,12 +6,12 @@ namespace Vix\Syntra\Commands\Health;
 
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
-use Vix\Syntra\Exceptions\CommandException;
-use Vix\Syntra\Exceptions\MissingBinaryException;
-use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Commands\Health\ComposerCheckCommand;
 use Vix\Syntra\Commands\Health\PhpStanCheckCommand;
 use Vix\Syntra\Commands\Health\PhpUnitCheckCommand;
+use Vix\Syntra\Commands\SyntraCommand;
+use Vix\Syntra\Exceptions\CommandException;
+use Vix\Syntra\Exceptions\MissingBinaryException;
 use Vix\Syntra\Traits\CommandRunnerTrait;
 
 class ProjectCheckCommand extends SyntraCommand
@@ -78,5 +78,4 @@ class ProjectCheckCommand extends SyntraCommand
         $this->output->success('Project check completed without critical errors.');
         return self::SUCCESS;
     }
-
 }

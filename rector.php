@@ -35,7 +35,7 @@ use Rector\TypeDeclaration\Rector\ClassMethod\AddReturnTypeDeclarationRector;
 return RectorConfig::configure()
     ->withRootFiles()
     ->withSkip([
-        'vendor'
+        'vendor',
     ])
     ->withPhpSets(php84: true)
     ->withTypeCoverageLevel(0) // Type coverage level: 0 — no requirement for full type coverage

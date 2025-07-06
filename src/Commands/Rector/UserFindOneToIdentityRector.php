@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Vix\Syntra\Commands\Rector;
 
-use PhpParser\Node\Expr\Array_;
 use PhpParser\Node;
 use PhpParser\Node\Expr;
-use PhpParser\Node\Name;
-use Rector\Rector\AbstractRector;
+use PhpParser\Node\Expr\Array_;
 use PhpParser\Node\Expr\PropertyFetch;
 use PhpParser\Node\Expr\StaticCall;
 use PhpParser\Node\Expr\StaticPropertyFetch;
+use PhpParser\Node\Name;
+use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 class UserFindOneToIdentityRector extends AbstractRector
