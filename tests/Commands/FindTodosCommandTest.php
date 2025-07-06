@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 use Vix\Syntra\Application;
 use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Utils\FileHelper;
 
 class FindTodosCommandTest extends TestCase
 {
@@ -14,6 +15,8 @@ class FindTodosCommandTest extends TestCase
         $dir = sys_get_temp_dir() . '/syntra_test_' . uniqid();
         mkdir($dir);
         file_put_contents("$dir/sample.php", "<?php\n// TODO: fix me\n");
+
+        FileHelper::clearCache();
 
         $app = new Application();
         Config::setContainer($app->getContainer());
@@ -36,6 +39,8 @@ class FindTodosCommandTest extends TestCase
         $dir = sys_get_temp_dir() . '/syntra_test_' . uniqid();
         mkdir($dir);
         file_put_contents("$dir/sample.php", "<?php\n// TODO: fix me\n");
+
+        FileHelper::clearCache();
 
         $app = new Application();
         Config::setContainer($app->getContainer());
