@@ -72,6 +72,8 @@ All commands support these standard options (with an optional `[path]` argument 
 -   `--force` / `-f`: Force execution, ignore warnings (refactor commands only)
 -   `--no-progress`: Disable progress output
 -   `--no-cache`: Disable file caching (useful for temporary directories)
+-   `--fail-on-warning`: Return exit code 1 if warnings were found
+-   `--ci`: CI mode, implies `--no-progress` and `--fail-on-warning`
 -   `--help` / `-h`: Display help for the command
 -   `--quiet` / `-q`: Only show errors
 -   `--verbose` / `-v/-vv/-vvv`: Increase verbosity level
@@ -209,6 +211,9 @@ Add to your CI pipeline:
   run: |
       vendor/bin/syntra health:project
       vendor/bin/syntra analyze:find-debug-calls
+
+# Fail the pipeline on warnings
+      vendor/bin/syntra health:composer --ci
 ```
 
 ### Running Tests

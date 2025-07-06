@@ -80,6 +80,6 @@ class PhpStanCheckCommand extends SyntraCommand implements HealthCheckCommandInt
             return self::FAILURE;
         }
 
-        return $this->handleResult($result, 'PHPStan analysis completed.');
+        return $this->handleResult($result, 'PHPStan analysis completed.', $this->failOnWarning);
     }
 }

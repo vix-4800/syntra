@@ -13,7 +13,7 @@ use Vix\Syntra\Enums\CommandStatus;
  */
 trait HandlesResultTrait
 {
-    protected function handleResult(CommandResult $result, string $successMessage): int
+    protected function handleResult(CommandResult $result, string $successMessage, bool $failOnWarning = false): int
     {
         if ($result->status === CommandStatus::OK) {
             $this->output->success($successMessage);
@@ -30,6 +30,10 @@ trait HandlesResultTrait
             $this->output->writeln('  - ' . $msg);
         }
 
-        return $result->status === CommandStatus::WARNING ? Command::SUCCESS : Command::FAILURE;
+        if ($result->status === CommandStatus::WARNING && !$failOnWarning) {
+            return Command::SUCCESS;
+        }
+
+        return $result->status === CommandStatus::OK ? Command::SUCCESS : Command::FAILURE;
     }
 }

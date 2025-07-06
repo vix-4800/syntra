@@ -53,6 +53,6 @@ class ComposerCheckCommand extends SyntraCommand implements HealthCheckCommandIn
 
         $result = $this->runCheck();
 
-        return $this->handleResult($result, 'Composer check completed.');
+        return $this->handleResult($result, 'Composer check completed.', $this->failOnWarning);
     }
 }
