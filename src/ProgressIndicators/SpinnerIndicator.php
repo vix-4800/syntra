@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Vix\Syntra\ProgressIndicator;
+namespace Vix\Syntra\ProgressIndicators;
 
 class SpinnerIndicator extends AbstractProgressIndicator
 {

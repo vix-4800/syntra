@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Vix\Syntra\ProgressIndicator;
+namespace Vix\Syntra\ProgressIndicators;
 
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Vix\Syntra\ProgressIndicator\ProgressIndicatorInterface;
+use Vix\Syntra\ProgressIndicators\ProgressIndicatorInterface;
 
 class ProgressIndicatorFactory
 {
