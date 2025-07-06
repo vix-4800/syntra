@@ -106,7 +106,7 @@ All commands support these standard options:
 | Command                    | Description                                                                   | Options                                                  |
 | -------------------------- | ----------------------------------------------------------------------------- | -------------------------------------------------------- |
 | `general:generate-command` | Generates a scaffold for a new Symfony Console command                        | `--path`, `--dry-run`, `--group`, `--cli-name`, `--desc` |
-| `general:generate-docs`    | Scans Yii controllers and generates a markdown file listing all action routes | `--path`, `--dry-run`                                    |
+| `general:generate-docs`    | Scans Yii controllers and generates a markdown file listing all action routes | `--path`, `--dry-run`, `[controllerDir]` |
 
 ### 🧩 Yii Framework Extensions
 
