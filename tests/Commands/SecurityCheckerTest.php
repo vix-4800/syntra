@@ -3,6 +3,7 @@
 namespace Vix\Syntra\Tests\Commands;
 
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 use Vix\Syntra\Commands\Health\SecurityCheckCommand;
 use Vix\Syntra\DTO\ProcessResult;
 use Vix\Syntra\Enums\CommandStatus;
@@ -15,7 +16,8 @@ class SecurityCheckerTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        $ref = new \ReflectionClass(ConfigLoader::class);
+        $ref = new ReflectionClass(ConfigLoader::class);
+
         /** @var ConfigLoader $cfg */
         $cfg = $ref->newInstanceWithoutConstructor();
 
@@ -25,15 +27,19 @@ class SecurityCheckerTest extends TestCase
 
         $propCmd = $ref->getProperty('commands');
         $propCmd->setAccessible(true);
-        $propCmd->setValue($cfg, require __DIR__ . '/../../config.php');
+        $propCmd->setValue($cfg, require PACKAGE_ROOT . '/config.php');
 
         self::$config = $cfg;
     }
 
     private function makeCommand(ProcessResult $result): SecurityCheckCommand
     {
-        $runner = new class($result) extends ProcessRunner {
-            public function __construct(private ProcessResult $result) {}
+        $runner = new class ($result) extends ProcessRunner {
+            public function __construct(private readonly ProcessResult $result)
+            {
+                //
+            }
+
             public function run(string $command, array $args = [], array $options = [], ?callable $callback = null): ProcessResult
             {
                 return $this->result;
@@ -57,10 +63,10 @@ class SecurityCheckerTest extends TestCase
         $json = json_encode([
             'advisories' => [
                 'pkg/a' => [
-                    ['link' => 'https://example.com/a']
+                    ['link' => 'https://example.com/a'],
                 ],
                 'pkg/b' => [
-                    ['link' => 'https://example.com/b']
+                    ['link' => 'https://example.com/b'],
                 ],
             ],
         ]);

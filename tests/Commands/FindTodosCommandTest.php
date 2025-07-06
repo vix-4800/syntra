@@ -13,7 +13,7 @@ class FindTodosCommandTest extends TestCase
     {
         $dir = sys_get_temp_dir() . '/syntra_test_' . uniqid();
         mkdir($dir);
-        file_put_contents($dir . '/sample.php', "<?php\n// TODO: fix me\n");
+        file_put_contents("$dir/sample.php", "<?php\n// TODO: fix me\n");
 
         $app = new Application();
         $container = $app->getContainer();
@@ -27,7 +27,7 @@ class FindTodosCommandTest extends TestCase
 
         $this->assertStringContainsString('TODO', $display);
 
-        unlink($dir . '/sample.php');
+        unlink("$dir/sample.php");
         rmdir($dir);
     }
 
@@ -35,7 +35,7 @@ class FindTodosCommandTest extends TestCase
     {
         $dir = sys_get_temp_dir() . '/syntra_test_' . uniqid();
         mkdir($dir);
-        file_put_contents($dir . '/sample.php', "<?php\n// TODO: fix me\n");
+        file_put_contents("$dir/sample.php", "<?php\n// TODO: fix me\n");
 
         $app = new Application();
         $container = $app->getContainer();
@@ -50,7 +50,7 @@ class FindTodosCommandTest extends TestCase
         $this->assertStringNotContainsString('Remaining:', $display);
         $this->assertStringContainsString('TODO', $display);
 
-        unlink($dir . '/sample.php');
+        unlink("$dir/sample.php");
         rmdir($dir);
     }
 }
