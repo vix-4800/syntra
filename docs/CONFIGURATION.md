@@ -118,12 +118,12 @@ return [
         PhpCsFixerRefactorer::class => [
             'enabled' => true,
             'web_enabled' => true,
-            'config' => __DIR__ . '/php_cs_fixer.php',
+            'config' => __DIR__ . '/config/php_cs_fixer.php',
         ],
         RectorRefactorer::class => [
             'enabled' => true,
             'web_enabled' => false, // Console only
-            'config' => __DIR__ . '/rector.php',
+            'config' => __DIR__ . '/config/rector.php',
         ],
     ],
 
@@ -131,7 +131,7 @@ return [
         PhpStanChecker::class => [
             'enabled' => true,
             'web_enabled' => true,
-            'config' => __DIR__ . '/phpstan.neon',
+            'config' => __DIR__ . '/config/phpstan.neon',
             'level' => 5,
         ],
     ],

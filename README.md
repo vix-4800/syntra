@@ -134,7 +134,7 @@ return [
     'refactor' => [
         PhpCsFixerRefactorer::class => [
             'enabled' => true,
-            'config' => __DIR__ . '/php_cs_fixer.php',
+            'config' => __DIR__ . '/config/php_cs_fixer.php',
         ],
     ],
     'yii' => [
