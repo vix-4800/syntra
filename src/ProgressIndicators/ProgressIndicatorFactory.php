@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Vix\Syntra\ProgressIndicators;
 
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Vix\Syntra\ProgressIndicators\ProgressIndicatorInterface;
 use Vix\Syntra\ProgressIndicators\NullProgressIndicator;
+use Vix\Syntra\ProgressIndicators\ProgressIndicatorInterface;
 
 class ProgressIndicatorFactory
 {
