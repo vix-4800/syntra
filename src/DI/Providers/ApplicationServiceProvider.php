@@ -7,7 +7,6 @@ namespace Vix\Syntra\DI\Providers;
 use Vix\Syntra\DI\ContainerInterface;
 use Vix\Syntra\DI\ServiceProviderInterface;
 use Vix\Syntra\Utils\ConfigLoader;
-use Vix\Syntra\Utils\ExtensionManager;
 use Vix\Syntra\Utils\FileHelper;
 use Vix\Syntra\Utils\ProcessRunner;
 
@@ -26,13 +25,6 @@ class ApplicationServiceProvider implements ServiceProviderInterface
 
         // Register ProcessRunner as singleton
         $container->singleton(ProcessRunner::class, fn (): ProcessRunner => new ProcessRunner());
-
-        // Register ExtensionManager as singleton with ConfigLoader dependency
-        $container->singleton(
-            ExtensionManager::class,
-            fn (ContainerInterface $container): ExtensionManager =>
-            new ExtensionManager($container->get(ConfigLoader::class))
-        );
 
         // Register FileHelper as singleton
         $container->singleton(FileHelper::class, fn (): FileHelper => new FileHelper());

@@ -76,7 +76,6 @@ Registers core application services:
 
 -   `ConfigLoader` - Configuration management
 -   `ProcessRunner` - Process execution
--   `ExtensionManager` - Extension management
 -   `FileHelper` - File operations
     -   caches results of file searches during a single run for performance
 
@@ -106,10 +105,9 @@ class MyCommand extends SyntraCommand
     public function __construct(
         ConfigLoader $configLoader,
         ProcessRunner $processRunner,
-        ExtensionManager $extensionManager,
         private MyService $myService  // Additional dependency
     ) {
-        parent::__construct($configLoader, $processRunner, $extensionManager);
+        parent::__construct($configLoader, $processRunner);
     }
 }
 ```
