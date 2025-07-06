@@ -40,7 +40,7 @@ abstract class SyntraCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addArgument('path', InputArgument::OPTIONAL, 'Root path of the project', $this->configLoader->getProjectRoot())
+            ->addArgument('path', InputArgument::OPTIONAL, 'Root path of the project', Config::getProjectRoot())
             ->addOption('dry-run', 'd', InputOption::VALUE_NONE, 'Do not apply changes, only show what would be done')
             ->addOption('no-progress', null, InputOption::VALUE_NONE, 'Disable progress output')
             ->addOption('no-cache', null, InputOption::VALUE_NONE, 'Disable file caching');

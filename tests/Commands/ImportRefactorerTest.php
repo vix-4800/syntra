@@ -41,7 +41,7 @@ class ImportRefactorerTest extends TestCase
 
         $command = $app->find('refactor:imports');
         $tester = new CommandTester($command);
-        $tester->execute(array_merge(['--path' => $this->dir], $options));
+        $tester->execute(["[path]" => $this->dir], $options);
     }
 
     public function testReordersHeaderBlocks(): void
