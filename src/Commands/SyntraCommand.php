@@ -55,12 +55,6 @@ abstract class SyntraCommand extends Command
         if ($input->getOption('path')) {
             $this->configLoader->setProjectRoot((string) $input->getOption('path'));
         }
-
-        $this->progressIndicator = ProgressIndicatorFactory::create(
-            $this->progressType,
-            $this->output,
-            $this->progressMax,
-        );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -72,6 +66,12 @@ abstract class SyntraCommand extends Command
 
     protected function startProgress(): void
     {
+        $this->progressIndicator = ProgressIndicatorFactory::create(
+            $this->progressType,
+            $this->output,
+            $this->progressMax,
+        );
+
         $this->progressIndicator->start();
     }
 
