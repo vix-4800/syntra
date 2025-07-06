@@ -83,9 +83,9 @@ abstract class SyntraCommand extends Command
         $this->progressIndicator->start();
     }
 
-    protected function advanceProgress(): void
+    protected function advanceProgress(int $step = 1): void
     {
-        $this->progressIndicator->advance();
+        $this->progressIndicator->advance($step);
     }
 
     protected function finishProgress(): void
