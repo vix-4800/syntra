@@ -10,11 +10,11 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Vix\Syntra\Facades\Config;
 use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
 use Vix\Syntra\ProgressIndicators\ProgressIndicatorInterface;
 use Vix\Syntra\Traits\HasStyledOutput;
-use Vix\Syntra\Utils\ConfigLoader;
-use Vix\Syntra\Utils\ProcessRunner;
+use Vix\Syntra\Utils\FileHelper;
 
 abstract class SyntraCommand extends Command
 {
@@ -24,6 +24,7 @@ abstract class SyntraCommand extends Command
 
     protected bool $dryRun = false;
     protected bool $noProgress = false;
+    protected bool $noCache = false;
 
     protected ProgressIndicatorInterface $progressIndicator;
 
@@ -31,10 +32,8 @@ abstract class SyntraCommand extends Command
 
     protected int $progressMax = 0;
 
-    public function __construct(
-        protected ConfigLoader $configLoader,
-        protected ProcessRunner $processRunner
-    ) {
+    public function __construct()
+    {
         parent::__construct();
     }
 
@@ -43,7 +42,8 @@ abstract class SyntraCommand extends Command
         $this
             ->addArgument('path', InputArgument::OPTIONAL, 'Root path of the project', $this->configLoader->getProjectRoot())
             ->addOption('dry-run', 'd', InputOption::VALUE_NONE, 'Do not apply changes, only show what would be done')
-            ->addOption('no-progress', null, InputOption::VALUE_NONE, 'Disable progress output');
+            ->addOption('no-progress', null, InputOption::VALUE_NONE, 'Disable progress output')
+            ->addOption('no-cache', null, InputOption::VALUE_NONE, 'Disable file caching');
     }
 
     protected function initialize(InputInterface $input, OutputInterface $output): void
@@ -53,10 +53,13 @@ abstract class SyntraCommand extends Command
 
         $this->dryRun = (bool) $input->getOption('dry-run');
         $this->noProgress = (bool) $input->getOption('no-progress');
+        $this->noCache = (bool) $input->getOption('no-cache');
+
+        FileHelper::setCacheEnabled(!$this->noCache);
 
         $argPath = $input->getArgument('path');
         if ($argPath !== null) {
-            $this->configLoader->setProjectRoot((string) $argPath);
+            Config::setProjectRoot((string) $argPath);
         }
     }
 

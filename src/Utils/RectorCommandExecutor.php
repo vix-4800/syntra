@@ -7,18 +7,16 @@ namespace Vix\Syntra\Utils;
 use Vix\Syntra\Commands\Refactor\RectorRefactorer;
 use Vix\Syntra\DTO\ProcessResult;
 use Vix\Syntra\Exceptions\MissingBinaryException;
-use Vix\Syntra\Utils\ConfigLoader;
-use Vix\Syntra\Utils\ProcessRunner;
+use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Facades\Process;
 
 /**
  * Utility class for executing Rector commands with specific rules
  */
 class RectorCommandExecutor
 {
-    public function __construct(
-        private readonly ConfigLoader $configLoader,
-        private readonly ProcessRunner $processRunner
-    ) {
+    public function __construct()
+    {
         //
     }
 
@@ -37,7 +35,7 @@ class RectorCommandExecutor
         $binary = $this->findRectorBinary();
         $args = $this->buildRectorArgs($rectorClass, $additionalArgs);
 
-        return $this->processRunner->run($binary, $args, callback: $outputCallback);
+        return Process::run($binary, $args, callback: $outputCallback);
     }
 
     /**
@@ -57,7 +55,7 @@ class RectorCommandExecutor
 
         foreach ($rectorClasses as $rectorClass) {
             $args = $this->buildRectorArgs($rectorClass, $additionalArgs);
-            $result = $this->processRunner->run($binary, $args, callback: $outputCallback);
+            $result = Process::run($binary, $args, callback: $outputCallback);
 
             // Stop on first failure
             if ($result->exitCode !== 0) {
@@ -89,7 +87,7 @@ class RectorCommandExecutor
      */
     private function findRectorBinary(): string
     {
-        $binary = find_composer_bin('rector', $this->configLoader->getProjectRoot());
+        $binary = find_composer_bin('rector', Config::getProjectRoot());
 
         if (!$binary) {
             throw new MissingBinaryException("rector", "composer require --dev rector/rector");
@@ -104,7 +102,7 @@ class RectorCommandExecutor
     private function buildRectorArgs(string $rectorClass, array $additionalArgs = []): array
     {
         $args = [
-            $this->configLoader->getProjectRoot(),
+            Config::getProjectRoot(),
             "--config=" . $this->getRectorConfig(),
             "--only=" . $this->normalizeRectorClassName($rectorClass),
             "--clear-cache",
@@ -118,7 +116,7 @@ class RectorCommandExecutor
      */
     private function getRectorConfig(): string
     {
-        return $this->configLoader->getCommandOption(
+        return Config::getCommandOption(
             'refactor',
             RectorRefactorer::class,
             'commands_config'

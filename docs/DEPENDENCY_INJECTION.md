@@ -123,6 +123,17 @@ if ($this->getApplication() instanceof \Vix\Syntra\Application) {
 }
 ```
 
+### Facades
+
+For simple access to common services you can use facades. Facades provide a
+static interface to services resolved from the application's container:
+
+```php
+use Vix\Syntra\Facades\Config;
+
+$root = Config::getProjectRoot();
+```
+
 ## Best Practices
 
 1. **Use interfaces**: Bind interfaces to implementations for better testability

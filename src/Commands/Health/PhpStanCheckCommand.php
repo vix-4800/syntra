@@ -9,12 +9,12 @@ use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\DTO\CommandResult;
 use Vix\Syntra\Exceptions\CommandException;
 use Vix\Syntra\Exceptions\MissingBinaryException;
-use Vix\Syntra\Traits\ContainerAwareTrait;
+use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Facades\Process;
 use Vix\Syntra\Traits\HandlesResultTrait;
 
 class PhpStanCheckCommand extends SyntraCommand implements HealthCheckCommandInterface
 {
-    use ContainerAwareTrait;
     use HandlesResultTrait;
 
     protected function configure(): void
@@ -26,7 +26,7 @@ class PhpStanCheckCommand extends SyntraCommand implements HealthCheckCommandInt
 
     public function runCheck(): CommandResult
     {
-        $binary = find_composer_bin('phpstan', $this->configLoader->getProjectRoot());
+        $binary = find_composer_bin('phpstan', Config::getProjectRoot());
 
         if (!$binary) {
             throw new MissingBinaryException('phpstan', 'composer require --dev phpstan/phpstan');
@@ -34,14 +34,14 @@ class PhpStanCheckCommand extends SyntraCommand implements HealthCheckCommandInt
 
         $args = [
             'analyse',
-            '--level=' . (int) $this->configLoader->getCommandOption('health', self::class, 'level', 0),
+            '--level=' . (int) Config::getCommandOption('health', self::class, 'level', 0),
             '--error-format=json',
             '--no-progress',
-            '--configuration=' . $this->configLoader->getCommandOption('health', self::class, 'config', 'phpstan.neon'),
-            $this->configLoader->getProjectRoot(),
+            '--configuration=' . Config::getCommandOption('health', self::class, 'config', 'phpstan.neon'),
+            Config::getProjectRoot(),
         ];
 
-        $result = $this->processRunner->run($binary, $args);
+        $result = Process::run($binary, $args);
 
         if ($result->exitCode !== 0 && empty($result->output)) {
             return CommandResult::error(["PHPStan crashed:\n$result->stderr"]);

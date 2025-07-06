@@ -6,14 +6,12 @@ namespace Vix\Syntra\Commands\Analyze;
 
 use Symfony\Component\Console\Command\Command;
 use Vix\Syntra\Commands\SyntraCommand;
+use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Facades\File;
 use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
-use Vix\Syntra\Traits\ContainerAwareTrait;
-use Vix\Syntra\Utils\FileHelper;
 
 class FindDebugCallsCommand extends SyntraCommand
 {
-    use ContainerAwareTrait;
-
     protected string $progressType = ProgressIndicatorFactory::TYPE_PROGRESS_BAR;
 
     protected static array $DEBUG_FUNCTIONS = [
@@ -41,11 +39,9 @@ class FindDebugCallsCommand extends SyntraCommand
 
     public function perform(): int
     {
-        $projectRoot = $this->configLoader->getProjectRoot();
+        $projectRoot = Config::getProjectRoot();
 
-        $fileHelper = $this->getService(FileHelper::class, fn (): FileHelper => new FileHelper());
-
-        $files = $fileHelper->collectFiles($projectRoot);
+        $files = File::collectFiles($projectRoot);
 
         $matches = [];
         $pattern = '/(?<![\w\$])(' . implode('|', array_map('preg_quote', self::$DEBUG_FUNCTIONS)) . ')\s*\(/i';
@@ -54,7 +50,7 @@ class FindDebugCallsCommand extends SyntraCommand
         $this->startProgress();
 
         foreach ($files as $filePath) {
-            if (str_contains($filePath, "FindDebugCallsCommand")) {
+            if (str_contains((string) $filePath, "FindDebugCallsCommand")) {
                 continue;
             }
 
@@ -63,7 +59,7 @@ class FindDebugCallsCommand extends SyntraCommand
                 continue;
             }
 
-            $relativePath = $fileHelper->makeRelative($filePath, $projectRoot);
+            $relativePath = File::makeRelative($filePath, $projectRoot);
 
             $lines = explode("\n", $content);
             foreach ($lines as $lineNumber => $line) {

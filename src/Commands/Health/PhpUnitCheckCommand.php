@@ -9,12 +9,12 @@ use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\DTO\CommandResult;
 use Vix\Syntra\Exceptions\CommandException;
 use Vix\Syntra\Exceptions\MissingBinaryException;
-use Vix\Syntra\Traits\ContainerAwareTrait;
+use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Facades\Process;
 use Vix\Syntra\Traits\HandlesResultTrait;
 
 class PhpUnitCheckCommand extends SyntraCommand implements HealthCheckCommandInterface
 {
-    use ContainerAwareTrait;
     use HandlesResultTrait;
 
     protected function configure(): void
@@ -26,16 +26,16 @@ class PhpUnitCheckCommand extends SyntraCommand implements HealthCheckCommandInt
 
     public function runCheck(): CommandResult
     {
-        $binary = find_composer_bin('phpunit', $this->configLoader->getProjectRoot());
+        $binary = find_composer_bin('phpunit', Config::getProjectRoot());
 
         if (!$binary) {
             throw new MissingBinaryException('phpunit', 'composer require --dev phpunit/phpunit');
         }
 
-        $result = $this->processRunner->run(
+        $result = Process::run(
             $binary,
             [],
-            ['working_dir' => $this->configLoader->getProjectRoot()]
+            ['working_dir' => Config::getProjectRoot()]
         );
 
         if ($result->exitCode === 0) {

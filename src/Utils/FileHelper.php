@@ -15,6 +15,25 @@ class FileHelper
      */
     private static array $filesCache = [];
 
+    private static bool $cacheEnabled = true;
+
+    /**
+     * Clears the internal files cache.
+     */
+    public static function clearCache(): void
+    {
+        self::$filesCache = [];
+    }
+
+    public static function setCacheEnabled(bool $enabled): void
+    {
+        self::$cacheEnabled = $enabled;
+
+        if (!$enabled) {
+            self::$filesCache = [];
+        }
+    }
+
     /**
      * @param string[] $extensions
      * @param string[] $excludeDirs
@@ -24,7 +43,7 @@ class FileHelper
     public function collectFiles(string $dir, array $extensions = ['php'], array $excludeDirs = ['vendor', 'tests']): array
     {
         $cacheKey = md5($dir . '|' . implode(',', $extensions) . '|' . implode(',', $excludeDirs));
-        if (isset(self::$filesCache[$cacheKey])) {
+        if (self::$cacheEnabled && isset(self::$filesCache[$cacheKey])) {
             return self::$filesCache[$cacheKey];
         }
 
@@ -48,7 +67,11 @@ class FileHelper
             }
         }
 
-        return self::$filesCache[$cacheKey] = $files;
+        if (self::$cacheEnabled) {
+            self::$filesCache[$cacheKey] = $files;
+        }
+
+        return $files;
     }
 
     /**

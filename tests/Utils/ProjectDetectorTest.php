@@ -3,6 +3,7 @@
 namespace Vix\Syntra\Tests\Utils;
 
 use PHPUnit\Framework\TestCase;
+use Vix\Syntra\Utils\FileHelper;
 use Vix\Syntra\Utils\ProjectDetector;
 
 class ProjectDetectorTest extends TestCase
@@ -16,6 +17,8 @@ class ProjectDetectorTest extends TestCase
                 'yiisoft/yii2' => '*',
             ],
         ]));
+
+        FileHelper::clearCache();
 
         $detector = new ProjectDetector();
         $this->assertSame(ProjectDetector::TYPE_YII, $detector->detect($dir));
@@ -33,6 +36,8 @@ class ProjectDetectorTest extends TestCase
                 'some/package' => '*',
             ],
         ]));
+
+        FileHelper::clearCache();
 
         $detector = new ProjectDetector();
         $this->assertSame(ProjectDetector::TYPE_UNKNOWN, $detector->detect($dir));
