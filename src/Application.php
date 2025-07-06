@@ -38,6 +38,12 @@ class Application extends SymfonyApplication
         parent::__construct($name, $version ?: self::getPackageVersion());
 
         $this->container = ContainerFactory::create();
+
+        // Make the container available to facades
+        if (class_exists(\Vix\Syntra\Facades\Facade::class)) {
+            \Vix\Syntra\Facades\Facade::setContainer($this->container);
+        }
+
         $this->registerCommands();
         $this->registerExtensionCommands();
     }
