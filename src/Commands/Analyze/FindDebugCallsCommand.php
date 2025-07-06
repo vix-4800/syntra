@@ -12,7 +12,6 @@ use Vix\Syntra\Facades\File;
 
 class FindDebugCallsCommand extends SyntraCommand
 {
-
     protected string $progressType = ProgressIndicatorFactory::TYPE_PROGRESS_BAR;
 
     protected static array $DEBUG_FUNCTIONS = [

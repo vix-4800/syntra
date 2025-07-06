@@ -18,7 +18,6 @@ use Vix\Syntra\Facades\File;
  */
 class ImportRefactorer extends SyntraRefactorCommand
 {
-
     protected string $progressType = ProgressIndicatorFactory::TYPE_PROGRESS_BAR;
 
     protected function configure(): void

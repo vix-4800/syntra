@@ -15,9 +15,11 @@ use Vix\Syntra\NodeVisitors\NestedTernaryVisitor;
 use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
 use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\File;
+use Vix\Syntra\Traits\ContainerAwareTrait;
 
 class FindBadPracticesCommand extends SyntraCommand
 {
+    use ContainerAwareTrait;
 
     protected string $progressType = ProgressIndicatorFactory::TYPE_PROGRESS_BAR;
 

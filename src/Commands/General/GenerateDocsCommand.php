@@ -15,10 +15,12 @@ use Vix\Syntra\NodeVisitors\DocsVisitor;
 use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
 use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\File;
+use Vix\Syntra\Traits\ContainerAwareTrait;
 use Vix\Syntra\Utils\ProjectDetector;
 
 class GenerateDocsCommand extends SyntraCommand
 {
+    use ContainerAwareTrait;
 
     protected string $progressType = ProgressIndicatorFactory::TYPE_PROGRESS_BAR;
 

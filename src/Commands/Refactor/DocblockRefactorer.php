@@ -14,7 +14,6 @@ use Vix\Syntra\Utils\StubHelper;
 
 class DocblockRefactorer extends SyntraRefactorCommand
 {
-
     protected string $progressType = ProgressIndicatorFactory::TYPE_PROGRESS_BAR;
 
     protected function configure(): void
