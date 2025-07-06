@@ -112,7 +112,7 @@ All commands support these standard options (with an optional `[path]` argument 
 | Command                    | Description                                                                                                          | Options                                                                |
 | -------------------------- | -------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
 | `general:generate-command` | Generates a scaffold for a new Symfony Console command                                                               | `[path]`, `--dry-run`, `--no-cache`, `--group`, `--cli-name`, `--desc` |
-| `general:generate-docs`    | Scans project controllers and generates a markdown file listing all action routes (framework detected automatically) | `[path]`, `--dry-run`, `--no-cache`, `[controllerDir]`                 |
+| `general:generate-docs`    | Scans project controllers and generates a markdown file listing all action routes (framework detected automatically) | `[path]`, `--controllerDir`, `--dry-run`, `--no-cache`                 |
 
 ### 🧩 Yii Framework Extensions
 
