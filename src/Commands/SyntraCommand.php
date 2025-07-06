@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Vix\Syntra\Commands;
 
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -40,7 +41,7 @@ abstract class SyntraCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addOption('path', null, InputOption::VALUE_REQUIRED, 'Root path of the project', null)
+            ->addArgument('path', InputArgument::OPTIONAL, 'Root path of the project', $this->configLoader->getProjectRoot())
             ->addOption('dry-run', 'd', InputOption::VALUE_NONE, 'Do not apply changes, only show what would be done')
             ->addOption('no-progress', null, InputOption::VALUE_NONE, 'Disable progress output');
     }
@@ -53,8 +54,9 @@ abstract class SyntraCommand extends Command
         $this->dryRun = (bool) $input->getOption('dry-run');
         $this->noProgress = (bool) $input->getOption('no-progress');
 
-        if ($input->getOption('path')) {
-            $this->configLoader->setProjectRoot((string) $input->getOption('path'));
+        $argPath = $input->getArgument('path');
+        if ($argPath !== null) {
+            $this->configLoader->setProjectRoot((string) $argPath);
         }
     }
 

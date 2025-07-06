@@ -52,7 +52,7 @@ vendor/bin/syntra [command] [options]
 vendor/bin/syntra health:project
 
 # Find TODO comments in specific directory
-vendor/bin/syntra analyze:find-todos --path=/path/to/project
+vendor/bin/syntra analyze:find-todos /path/to/project
 
 # Fix code style with dry-run (preview changes)
 vendor/bin/syntra refactor:cs-fixer --dry-run
@@ -63,9 +63,7 @@ vendor/bin/syntra general:generate-command --group=analyze --cli-name=analyze:cu
 
 ### Common Options
 
-All commands support these standard options:
-
--   `--path`: Specify the root path of the project (defaults to current directory)
+All commands support these standard options (with an optional `[path]` argument to specify the project root):
 -   `--dry-run` / `-d`: Preview changes without applying them
 -   `--force` / `-f`: Force execution, ignore warnings (refactor commands only)
 -   `--no-progress`: Disable progress output
@@ -79,52 +77,52 @@ All commands support these standard options:
 
 | Command                      | Description                                                                       | Options                        |
 | ---------------------------- | --------------------------------------------------------------------------------- | ------------------------------ |
-| `analyze:find-todos`         | Scans project files and collects all TODO, FIXME, @todo, @deprecated comments     | `--path`, `--dry-run`          |
-| `analyze:find-debug-calls`   | Checks that var_dump, dd, print_r, eval, and other calls prohibited in production | `--path`, `--dry-run`          |
-| `analyze:find-long-methods`  | Finds all methods or functions that exceed a specified number of lines            | `--path`, `--dry-run`, `--max` |
-| `analyze:find-bad-practices` | Detects bad practices in code like magic numbers, nested ternaries                | `--path`, `--dry-run`          |
+| `analyze:find-todos`         | Scans project files and collects all TODO, FIXME, @todo, @deprecated comments     | `[path]`, `--dry-run`          |
+| `analyze:find-debug-calls`   | Checks that var_dump, dd, print_r, eval, and other calls prohibited in production | `[path]`, `--dry-run`          |
+| `analyze:find-long-methods`  | Finds all methods or functions that exceed a specified number of lines            | `[path]`, `--dry-run`, `--max` |
+| `analyze:find-bad-practices` | Detects bad practices in code like magic numbers, nested ternaries                | `[path]`, `--dry-run`          |
 
 ### 🏥 Health
 
 | Command           | Description                                                  | Options               |
 | ----------------- | ------------------------------------------------------------ | --------------------- |
-| `health:composer` | Check Composer dependencies for updates                      | `--path`, `--dry-run` |
-| `health:phpstan`  | Run PHPStan static analysis                                  | `--path`, `--dry-run` |
-| `health:phpunit`  | Execute PHPUnit tests                                        | `--path`, `--dry-run` |
-| `health:security` | Check Composer dependencies for known vulnerabilities        | `--path`, `--dry-run` |
-| `health:project`  | Run all health checks (composer, phpstan, phpunit, security) | `--path`, `--dry-run` |
+| `health:composer` | Check Composer dependencies for updates                      | `[path]`, `--dry-run` |
+| `health:phpstan`  | Run PHPStan static analysis                                  | `[path]`, `--dry-run` |
+| `health:phpunit`  | Execute PHPUnit tests                                        | `[path]`, `--dry-run` |
+| `health:security` | Check Composer dependencies for known vulnerabilities        | `[path]`, `--dry-run` |
+| `health:project`  | Run all health checks (composer, phpstan, phpunit, security) | `[path]`, `--dry-run` |
 
 ### 🔧 Refactor
 
 | Command                 | Description                                                       | Danger Level | Options                          |
 | ----------------------- | ----------------------------------------------------------------- | ------------ | -------------------------------- |
-| `refactor:cs-fixer`     | Fixes code style using php-cs-fixer for the selected files        | 🟢 LOW       | `--path`, `--dry-run`, `--force` |
-| `refactor:imports`      | Fixes incorrect order of docblocks and import statements          | 🟢 LOW       | `--path`, `--dry-run`, `--force` |
-| `refactor:var-comments` | Standardizes @var comments to `/** @var Type $var */`             | 🟢 LOW       | `--path`, `--dry-run`, `--force` |
-| `refactor:docblocks`    | Adds a file-level PHPDoc block and class PHPDoc blocks if missing | 🟡 MEDIUM    | `--path`, `--dry-run`, `--force` |
-| `refactor:rector`       | Runs Rector for automated refactoring                             | 🔴 HIGH      | `--path`, `--dry-run`, `--force` |
+| `refactor:cs-fixer`     | Fixes code style using php-cs-fixer for the selected files        | 🟢 LOW       | `[path]`, `--dry-run`, `--force` |
+| `refactor:imports`      | Fixes incorrect order of docblocks and import statements          | 🟢 LOW       | `[path]`, `--dry-run`, `--force` |
+| `refactor:var-comments` | Standardizes @var comments to `/** @var Type $var */`             | 🟢 LOW       | `[path]`, `--dry-run`, `--force` |
+| `refactor:docblocks`    | Adds a file-level PHPDoc block and class PHPDoc blocks if missing | 🟡 MEDIUM    | `[path]`, `--dry-run`, `--force` |
+| `refactor:rector`       | Runs Rector for automated refactoring                             | 🔴 HIGH      | `[path]`, `--dry-run`, `--force` |
 
 ### 🧠 General
 
 | Command                    | Description                                                                                                          | Options                                                  |
 | -------------------------- | -------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
-| `general:generate-command` | Generates a scaffold for a new Symfony Console command                                                               | `--path`, `--dry-run`, `--group`, `--cli-name`, `--desc` |
-| `general:generate-docs`    | Scans project controllers and generates a markdown file listing all action routes (framework detected automatically) | `--path`, `--dry-run`, `[controllerDir]`                 |
+| `general:generate-command` | Generates a scaffold for a new Symfony Console command                                                               | `[path]`, `--dry-run`, `--group`, `--cli-name`, `--desc` |
+| `general:generate-docs`    | Scans project controllers and generates a markdown file listing all action routes (framework detected automatically) | `[path]`, `--dry-run`, `[controllerDir]`                 |
 
 ### 🧩 Yii Framework Extensions
 
 | Command                        | Description                                                                                          | Danger Level | Options                          |
 | ------------------------------ | ---------------------------------------------------------------------------------------------------- | ------------ | -------------------------------- |
-| `yii:all`                      | Runs all Yii-specific Rector refactorings in sequence                                                | 🟢 LOW       | `--path`, `--dry-run`, `--force` |
-| `yii:find-shortcuts`           | Converts `Model::find()->where([...])->one()/all()` into `Model::findOne([...])` or `findAll([...])` | 🟢 LOW       | `--path`, `--dry-run`, `--force` |
-| `yii:find-one-id`              | Replaces `Model::findOne(['id' => $id])` with `Model::findOne($id)`                                  | 🟢 LOW       | `--path`, `--dry-run`, `--force` |
-| `yii:find-all-id`              | Replaces `Model::findAll(['id' => $id]) with Model::findAll($id)`                                    | 🟢 LOW       | `--path`, `--dry-run`, `--force` |
-| `yii:update-shortcut`          | Replaces `Model::find()->where([...])->update([...])` with `Model::updateAll([...], [...])`          | 🟢 LOW       | `--path`, `--dry-run`, `--force` |
-| `yii:delete-shortcut`          | Replaces `Model::find()->where([...])->delete()` with `Model::deleteAll([...])`                      | 🟢 LOW       | `--path`, `--dry-run`, `--force` |
-| `yii:can-helpers`              | Replaces `can()/!can()` chains with `canAny()`, `canAll()`, `cannotAny()`, or `cannotAll()`          | 🟢 LOW       | `--path`, `--dry-run`, `--force` |
-| `yii:check-translations`       | Checks Yii::t translations: finds missing and unused keys across all categories                      | N/A          | `--path`, `--dry-run`, `--lang`  |
-| `yii:convert-access-chain`     | Replaces `user->identity->hasAccessChain/hasNoAccessChain` with `user->canAny/cannotAny`             | N/A          | `--path`, `--dry-run`            |
-| `yii:user-findone-to-identity` | Replaces redundant `User::findOne(...)` lookups for current user with `Yii::$app->user->identity`    | N/A          | `--path`, `--dry-run`            |
+| `yii:all`                      | Runs all Yii-specific Rector refactorings in sequence                                                | 🟢 LOW       | `[path]`, `--dry-run`, `--force` |
+| `yii:find-shortcuts`           | Converts `Model::find()->where([...])->one()/all()` into `Model::findOne([...])` or `findAll([...])` | 🟢 LOW       | `[path]`, `--dry-run`, `--force` |
+| `yii:find-one-id`              | Replaces `Model::findOne(['id' => $id])` with `Model::findOne($id)`                                  | 🟢 LOW       | `[path]`, `--dry-run`, `--force` |
+| `yii:find-all-id`              | Replaces `Model::findAll(['id' => $id]) with Model::findAll($id)`                                    | 🟢 LOW       | `[path]`, `--dry-run`, `--force` |
+| `yii:update-shortcut`          | Replaces `Model::find()->where([...])->update([...])` with `Model::updateAll([...], [...])`          | 🟢 LOW       | `[path]`, `--dry-run`, `--force` |
+| `yii:delete-shortcut`          | Replaces `Model::find()->where([...])->delete()` with `Model::deleteAll([...])`                      | 🟢 LOW       | `[path]`, `--dry-run`, `--force` |
+| `yii:can-helpers`              | Replaces `can()/!can()` chains with `canAny()`, `canAll()`, `cannotAny()`, or `cannotAll()`          | 🟢 LOW       | `[path]`, `--dry-run`, `--force` |
+| `yii:check-translations`       | Checks Yii::t translations: finds missing and unused keys across all categories                      | N/A          | `[path]`, `--dry-run`, `--lang`  |
+| `yii:convert-access-chain`     | Replaces `user->identity->hasAccessChain/hasNoAccessChain` with `user->canAny/cannotAny`             | N/A          | `[path]`, `--dry-run`            |
+| `yii:user-findone-to-identity` | Replaces redundant `User::findOne(...)` lookups for current user with `Yii::$app->user->identity`    | N/A          | `[path]`, `--dry-run`            |
 
 ## 📁 Configuration
 
