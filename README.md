@@ -134,7 +134,7 @@ All commands support these standard options (with an optional `[path]` argument 
 | Command                        | Description                                                                                          | Danger Level | Options                             |
 | ------------------------------ | ---------------------------------------------------------------------------------------------------- | ------------ | ----------------------------------- |
 | `yii:all`                      | Runs all Yii-specific Rector refactorings in sequence                                                | 🟢 LOW       | `[path]`, `--dry-run`, `--force`    |
-| `yii:find-shortcuts`           | Converts `Model::find()->where([...])->one()/all()` into `Model::findOne([...])` or `findAll([...])` | 🟢 LOW       | `[path]`, `--dry-run`, `--force`    |
+| `yii:find-shortcuts`           | Converts `Model::find()->where([...])->one()/all()` or `Model::find()->where([...])->limit(1)->one()/all()` into `Model::findOne([...])` or `findAll([...])` | 🟢 LOW       | `[path]`, `--dry-run`, `--force`    |
 | `yii:find-one-id`              | Replaces `Model::findOne(['id' => $id])` with `Model::findOne($id)`                                  | 🟢 LOW       | `[path]`, `--dry-run`, `--force`    |
 | `yii:find-all-id`              | Replaces `Model::findAll(['id' => $id]) with Model::findAll($id)`                                    | 🟢 LOW       | `[path]`, `--dry-run`, `--force`    |
 | `yii:update-shortcut`          | Replaces `Model::find()->where([...])->update([...])` with `Model::updateAll([...], [...])`          | 🟢 LOW       | `[path]`, `--dry-run`, `--force`    |
