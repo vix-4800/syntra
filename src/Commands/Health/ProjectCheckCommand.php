@@ -6,6 +6,8 @@ namespace Vix\Syntra\Commands\Health;
 
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Vix\Syntra\Traits\HandlesResultTrait;
+use Vix\Syntra\Facades\Installer;
 use Vix\Syntra\Commands\Health\ComposerCheckCommand;
 use Vix\Syntra\Commands\Health\EditorConfigCheckCommand;
 use Vix\Syntra\Commands\Health\PhpStanCheckCommand;
@@ -19,6 +21,8 @@ use Vix\Syntra\Traits\CommandRunnerTrait;
 class ProjectCheckCommand extends SyntraCommand
 {
     use CommandRunnerTrait;
+    use HandlesResultTrait;
+
     protected function configure(): void
     {
         parent::configure();
@@ -59,8 +63,9 @@ class ProjectCheckCommand extends SyntraCommand
 
                     if ($helper->ask($this->input, $this->output, $question)) {
                         $this->output->writeln("Running: $e->suggestedInstall");
-                        shell_exec($e->suggestedInstall);
-                        $this->output->success('phpstan installed! Please re-run the command.');
+                        $commandResult = Installer::install($e->suggestedInstall);
+
+                        $this->handleResult($commandResult, 'Installation finished.');
                     }
                 }
 

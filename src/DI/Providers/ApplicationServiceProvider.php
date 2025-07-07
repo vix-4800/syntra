@@ -9,6 +9,7 @@ use Vix\Syntra\DI\ServiceProviderInterface;
 use Vix\Syntra\Utils\ConfigLoader;
 use Vix\Syntra\Utils\FileHelper;
 use Vix\Syntra\Utils\ProcessRunner;
+use Vix\Syntra\Utils\PackageInstaller;
 
 /**
  * Application Service Provider
@@ -28,6 +29,9 @@ class ApplicationServiceProvider implements ServiceProviderInterface
 
         // Register FileHelper as singleton
         $container->singleton(FileHelper::class, fn (): FileHelper => new FileHelper());
+
+        // Register PackageInstaller as singleton
+        $container->singleton(PackageInstaller::class, fn (): PackageInstaller => new PackageInstaller());
     }
 
     public function boot(ContainerInterface $container): void
