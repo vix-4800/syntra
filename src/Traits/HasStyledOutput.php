@@ -24,4 +24,14 @@ trait HasStyledOutput
             ->setRows($rows)
             ->render();
     }
+
+    /**
+     * Display a bulleted list of items.
+     *
+     * @param string[] $items
+     */
+    protected function listing(array $items): void
+    {
+        $this->output->listing($items);
+    }
 }
