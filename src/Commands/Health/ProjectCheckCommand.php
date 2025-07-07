@@ -6,9 +6,8 @@ namespace Vix\Syntra\Commands\Health;
 
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
-use Vix\Syntra\DTO\CommandResult;
-use Vix\Syntra\Facades\Process;
 use Vix\Syntra\Traits\HandlesResultTrait;
+use Vix\Syntra\Utils\PackageInstaller;
 use Vix\Syntra\Commands\Health\ComposerCheckCommand;
 use Vix\Syntra\Commands\Health\EditorConfigCheckCommand;
 use Vix\Syntra\Commands\Health\PhpStanCheckCommand;
@@ -23,6 +22,15 @@ class ProjectCheckCommand extends SyntraCommand
 {
     use CommandRunnerTrait;
     use HandlesResultTrait;
+
+    private PackageInstaller $installer;
+
+    public function __construct(PackageInstaller $installer)
+    {
+        parent::__construct();
+        $this->installer = $installer;
+    }
+
     protected function configure(): void
     {
         parent::configure();
@@ -63,17 +71,7 @@ class ProjectCheckCommand extends SyntraCommand
 
                     if ($helper->ask($this->input, $this->output, $question)) {
                         $this->output->writeln("Running: $e->suggestedInstall");
-                        $processResult = Process::run('bash', ['-c', $e->suggestedInstall]);
-
-                        $messages = [];
-                        $output = trim($processResult->output ?: $processResult->stderr);
-                        if ($output !== '') {
-                            $messages = preg_split('/\r?\n/', $output);
-                        }
-
-                        $commandResult = $processResult->exitCode === 0
-                            ? CommandResult::ok($messages)
-                            : CommandResult::error($messages ?: ["Command failed with exit code {$processResult->exitCode}."]);
+                        $commandResult = $this->installer->install($e->suggestedInstall);
 
                         $this->handleResult($commandResult, 'Installation finished.');
                     }
