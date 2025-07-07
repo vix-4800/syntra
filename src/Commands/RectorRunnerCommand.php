@@ -14,10 +14,10 @@ abstract class RectorRunnerCommand extends SyntraRefactorCommand
 {
     protected RectorCommandExecutor $rectorExecutor;
 
-    public function __construct()
+    public function __construct(RectorCommandExecutor $executor)
     {
         parent::__construct();
-        $this->rectorExecutor = new RectorCommandExecutor();
+        $this->rectorExecutor = $executor;
     }
 
     /**
