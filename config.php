@@ -201,6 +201,9 @@ return [
         ],
     ],
     CommandGroup::LARAVEL->value => [
-        //
+        \Vix\Syntra\Commands\Extension\Laravel\LaravelAllCommand::class => [
+            'enabled' => true,
+            'web_enabled' => true,
+        ],
     ],
 ];
