@@ -19,6 +19,7 @@ use Vix\Syntra\Commands\Extension\Yii\YiiUserFindoneToIdentityCommand;
 use Vix\Syntra\Commands\General\GenerateCommandCommand;
 use Vix\Syntra\Commands\General\GenerateDocsCommand;
 use Vix\Syntra\Commands\Health\ComposerCheckCommand;
+use Vix\Syntra\Commands\Health\EditorConfigCheckCommand;
 use Vix\Syntra\Commands\Health\PhpStanCheckCommand;
 use Vix\Syntra\Commands\Health\PhpUnitCheckCommand;
 use Vix\Syntra\Commands\Health\ProjectCheckCommand;
@@ -88,6 +89,10 @@ return [
     ],
     CommandGroup::HEALTH->value => [
         ComposerCheckCommand::class => [
+            'enabled' => true,
+            'web_enabled' => true,
+        ],
+        EditorConfigCheckCommand::class => [
             'enabled' => true,
             'web_enabled' => true,
         ],
