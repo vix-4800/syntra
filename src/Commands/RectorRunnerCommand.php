@@ -12,12 +12,9 @@ use Vix\Syntra\Utils\RectorCommandExecutor;
  */
 abstract class RectorRunnerCommand extends SyntraRefactorCommand
 {
-    protected RectorCommandExecutor $rectorExecutor;
-
-    public function __construct(RectorCommandExecutor $executor)
+    public function __construct(protected RectorCommandExecutor $rectorExecutor)
     {
         parent::__construct();
-        $this->rectorExecutor = $executor;
     }
 
     /**
