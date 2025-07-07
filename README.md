@@ -7,7 +7,7 @@
 -   **Health Checks**: Verify project stability with Composer, PHPStan, PHPUnit, and security audits.
 -   **Code Refactoring**: Automatically fix code with custom refactorers, Rector, and PHP-CS-Fixer.
 -   **Static Analysis**: Detect todos, long methods, and unsafe debug calls.
--   **Framework Support**: Built-in tooling for Yii (Laravel, Symfony planned).
+-   **Framework Support**: Built-in tooling for Yii and Laravel (Symfony planned).
 -   **Extensibility**: Generate and register new commands using stubs.
 -   **In-Memory Caching**: Reuses previously scanned file lists for faster repeated command execution.
 -   **Cache Reset**: Call `FileHelper::clearCache()` to manually reset cached file lists when working with temporary directories or tests.
@@ -144,6 +144,12 @@ All commands support these standard options (with an optional `[path]` argument 
 | `yii:convert-access-chain`     | Replaces `user->identity->hasAccessChain/hasNoAccessChain` with `user->canAny/cannotAny`             | N/A          | `[path]`, `--dry-run`, `--no-cache` |
 | `yii:user-findone-to-identity` | Replaces redundant `User::findOne(...)` lookups for current user with `Yii::$app->user->identity`    | N/A          | `[path]`, `--dry-run`, `--no-cache` |
 
+### 🧩 Laravel Framework Extensions
+
+| Command            | Description                                                   | Danger Level | Options                           |
+| ------------------ | ------------------------------------------------------------- | ------------ | --------------------------------- |
+| `laravel:to-route` | Replaces `redirect()->route()` with `to_route()`              | 🟢 LOW       | `[path]`, `--dry-run`, `--force`    |
+
 ## 📁 Configuration
 
 Configuration is defined in PHP via `config.php`, allowing you to enable/disable commands or set options per tool. Example:
@@ -218,6 +224,10 @@ The PHPStan health check reads from `config/phpstan.neon` by default, so tweak t
     vendor/bin/syntra yii:find-shortcuts --dry-run
     vendor/bin/syntra yii:find-one-id --dry-run
     vendor/bin/syntra yii:check-translations
+    ```
+5. **Framework-Specific Optimizations** (Laravel example):
+    ```bash
+    vendor/bin/syntra laravel:to-route --dry-run
     ```
 
 ### Integration with CI/CD
