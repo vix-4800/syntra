@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 use Vix\Syntra\Application;
 use Vix\Syntra\Utils\ConfigLoader;
-use Vix\Syntra\Utils\FileHelper;
+use Vix\Syntra\Facades\File;
 
 class DocblockRefactorerTest extends TestCase
 {
@@ -38,7 +38,7 @@ class DocblockRefactorerTest extends TestCase
     {
         $app = new Application();
         $container = $app->getContainer();
-        $container->get(FileHelper::class)->clearCache();
+        File::clearCache();
         $container->get(ConfigLoader::class)->setProjectRoot($this->dir);
 
         $command = $app->find('refactor:docblocks');
