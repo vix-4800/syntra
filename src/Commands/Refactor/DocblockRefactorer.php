@@ -52,6 +52,20 @@ class DocblockRefactorer extends SyntraRefactorCommand
 
         $this->finishProgress();
 
+        $changed = File::getChangedFiles();
+        File::clearChangedFiles();
+
+        if ($changed) {
+            $this->output->section('Changed files');
+            $list = array_map(
+                fn (string $f): string => File::makeRelative($f, Config::getProjectRoot()),
+                $changed
+            );
+            $this->listing($list);
+        } else {
+            $this->output->success('No files needed updating.');
+        }
+
         return Command::SUCCESS;
     }
 
