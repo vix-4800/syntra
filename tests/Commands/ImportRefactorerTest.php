@@ -36,7 +36,6 @@ class ImportRefactorerTest extends TestCase
     private function runCommand(array $options = []): void
     {
         $app = new Application();
-        $app->getContainer();
         Config::setProjectRoot($this->dir);
 
         $command = $app->find('refactor:imports');

@@ -31,7 +31,6 @@ class OutputFileTest extends TestCase
     public function testWritesToOutputFile(): void
     {
         $app = new Application();
-        $app->getContainer();
         Config::setProjectRoot(sys_get_temp_dir());
 
         $command = $this->makeCommand();

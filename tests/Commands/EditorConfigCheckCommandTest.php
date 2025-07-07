@@ -59,7 +59,6 @@ class EditorConfigCheckCommandTest extends TestCase
         mkdir($dir);
 
         $app = new Application();
-        $app->getContainer();
         Config::setProjectRoot($dir);
 
         $command = $app->find('health:editorconfig');
