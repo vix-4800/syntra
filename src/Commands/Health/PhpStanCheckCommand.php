@@ -8,8 +8,6 @@ use Vix\Syntra\Commands\Health\HealthCheckCommandInterface;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\DTO\CommandResult;
 use Vix\Syntra\Enums\CommandGroup;
-use Vix\Syntra\Exceptions\CommandException;
-use Vix\Syntra\Exceptions\MissingBinaryException;
 use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\Process;
 use Vix\Syntra\Traits\HandlesResultTrait;
@@ -74,12 +72,7 @@ class PhpStanCheckCommand extends SyntraCommand implements HealthCheckCommandInt
     {
         $this->output->section('Running PHPStan...');
 
-        try {
-            $result = $this->runCheck();
-        } catch (MissingBinaryException|CommandException $e) {
-            $this->output->error($e->getMessage());
-            return self::FAILURE;
-        }
+        $result = $this->runCheck();
 
         return $this->handleResult($result, 'PHPStan analysis completed.', $this->failOnWarning);
     }

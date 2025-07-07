@@ -11,11 +11,17 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Console\Helper\QuestionHelper;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Vix\Syntra\Enums\ProgressIndicatorType;
 use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Facades\Installer;
 use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
 use Vix\Syntra\ProgressIndicators\ProgressIndicatorInterface;
 use Vix\Syntra\Traits\HasStyledOutput;
+use Vix\Syntra\Enums\CommandStatus;
+use Vix\Syntra\Exceptions\CommandException;
+use Vix\Syntra\Exceptions\MissingBinaryException;
 use Vix\Syntra\Utils\FileHelper;
 use Vix\Syntra\Utils\TeeOutput;
 
@@ -87,7 +93,15 @@ abstract class SyntraCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        return $this->perform();
+        try {
+            return $this->perform();
+        } catch (MissingBinaryException $e) {
+            return $this->handleMissingBinary($e);
+        } catch (CommandException $e) {
+            $this->output->error($e->getMessage());
+
+            return self::FAILURE;
+        }
     }
 
     abstract public function perform(): int;
@@ -118,5 +132,49 @@ abstract class SyntraCommand extends Command
     protected function setProgressMax(int $max): void
     {
         $this->progressMax = $max;
+    }
+
+    /**
+     * Handle MissingBinaryException uniformly across commands.
+     */
+    protected function handleMissingBinary(MissingBinaryException $e): int
+    {
+        $this->output->error($e->getMessage());
+
+        if ($e->suggestedInstall && $this->input->isInteractive()) {
+            /** @var QuestionHelper $helper */
+            $helper = $this->getHelper('question');
+            if ($helper instanceof QuestionHelper) {
+                $question = new ConfirmationQuestion(
+                    '<fg=yellow>Do you want to install it now? (y/N): </>',
+                    false,
+                    '/^(y|yes)$/i'
+                );
+
+                if ($helper->ask($this->input, $this->output, $question)) {
+                    $this->output->writeln("Running: $e->suggestedInstall");
+                    $commandResult = Installer::install($e->suggestedInstall);
+
+                    if (method_exists($this, 'handleResult')) {
+                        $this->handleResult($commandResult, 'Installation finished.');
+                    } else {
+                        $status = $commandResult->status;
+                        if ($status === CommandStatus::OK) {
+                            $this->output->success('Installation finished.');
+                        } elseif ($status === CommandStatus::WARNING) {
+                            $this->output->warning('Installation finished with warnings.');
+                        } else {
+                            $this->output->error('Installation failed.');
+                        }
+
+                        foreach ($commandResult->messages as $msg) {
+                            $this->output->writeln('  - ' . $msg);
+                        }
+                    }
+                }
+            }
+        }
+
+        return self::FAILURE;
     }
 }
