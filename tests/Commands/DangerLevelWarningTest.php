@@ -3,8 +3,8 @@
 namespace Vix\Syntra\Tests\Commands;
 
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Tester\CommandTester;
 use Vix\Syntra\Application;
 use Vix\Syntra\Commands\SyntraRefactorCommand;
 use Vix\Syntra\Enums\DangerLevel;
@@ -18,7 +18,7 @@ class DangerLevelWarningTest extends TestCase
         $container = $app->getContainer();
         $container->get(ConfigLoader::class)->setProjectRoot(sys_get_temp_dir());
 
-        $command = new class extends SyntraRefactorCommand {
+        $command = new class () extends SyntraRefactorCommand {
             protected function configure(): void
             {
                 parent::configure();

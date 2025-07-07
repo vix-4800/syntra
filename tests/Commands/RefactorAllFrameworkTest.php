@@ -3,9 +3,10 @@
 namespace Vix\Syntra\Tests\Commands;
 
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Tester\CommandTester;
 use Vix\Syntra\Application;
+use Vix\Syntra\Commands\Extension\Yii\YiiAllCommand;
 use Vix\Syntra\Commands\Refactor\RefactorAllCommand;
 use Vix\Syntra\Utils\ConfigLoader;
 use Vix\Syntra\Utils\FileHelper;
@@ -28,7 +29,7 @@ class RefactorAllFrameworkTest extends TestCase
         $container = $app->getContainer();
         $container->get(ConfigLoader::class)->setProjectRoot($dir);
 
-        $command = new class extends RefactorAllCommand {
+        $command = new class () extends RefactorAllCommand {
             public array $executed = [];
             protected function runCommand(string $class, array $input = []): int
             {
@@ -41,7 +42,7 @@ class RefactorAllFrameworkTest extends TestCase
         $tester = new CommandTester($command);
         $tester->execute(['--framework' => true, '--force' => true]);
 
-        $this->assertContains('Vix\\Syntra\\Commands\\Extension\\Yii\\YiiAllCommand', $command->executed);
+        $this->assertContains(YiiAllCommand::class, $command->executed);
 
         unlink("$dir/composer.json");
         rmdir($dir);

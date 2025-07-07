@@ -6,10 +6,9 @@ namespace Vix\Syntra\Commands\Refactor;
 
 use Symfony\Component\Console\Command\Command;
 use Vix\Syntra\Commands\SyntraRefactorCommand;
+use Vix\Syntra\Enums\ProgressIndicatorType;
 use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\File;
-use Vix\Syntra\Enums\ProgressIndicatorType;
-use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
 
 /**
  * Refactors @var comments by standardizing the order of type and variable name.

@@ -11,11 +11,10 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Throwable;
 use Vix\Syntra\Commands\SyntraCommand;
+use Vix\Syntra\Enums\ProgressIndicatorType;
 use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\File;
 use Vix\Syntra\NodeVisitors\DocsVisitor;
-use Vix\Syntra\Enums\ProgressIndicatorType;
-use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
 use Vix\Syntra\Traits\ContainerAwareTrait;
 use Vix\Syntra\Utils\ProjectDetector;
 

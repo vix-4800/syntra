@@ -6,10 +6,9 @@ namespace Vix\Syntra\Commands\Analyze;
 
 use Symfony\Component\Console\Command\Command;
 use Vix\Syntra\Commands\SyntraCommand;
+use Vix\Syntra\Enums\ProgressIndicatorType;
 use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\File;
-use Vix\Syntra\Enums\ProgressIndicatorType;
-use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
 
 class FindTodosCommand extends SyntraCommand
 {

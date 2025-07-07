@@ -7,13 +7,13 @@ namespace Vix\Syntra\Commands\Refactor;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Vix\Syntra\Commands\Extension\Laravel\LaravelAllCommand;
+use Vix\Syntra\Commands\Extension\Yii\YiiAllCommand;
 use Vix\Syntra\Commands\SyntraRefactorCommand;
 use Vix\Syntra\Enums\DangerLevel;
 use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Traits\CommandRunnerTrait;
 use Vix\Syntra\Utils\ProjectDetector;
-use Vix\Syntra\Commands\Extension\Yii\YiiAllCommand;
-use Vix\Syntra\Commands\Extension\Laravel\LaravelAllCommand;
 
 class RefactorAllCommand extends SyntraRefactorCommand
 {
@@ -33,7 +33,7 @@ class RefactorAllCommand extends SyntraRefactorCommand
             ->addOption('framework', null, InputOption::VALUE_NONE, 'Also run framework-specific refactorings (Yii or Laravel)');
     }
 
-    protected function initialize(InputInterface $input, \Symfony\Component\Console\Output\OutputInterface $output): void
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->runFramework = (bool) $input->getOption('framework');
 
@@ -45,7 +45,7 @@ class RefactorAllCommand extends SyntraRefactorCommand
         $enabled = Config::getEnabledCommands();
         $commands = array_filter(
             $enabled,
-            static fn(string $class): bool => str_contains($class, '\\Commands\\Refactor\\') && $class !== self::class
+            static fn (string $class): bool => str_contains($class, '\\Commands\\Refactor\\') && $class !== self::class
         );
 
         $hasErrors = false;
