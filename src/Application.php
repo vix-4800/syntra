@@ -61,33 +61,29 @@ class Application extends SymfonyApplication
     {
         $configLoader = $this->container->get(ConfigLoader::class);
 
-        foreach ($configLoader->getEnabledCommands() as $class) {
-            if (!class_exists($class)) {
-                continue;
-            }
-
-            // Ensure it's a concrete subclass of Syntra Command
-            $reflectionClass = new ReflectionClass($class);
-
-            if (
-                is_subclass_of($class, SyntraCommand::class)
-                && !$reflectionClass->isAbstract()
-            ) {
-                $instance = $this->container->make($class);
-                $this->add($instance);
-            }
-        }
+        $this->registerFromConfig($configLoader->getEnabledCommands());
     }
 
     private function registerExtensionCommands(): void
     {
         $configLoader = $this->container->get(ConfigLoader::class);
 
-        foreach ($configLoader->getEnabledExtensionCommands() as $class) {
+        $this->registerFromConfig($configLoader->getEnabledExtensionCommands());
+    }
+
+    /**
+     * Register commands from configuration
+     *
+     * @param string[] $classes List of command class names
+     */
+    private function registerFromConfig(array $classes): void
+    {
+        foreach ($classes as $class) {
             if (!class_exists($class)) {
                 continue;
             }
 
+            // Ensure it's a concrete subclass of Syntra Command
             $reflectionClass = new ReflectionClass($class);
 
             if (
