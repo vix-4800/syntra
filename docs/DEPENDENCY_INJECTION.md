@@ -76,7 +76,7 @@ Registers core application services:
 
 -   `ConfigLoader` - Configuration management
 -   `ProcessRunner` - Process execution
--   `FileHelper` - File operations
+-   `FileHelper` - File operations (available via the `File` facade)
     -   caches results of file searches during a single run for performance
 
 ### HealthServiceProvider

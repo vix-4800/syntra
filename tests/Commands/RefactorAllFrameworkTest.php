@@ -9,7 +9,7 @@ use Vix\Syntra\Application;
 use Vix\Syntra\Commands\Extension\Yii\YiiAllCommand;
 use Vix\Syntra\Commands\Refactor\RefactorAllCommand;
 use Vix\Syntra\Utils\ConfigLoader;
-use Vix\Syntra\Utils\FileHelper;
+use Vix\Syntra\Facades\File;
 
 class RefactorAllFrameworkTest extends TestCase
 {
@@ -23,10 +23,9 @@ class RefactorAllFrameworkTest extends TestCase
             ],
         ]));
 
-        FileHelper::clearCache();
-
         $app = new Application();
         $container = $app->getContainer();
+        File::clearCache();
         $container->get(ConfigLoader::class)->setProjectRoot($dir);
 
         $command = new class () extends RefactorAllCommand {
