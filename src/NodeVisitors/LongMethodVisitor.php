@@ -8,12 +8,9 @@ use PhpParser\Node;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\Node\Stmt\Function_;
-use PhpParser\NodeVisitorAbstract;
 
-class LongMethodVisitor extends NodeVisitorAbstract
+class LongMethodVisitor extends NodeVisitor
 {
-    public array $results;
-
     public function __construct(private readonly string $filePath, private readonly int $maxLength, &$results)
     {
         $this->results = &$results;

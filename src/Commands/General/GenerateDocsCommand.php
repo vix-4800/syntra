@@ -83,7 +83,7 @@ class GenerateDocsCommand extends SyntraCommand
             $traverser->addVisitor($visitor);
             $traverser->traverse($ast);
 
-            $routes = array_merge($routes, $visitor->routes);
+            $routes = array_merge($routes, $visitor->getResults());
 
             $this->advanceProgress();
         }

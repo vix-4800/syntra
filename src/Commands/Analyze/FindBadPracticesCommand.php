@@ -15,6 +15,7 @@ use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\File;
 use Vix\Syntra\NodeVisitors\AssignmentInConditionVisitor;
 use Vix\Syntra\NodeVisitors\NestedTernaryVisitor;
+use Vix\Syntra\NodeVisitors\NodeVisitor;
 use Vix\Syntra\Traits\ContainerAwareTrait;
 
 class FindBadPracticesCommand extends SyntraCommand
@@ -77,15 +78,14 @@ class FindBadPracticesCommand extends SyntraCommand
 
             // Get findings from visitors
             foreach ($visitors as $visitor) {
-                if (property_exists($visitor, 'findings')) {
-                    foreach ($visitor->findings as $finding) {
-                        $rows[] = [
-                            $file,
-                            $finding['line'],
-                            $this->snippet($finding['code'] ?? ''),
-                            $finding['message'] ?? '',
-                        ];
-                    }
+                /** @var NodeVisitor $visitor */
+                foreach ($visitor->getResults() as $finding) {
+                    $rows[] = [
+                        $file,
+                        $finding['line'],
+                        $this->snippet($finding['code'] ?? ''),
+                        $finding['message'] ?? '',
+                    ];
                 }
             }
 

@@ -7,20 +7,17 @@ namespace Vix\Syntra\NodeVisitors;
 use PhpParser\Node;
 use PhpParser\Node\Expr\Throw_;
 use PhpParser\Node\Stmt\Return_;
-use PhpParser\NodeVisitorAbstract;
 use PhpParser\PrettyPrinter\Standard;
 
-class ReturnThrowVisitor extends NodeVisitorAbstract
+class ReturnThrowVisitor extends NodeVisitor
 {
-    public $findings = [];
-
     public function enterNode(Node $node): void
     {
         if (
             $node instanceof Return_
             && $node->expr instanceof Throw_
         ) {
-            $this->findings[] = [
+            $this->results[] = [
                 'line' => $node->getLine(),
                 'code' => $this->prettyPrintNode($node),
                 'message' => 'Return throw',

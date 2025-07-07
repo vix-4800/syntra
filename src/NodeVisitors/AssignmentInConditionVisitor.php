@@ -10,19 +10,16 @@ use PhpParser\Node\Expr\Assign;
 use PhpParser\Node\Stmt\ElseIf_;
 use PhpParser\Node\Stmt\If_;
 use PhpParser\Node\Stmt\While_;
-use PhpParser\NodeVisitorAbstract;
 use PhpParser\PrettyPrinter\Standard;
 
-class AssignmentInConditionVisitor extends NodeVisitorAbstract
+class AssignmentInConditionVisitor extends NodeVisitor
 {
-    public $findings = [];
-
     public function enterNode(Node $node): void
     {
         if ($node instanceof If_ || $node instanceof ElseIf_ || $node instanceof While_) {
             $assignments = $this->findAssignments($node->cond);
             foreach ($assignments as $assignNode) {
-                $this->findings[] = [
+                $this->results[] = [
                     'line' => $node->getLine(),
                     'code' => $this->prettyPrintNode($assignNode),
                     'message' => 'Assignment in condition',
