@@ -36,10 +36,9 @@ class DocblockRefactorerTest extends TestCase
 
     private function runCommand(): string
     {
-        FileHelper::clearCache();
-
         $app = new Application();
         $container = $app->getContainer();
+        $container->get(FileHelper::class)->clearCache();
         $container->get(ConfigLoader::class)->setProjectRoot($this->dir);
 
         $command = $app->find('refactor:docblocks');

@@ -19,10 +19,10 @@ use Vix\Syntra\Exceptions\CommandException;
 use Vix\Syntra\Exceptions\MissingBinaryException;
 use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\Installer;
+use Vix\Syntra\Facades\File;
 use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
 use Vix\Syntra\ProgressIndicators\ProgressIndicatorInterface;
 use Vix\Syntra\Traits\HasStyledOutput;
-use Vix\Syntra\Utils\FileHelper;
 use Vix\Syntra\Utils\TeeOutput;
 
 abstract class SyntraCommand extends Command
@@ -83,7 +83,7 @@ abstract class SyntraCommand extends Command
             $this->failOnWarning = true;
         }
 
-        FileHelper::setCacheEnabled(!$this->noCache);
+        File::setCacheEnabled(!$this->noCache);
 
         $argPath = $input->getArgument('path');
         if ($argPath !== null) {

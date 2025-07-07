@@ -18,7 +18,7 @@ class ProjectDetectorTest extends TestCase
             ],
         ]));
 
-        FileHelper::clearCache();
+        (new FileHelper())->clearCache();
 
         $detector = new ProjectDetector();
         $this->assertSame(ProjectDetector::TYPE_YII, $detector->detect($dir));
@@ -37,7 +37,7 @@ class ProjectDetectorTest extends TestCase
             ],
         ]));
 
-        FileHelper::clearCache();
+        (new FileHelper())->clearCache();
 
         $detector = new ProjectDetector();
         $this->assertSame(ProjectDetector::TYPE_LARAVEL, $detector->detect($dir));
@@ -56,7 +56,7 @@ class ProjectDetectorTest extends TestCase
             ],
         ]));
 
-        FileHelper::clearCache();
+        (new FileHelper())->clearCache();
 
         $detector = new ProjectDetector();
         $this->assertSame(ProjectDetector::TYPE_UNKNOWN, $detector->detect($dir));

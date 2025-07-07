@@ -16,9 +16,8 @@ class FindTodosCommandTest extends TestCase
         mkdir($dir);
         file_put_contents("$dir/sample.php", "<?php\n// TODO: fix me\n");
 
-        FileHelper::clearCache();
-
         $app = new Application();
+        $app->getContainer()->get(FileHelper::class)->clearCache();
         Config::setContainer($app->getContainer());
         Config::setProjectRoot($dir);
 
@@ -40,9 +39,8 @@ class FindTodosCommandTest extends TestCase
         mkdir($dir);
         file_put_contents("$dir/sample.php", "<?php\n// TODO: fix me\n");
 
-        FileHelper::clearCache();
-
         $app = new Application();
+        $app->getContainer()->get(FileHelper::class)->clearCache();
         Config::setContainer($app->getContainer());
         Config::setProjectRoot($dir);
 

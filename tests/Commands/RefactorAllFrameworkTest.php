@@ -23,10 +23,9 @@ class RefactorAllFrameworkTest extends TestCase
             ],
         ]));
 
-        FileHelper::clearCache();
-
         $app = new Application();
         $container = $app->getContainer();
+        $container->get(FileHelper::class)->clearCache();
         $container->get(ConfigLoader::class)->setProjectRoot($dir);
 
         $command = new class () extends RefactorAllCommand {

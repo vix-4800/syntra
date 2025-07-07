@@ -13,29 +13,29 @@ class FileHelper
     /**
      * @var array<string, string[]>
      */
-    private static array $filesCache = [];
+    private array $filesCache = [];
 
-    private static bool $cacheEnabled = true;
+    private bool $cacheEnabled = true;
 
     /**
      * @var string[]
      */
-    private static array $changedFiles = [];
+    private array $changedFiles = [];
 
     /**
      * Clears the internal files cache.
      */
-    public static function clearCache(): void
+    public function clearCache(): void
     {
-        self::$filesCache = [];
+        $this->filesCache = [];
     }
 
-    public static function setCacheEnabled(bool $enabled): void
+    public function setCacheEnabled(bool $enabled): void
     {
-        self::$cacheEnabled = $enabled;
+        $this->cacheEnabled = $enabled;
 
         if (!$enabled) {
-            self::$filesCache = [];
+            $this->filesCache = [];
         }
     }
 
@@ -44,17 +44,17 @@ class FileHelper
      *
      * @return string[]
      */
-    public static function getChangedFiles(): array
+    public function getChangedFiles(): array
     {
-        return self::$changedFiles;
+        return $this->changedFiles;
     }
 
     /**
      * Clears the list of changed files.
      */
-    public static function clearChangedFiles(): void
+    public function clearChangedFiles(): void
     {
-        self::$changedFiles = [];
+        $this->changedFiles = [];
     }
 
     /**
@@ -66,8 +66,8 @@ class FileHelper
     public function collectFiles(string $dir, array $extensions = ['php'], array $excludeDirs = ['vendor', 'tests']): array
     {
         $cacheKey = md5($dir . '|' . implode(',', $extensions) . '|' . implode(',', $excludeDirs));
-        if (self::$cacheEnabled && isset(self::$filesCache[$cacheKey])) {
-            return self::$filesCache[$cacheKey];
+        if ($this->cacheEnabled && isset($this->filesCache[$cacheKey])) {
+            return $this->filesCache[$cacheKey];
         }
 
         $files = [];
@@ -90,8 +90,8 @@ class FileHelper
             }
         }
 
-        if (self::$cacheEnabled) {
-            self::$filesCache[$cacheKey] = $files;
+        if ($this->cacheEnabled) {
+            $this->filesCache[$cacheKey] = $files;
         }
 
         return $files;
@@ -104,7 +104,7 @@ class FileHelper
     {
         if ($newContent !== $oldContent) {
             file_put_contents($filePath, $newContent);
-            self::$changedFiles[] = $filePath;
+            $this->changedFiles[] = $filePath;
         }
     }
 
