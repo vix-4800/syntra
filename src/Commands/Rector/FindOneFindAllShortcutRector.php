@@ -14,11 +14,12 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 /**
  * This Rector rule converts query chains like:
  * Model::find()->where([...])->one() / all()
+ * Model::find()->where([...])->limit(1)->one() / all()
  * into their shorter equivalents:
  * Model::findOne([...]) / findAll([...])
  *
  * Applies only when the call chain exactly matches the structure:
- * StaticCall::find() -> MethodCall::where(...) -> MethodCall::one()/all()
+ * StaticCall::find() -> MethodCall::where(...) -> [MethodCall::limit(1) ->] MethodCall::one()/all()
  */
 class FindOneFindAllShortcutRector extends AbstractRector
 {
@@ -30,7 +31,7 @@ class FindOneFindAllShortcutRector extends AbstractRector
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition(
-            'Converts Model::find()->where([...])->one()/all() into Model::findOne([...]) or findAll([...])',
+            'Converts Model::find()->where([...])->one()/all() or Model::find()->where([...])->limit(1)->one()/all() into Model::findOne([...]) or findAll([...])',
             []
         );
     }
@@ -64,8 +65,27 @@ class FindOneFindAllShortcutRector extends AbstractRector
             return null;
         }
 
-        // Ensure the previous call is ->where(...)
+        // Allow optional ->limit(1) immediately before ->one()
         $whereCall = $node->var;
+        if ($whereCall instanceof MethodCall && $whereCall->name instanceof Identifier && $whereCall->name->toString() === 'limit') {
+            // limit is only allowed when calling ->one()
+            if ($methodName !== 'one') {
+                return null;
+            }
+
+            if (count($whereCall->args) < 1) {
+                return null;
+            }
+
+            $limitArg = $whereCall->args[0]->value;
+            if (!$limitArg instanceof \PhpParser\Node\Scalar\LNumber || $limitArg->value !== 1) {
+                return null;
+            }
+
+            $whereCall = $whereCall->var;
+        }
+
+        // Ensure the previous call is ->where(...)
         if (
             !($whereCall instanceof MethodCall) ||
             !($whereCall->name instanceof Identifier) ||
