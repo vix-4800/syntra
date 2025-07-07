@@ -120,7 +120,7 @@ All commands support these standard options (with an optional `[path]` argument 
 | `refactor:var-comments` | Standardizes @var comments to `/** @var Type $var */`             | 🟢 LOW       | `[path]`, `--dry-run`, `--no-cache`, `--force`                                     |
 | `refactor:docblocks`    | Adds a file-level PHPDoc block and class PHPDoc blocks if missing | 🟡 MEDIUM    | `[path]`, `--dry-run`, `--no-cache`, `--force`, `--author`, `--link`, `--category` |
 | `refactor:rector`       | Runs Rector for automated refactoring                             | 🔴 HIGH      | `[path]`, `--dry-run`, `--no-cache`, `--force`                                     |
-| `refactor:all`          | Runs all enabled refactor commands sequentially    | 🔴 HIGH      | `[path]`, `--dry-run`, `--no-cache`, `--force`                                  |
+| `refactor:all`          | Runs all enabled refactor commands sequentially    | 🔴 HIGH      | `[path]`, `--dry-run`, `--no-cache`, `--force`, `--framework`                                  |
 
 ### 🧠 General
 
@@ -143,6 +143,13 @@ All commands support these standard options (with an optional `[path]` argument 
 | `yii:check-translations`       | Checks Yii::t translations: finds missing and unused keys across all categories                      | N/A          | `[path]`, `--dry-run`, `--lang`     |
 | `yii:convert-access-chain`     | Replaces `user->identity->hasAccessChain/hasNoAccessChain` with `user->canAny/cannotAny`             | N/A          | `[path]`, `--dry-run`, `--no-cache` |
 | `yii:user-findone-to-identity` | Replaces redundant `User::findOne(...)` lookups for current user with `Yii::$app->user->identity`    | N/A          | `[path]`, `--dry-run`, `--no-cache` |
+
+### 🧩 Laravel Framework Extensions
+
+| Command | Description | Danger Level | Options |
+| ---------------------- | --------------------------------------------- | ------------ | ---------------------------- |
+| `laravel:all` | Runs all Laravel-specific Rector refactorings in sequence | 🟢 LOW | `[path]`, `--dry-run`, `--force` |
+
 
 ## 📁 Configuration
 
