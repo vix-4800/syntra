@@ -144,7 +144,6 @@ abstract class SyntraCommand extends Command
         $this->output->error($e->getMessage());
 
         if ($e->suggestedInstall && $this->input->isInteractive()) {
-            /** @var QuestionHelper $helper */
             $helper = $this->getHelper('question');
             if ($helper instanceof QuestionHelper) {
                 $question = new ConfirmationQuestion(
@@ -157,22 +156,7 @@ abstract class SyntraCommand extends Command
                     $this->output->writeln("Running: $e->suggestedInstall");
                     $commandResult = Installer::install($e->suggestedInstall);
 
-                    if (method_exists($this, 'handleResult')) {
-                        $this->handleResult($commandResult, 'Installation finished.');
-                    } else {
-                        $status = $commandResult->status;
-                        if ($status === CommandStatus::OK) {
-                            $this->output->success('Installation finished.');
-                        } elseif ($status === CommandStatus::WARNING) {
-                            $this->output->warning('Installation finished with warnings.');
-                        } else {
-                            $this->output->error('Installation failed.');
-                        }
-
-                        foreach ($commandResult->messages as $msg) {
-                            $this->output->writeln('  - ' . $msg);
-                        }
-                    }
+                    $this->handleResult($commandResult, 'Installation finished.');
                 }
             }
         }

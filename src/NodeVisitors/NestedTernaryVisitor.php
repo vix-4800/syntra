@@ -11,7 +11,7 @@ use PhpParser\PrettyPrinter\Standard;
 
 class NestedTernaryVisitor extends NodeVisitor
 {
-    public function enterNode(Node $node): void
+    public function enterNode(Node $node)
     {
         if ($node instanceof Ternary) {
             foreach (['if', 'else'] as $side) {
@@ -24,6 +24,8 @@ class NestedTernaryVisitor extends NodeVisitor
                 }
             }
         }
+
+        return null;
     }
 
     private function prettyPrintNode(Expr $node): string

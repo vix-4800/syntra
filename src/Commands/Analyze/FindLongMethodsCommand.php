@@ -79,9 +79,14 @@ class FindLongMethodsCommand extends SyntraCommand
 
         usort($longMethods, fn ($a, $b): int => [$a[0], $a[1], $a[2]] <=> [$b[0], $b[1], $b[2]]);
 
+        $rows = array_map(
+            static fn (array $row): array => array_map('strval', $row),
+            $longMethods,
+        );
+
         $this->table(
             ['File', 'Class', 'Method', 'Length', 'Start', 'End'],
-            $longMethods
+            $rows,
         );
 
         $this->output->warning(count($longMethods) . " method(s)/function(s) longer than $maxLength lines found.");

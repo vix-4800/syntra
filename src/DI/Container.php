@@ -69,11 +69,7 @@ class Container implements ContainerInterface
 
     public function get(string $id): mixed
     {
-        try {
-            return $this->resolve($id);
-        } catch (ReflectionException $e) {
-            throw new NotFoundException("Service '$id' not found in container", 0, $e);
-        }
+        return $this->resolve($id);
     }
 
     public function make(string $class): object

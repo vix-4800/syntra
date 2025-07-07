@@ -50,7 +50,7 @@ interface ContainerInterface extends PsrContainerInterface
     /**
      * Resolve a service with automatic dependency injection
      *
-     * @template T
+     * @template T of object
      * @param  class-string<T> $class
      * @return T
      */
