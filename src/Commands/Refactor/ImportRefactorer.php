@@ -8,6 +8,7 @@ use Symfony\Component\Console\Command\Command;
 use Vix\Syntra\Commands\SyntraRefactorCommand;
 use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\File;
+use Vix\Syntra\Enums\ProgressIndicatorType;
 use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
 
 /**
@@ -18,7 +19,7 @@ use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
  */
 class ImportRefactorer extends SyntraRefactorCommand
 {
-    protected string $progressType = ProgressIndicatorFactory::TYPE_PROGRESS_BAR;
+    protected ProgressIndicatorType $progressType = ProgressIndicatorType::PROGRESS_BAR;
 
     protected function configure(): void
     {

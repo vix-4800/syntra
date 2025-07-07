@@ -13,6 +13,7 @@
 -   **Cache Reset**: Call `FileHelper::clearCache()` to manually reset cached file lists when working with temporary directories or tests.
 -   **No-Cache Option**: Use `--no-cache` to disable caching for a single command run.
 -   **Facades**: Convenient static access to common services.
+-   **Progress Indicators**: Choose between spinner, progress bar, bouncing, or none via the `ProgressIndicatorType` enum.
 
 ## 📦 Installation
 
@@ -72,6 +73,8 @@ All commands support these standard options (with an optional `[path]` argument 
 -   `--force` / `-f`: Force execution, ignore warnings (refactor commands only)
 -   `--no-progress`: Disable progress output
 -   `--no-cache`: Disable file caching (useful for temporary directories)
+-   `--fail-on-warning`: Return exit code 1 if warnings were found
+-   `--ci`: CI mode, implies `--no-progress` and `--fail-on-warning`
 -   `--help` / `-h`: Display help for the command
 -   `--quiet` / `-q`: Only show errors
 -   `--verbose` / `-v/-vv/-vvv`: Increase verbosity level
@@ -135,19 +138,25 @@ All commands support these standard options (with an optional `[path]` argument 
 
 Configuration is defined in PHP via `config.php`, allowing you to enable/disable commands or set options per tool. Example:
 
+The default group names are provided as enum cases in `Vix\Syntra\Enums\CommandGroup`.
+
 ```php
+use Vix\Syntra\Enums\CommandGroup;
+
 return [
-    'refactor' => [
+    CommandGroup::REFACTOR->value => [
         PhpCsFixerRefactorer::class => [
             'enabled' => true,
             'config' => __DIR__ . '/config/php_cs_fixer.php',
         ],
     ],
-    'yii' => [
+    CommandGroup::YII->value => [
         YiiFindShortcutsCommand::class => true,
     ],
 ];
 ```
+
+The PHPStan health check reads from `config/phpstan.neon` by default, so tweak that file to customize analysis settings.
 
 ## 💡 Tips & Best Practices
 
@@ -211,6 +220,9 @@ Add to your CI pipeline:
   run: |
       vendor/bin/syntra health:project
       vendor/bin/syntra analyze:find-debug-calls
+
+# Fail the pipeline on warnings
+      vendor/bin/syntra health:composer --ci
 ```
 
 ### Running Tests

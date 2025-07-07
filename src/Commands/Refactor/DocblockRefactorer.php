@@ -10,12 +10,13 @@ use Vix\Syntra\Commands\SyntraRefactorCommand;
 use Vix\Syntra\Enums\DangerLevel;
 use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\File;
+use Vix\Syntra\Enums\ProgressIndicatorType;
 use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
 use Vix\Syntra\Utils\StubHelper;
 
 class DocblockRefactorer extends SyntraRefactorCommand
 {
-    protected string $progressType = ProgressIndicatorFactory::TYPE_PROGRESS_BAR;
+    protected ProgressIndicatorType $progressType = ProgressIndicatorType::PROGRESS_BAR;
 
     protected function configure(): void
     {

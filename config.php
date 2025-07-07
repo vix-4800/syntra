@@ -20,6 +20,7 @@ use Vix\Syntra\Commands\Extension\Yii\YiiUserFindoneToIdentityCommand;
 use Vix\Syntra\Commands\General\GenerateCommandCommand;
 use Vix\Syntra\Commands\General\GenerateDocsCommand;
 use Vix\Syntra\Commands\Health\ComposerCheckCommand;
+use Vix\Syntra\Commands\Health\EditorConfigCheckCommand;
 use Vix\Syntra\Commands\Health\PhpStanCheckCommand;
 use Vix\Syntra\Commands\Health\PhpUnitCheckCommand;
 use Vix\Syntra\Commands\Health\ProjectCheckCommand;
@@ -30,6 +31,7 @@ use Vix\Syntra\Commands\Refactor\PhpCsFixerRefactorer;
 use Vix\Syntra\Commands\Refactor\RectorRefactorer;
 use Vix\Syntra\Commands\Refactor\VarCommentsRefactorer;
 use Vix\Syntra\Commands\Refactor\RefactorAllCommand;
+use Vix\Syntra\Enums\CommandGroup;
 
 /**
  * Syntra Configuration
@@ -60,9 +62,9 @@ return [
     'web' => [
         'enabled' => true,
     ],
-
+  
     // Command configurations
-    'refactor' => [
+    CommandGroup::REFACTOR->value => [
         RefactorAllCommand::class => [
             'enabled' => true,
             'web_enabled' => true,
@@ -91,8 +93,12 @@ return [
             'commands_config' => PACKAGE_ROOT . '/config/rector_only_custom.php',
         ],
     ],
-    'health' => [
+    CommandGroup::HEALTH->value => [
         ComposerCheckCommand::class => [
+            'enabled' => true,
+            'web_enabled' => true,
+        ],
+        EditorConfigCheckCommand::class => [
             'enabled' => true,
             'web_enabled' => true,
         ],
@@ -115,7 +121,7 @@ return [
             'web_enabled' => true,
         ],
     ],
-    'analyze' => [
+    CommandGroup::ANALYZE->value => [
         AnalyzeAllCommand::class => [
             'enabled' => true,
             'web_enabled' => true,
@@ -137,7 +143,7 @@ return [
             'web_enabled' => true,
         ],
     ],
-    'general' => [
+    CommandGroup::GENERAL->value => [
         GenerateCommandCommand::class => [
             'enabled' => true,
             'web_enabled' => true,
@@ -147,7 +153,7 @@ return [
             'web_enabled' => true,
         ],
     ],
-    'yii' => [
+    CommandGroup::YII->value => [
         YiiAllCommand::class => [
             'enabled' => true,
             'web_enabled' => true,
@@ -189,7 +195,7 @@ return [
             'web_enabled' => true,
         ],
     ],
-    'laravel' => [
+    CommandGroup::LARAVEL->value => [
         //
     ],
 ];

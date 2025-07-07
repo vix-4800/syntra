@@ -7,6 +7,7 @@ namespace Vix\Syntra\Commands\Health;
 use Vix\Syntra\Commands\Health\HealthCheckCommandInterface;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\DTO\CommandResult;
+use Vix\Syntra\Enums\CommandGroup;
 use Vix\Syntra\Exceptions\CommandException;
 use Vix\Syntra\Exceptions\MissingBinaryException;
 use Vix\Syntra\Facades\Config;
@@ -34,10 +35,10 @@ class PhpStanCheckCommand extends SyntraCommand implements HealthCheckCommandInt
 
         $args = [
             'analyse',
-            '--level=' . (int) Config::getCommandOption('health', self::class, 'level', 0),
+            '--level=' . (int) Config::getCommandOption(CommandGroup::HEALTH->value, self::class, 'level', 0),
             '--error-format=json',
             '--no-progress',
-            '--configuration=' . Config::getCommandOption('health', self::class, 'config', 'phpstan.neon'),
+            '--configuration=' . Config::getCommandOption(CommandGroup::HEALTH->value, self::class, 'config', 'phpstan.neon'),
             Config::getProjectRoot(),
         ];
 
@@ -80,6 +81,6 @@ class PhpStanCheckCommand extends SyntraCommand implements HealthCheckCommandInt
             return self::FAILURE;
         }
 
-        return $this->handleResult($result, 'PHPStan analysis completed.');
+        return $this->handleResult($result, 'PHPStan analysis completed.', $this->failOnWarning);
     }
 }

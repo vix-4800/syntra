@@ -14,6 +14,7 @@ use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\File;
 use Vix\Syntra\NodeVisitors\DocsVisitor;
+use Vix\Syntra\Enums\ProgressIndicatorType;
 use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
 use Vix\Syntra\Traits\ContainerAwareTrait;
 use Vix\Syntra\Utils\ProjectDetector;
@@ -22,7 +23,7 @@ class GenerateDocsCommand extends SyntraCommand
 {
     use ContainerAwareTrait;
 
-    protected string $progressType = ProgressIndicatorFactory::TYPE_PROGRESS_BAR;
+    protected ProgressIndicatorType $progressType = ProgressIndicatorType::PROGRESS_BAR;
 
     protected function configure(): void
     {

@@ -9,6 +9,7 @@ use Vix\Syntra\DTO\ProcessResult;
 use Vix\Syntra\Exceptions\MissingBinaryException;
 use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\Process;
+use Vix\Syntra\Enums\CommandGroup;
 
 /**
  * Utility class for executing Rector commands with specific rules
@@ -117,7 +118,7 @@ class RectorCommandExecutor
     private function getRectorConfig(): string
     {
         return Config::getCommandOption(
-            'refactor',
+            CommandGroup::REFACTOR->value,
             RectorRefactorer::class,
             'commands_config'
         );
