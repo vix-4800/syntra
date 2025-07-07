@@ -78,6 +78,8 @@ Registers core application services:
 -   `ProcessRunner` - Process execution
 -   `FileHelper` - File operations (available via the `File` facade)
     -   caches results of file searches during a single run for performance
+-   `ProjectDetector` - Detects framework type (available via the `Project` facade)
+-   `RectorCommandExecutor` - Runs Rector rules (available via the `Rector` facade)
 
 ### HealthServiceProvider
 

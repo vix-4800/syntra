@@ -9,6 +9,7 @@ use Vix\Syntra\Application;
 use Vix\Syntra\Commands\Health\EditorConfigCheckCommand;
 use Vix\Syntra\DI\Container;
 use Vix\Syntra\Enums\CommandStatus;
+use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\Facade;
 use Vix\Syntra\Utils\ConfigLoader;
 
@@ -58,8 +59,8 @@ class EditorConfigCheckCommandTest extends TestCase
         mkdir($dir);
 
         $app = new Application();
-        $container = $app->getContainer();
-        $container->get(ConfigLoader::class)->setProjectRoot($dir);
+        $app->getContainer();
+        Config::setProjectRoot($dir);
 
         $command = $app->find('health:editorconfig');
         $tester = new CommandTester($command);

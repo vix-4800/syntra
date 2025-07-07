@@ -34,7 +34,6 @@ class PhpStanCheckCommand extends SyntraCommand implements HealthCheckCommandInt
 
         $args = [
             'analyse',
-            '--level=' . (int) Config::getCommandOption(CommandGroup::HEALTH->value, self::class, 'level', 0),
             '--error-format=json',
             '--no-progress',
             '--configuration=' . Config::getCommandOption(CommandGroup::HEALTH->value, self::class, 'config', 'phpstan.neon'),

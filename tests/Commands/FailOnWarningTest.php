@@ -8,8 +8,8 @@ use Symfony\Component\Console\Tester\CommandTester;
 use Vix\Syntra\Application;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\DTO\CommandResult;
+use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Traits\HandlesResultTrait;
-use Vix\Syntra\Utils\ConfigLoader;
 
 class FailOnWarningTest extends TestCase
 {
@@ -35,8 +35,8 @@ class FailOnWarningTest extends TestCase
     public function testFailOnWarningOption(): void
     {
         $app = new Application();
-        $container = $app->getContainer();
-        $container->get(ConfigLoader::class)->setProjectRoot(sys_get_temp_dir());
+        $app->getContainer();
+        Config::setProjectRoot(sys_get_temp_dir());
 
         $command = $this->makeCommand();
         $app->add($command);
@@ -50,8 +50,8 @@ class FailOnWarningTest extends TestCase
     public function testCiModeFailsOnWarning(): void
     {
         $app = new Application();
-        $container = $app->getContainer();
-        $container->get(ConfigLoader::class)->setProjectRoot(sys_get_temp_dir());
+        $app->getContainer();
+        Config::setProjectRoot(sys_get_temp_dir());
 
         $command = $this->makeCommand();
         $app->add($command);

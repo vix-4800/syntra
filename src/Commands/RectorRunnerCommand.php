@@ -5,18 +5,13 @@ declare(strict_types=1);
 namespace Vix\Syntra\Commands;
 
 use Exception;
-use Vix\Syntra\Utils\RectorCommandExecutor;
+use Vix\Syntra\Facades\Rector;
 
 /**
  * Generic command base for running specific Rector rules.
  */
 abstract class RectorRunnerCommand extends SyntraRefactorCommand
 {
-    public function __construct(protected RectorCommandExecutor $rectorExecutor)
-    {
-        parent::__construct();
-    }
-
     /**
      * Return Rector rule class(es) to execute.
      *
@@ -69,7 +64,7 @@ abstract class RectorRunnerCommand extends SyntraRefactorCommand
         };
 
         try {
-            $result = $this->rectorExecutor->executeRules($rules, $additionalArgs, $outputCallback);
+            $result = Rector::executeRules($rules, $additionalArgs, $outputCallback);
 
             $this->progressIndicator->setMessage(
                 $result->exitCode === 0 ? $this->getSuccessMessage() : $this->getErrorMessage()

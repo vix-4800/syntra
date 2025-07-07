@@ -112,7 +112,6 @@ return [
             'enabled' => true,
             'web_enabled' => true,
             'config' => config_path('phpstan.neon'),
-            'level' => 5,
         ],
         PhpUnitCheckCommand::class => [
             'enabled' => true,
