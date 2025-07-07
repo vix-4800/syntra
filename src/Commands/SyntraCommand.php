@@ -11,6 +11,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Enums\ProgressIndicatorType;
 use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
 use Vix\Syntra\ProgressIndicators\ProgressIndicatorInterface;
 use Vix\Syntra\Traits\HasStyledOutput;
@@ -25,10 +26,12 @@ abstract class SyntraCommand extends Command
     protected bool $dryRun = false;
     protected bool $noProgress = false;
     protected bool $noCache = false;
+    protected bool $failOnWarning = false;
+    protected bool $ciMode = false;
 
     protected ProgressIndicatorInterface $progressIndicator;
 
-    protected string $progressType = ProgressIndicatorFactory::TYPE_SPINNER;
+    protected ProgressIndicatorType $progressType = ProgressIndicatorType::SPINNER;
 
     protected int $progressMax = 0;
 
@@ -43,7 +46,9 @@ abstract class SyntraCommand extends Command
             ->addArgument('path', InputArgument::OPTIONAL, 'Root path of the project', Config::getProjectRoot())
             ->addOption('dry-run', 'd', InputOption::VALUE_NONE, 'Do not apply changes, only show what would be done')
             ->addOption('no-progress', null, InputOption::VALUE_NONE, 'Disable progress output')
-            ->addOption('no-cache', null, InputOption::VALUE_NONE, 'Disable file caching');
+            ->addOption('no-cache', null, InputOption::VALUE_NONE, 'Disable file caching')
+            ->addOption('fail-on-warning', null, InputOption::VALUE_NONE, 'Return exit code 1 if warnings were found')
+            ->addOption('ci', null, InputOption::VALUE_NONE, 'CI mode (implies --no-progress and --fail-on-warning)');
     }
 
     protected function initialize(InputInterface $input, OutputInterface $output): void
@@ -54,6 +59,13 @@ abstract class SyntraCommand extends Command
         $this->dryRun = (bool) $input->getOption('dry-run');
         $this->noProgress = (bool) $input->getOption('no-progress');
         $this->noCache = (bool) $input->getOption('no-cache');
+        $this->failOnWarning = (bool) $input->getOption('fail-on-warning');
+        $this->ciMode = (bool) $input->getOption('ci') || getenv('CI') !== false;
+
+        if ($this->ciMode) {
+            $this->noProgress = true;
+            $this->failOnWarning = true;
+        }
 
         FileHelper::setCacheEnabled(!$this->noCache);
 
@@ -72,7 +84,7 @@ abstract class SyntraCommand extends Command
 
     protected function startProgress(): void
     {
-        $type = $this->noProgress ? ProgressIndicatorFactory::TYPE_NONE : $this->progressType;
+        $type = $this->noProgress ? ProgressIndicatorType::NONE : $this->progressType;
 
         $this->progressIndicator = ProgressIndicatorFactory::create(
             $type,

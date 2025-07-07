@@ -50,6 +50,11 @@ trait HasDangerLevel
             /** @var QuestionHelper $helper */
             $helper = $this->getHelper('question');
 
+            $output->writeln(sprintf(
+                '<comment>Warning: the danger level of this command is marked as %s and it may be unsafe.</comment>',
+                $this->getDangerLevel()->value,
+            ));
+
             $question = new ConfirmationQuestion(
                 '<fg=yellow>Are you sure you want to execute this command? (y/N): </>',
                 false,

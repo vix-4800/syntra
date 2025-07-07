@@ -11,6 +11,9 @@ Syntra uses a single configuration file (`config.php`) that controls:
 -   **Command Settings**: Tool-specific configurations (like config file paths)
 -   **Security Settings**: Web interface security controls
 
+Default group names are provided as enum cases in `Vix\\Syntra\\Enums\\CommandGroup` to
+avoid typos when referencing configuration sections.
+
 ## Configuration Structure
 
 ```php
@@ -72,14 +75,16 @@ Each command can be configured using either:
 ### Basic Configuration
 
 ```php
+use Vix\Syntra\Enums\CommandGroup;
+
 return [
     'web' => ['enabled' => true],
 
-    'analyze' => [
+    CommandGroup::ANALYZE->value => [
         FindTodosCommand::class => true, // Enabled for both console and web
     ],
 
-    'health' => [
+    CommandGroup::HEALTH->value => [
         ProjectCheckCommand::class => [
             'enabled' => true,     // Console access
             'web_enabled' => true, // Web access
@@ -142,15 +147,15 @@ return [
 
 ### Core Commands
 
--   **`analyze`**: Code analysis commands (safe, read-only)
--   **`health`**: Project health checks (safe, read-only)
--   **`refactor`**: Code modification commands (⚠️ **use with caution**)
--   **`general`**: Utility commands
+-   **`analyze`** (`CommandGroup::ANALYZE`): Code analysis commands (safe, read-only)
+-   **`health`** (`CommandGroup::HEALTH`): Project health checks (safe, read-only)
+-   **`refactor`** (`CommandGroup::REFACTOR`): Code modification commands (⚠️ **use with caution**)
+-   **`general`** (`CommandGroup::GENERAL`): Utility commands
 
 ### Extension Commands
 
--   **`yii`**: Yii framework-specific commands
--   **`laravel`**: Laravel framework-specific commands (planned)
+-   **`yii`** (`CommandGroup::YII`): Yii framework-specific commands
+-   **`laravel`** (`CommandGroup::LARAVEL`): Laravel framework-specific commands (planned)
 
 ## Security Considerations
 
