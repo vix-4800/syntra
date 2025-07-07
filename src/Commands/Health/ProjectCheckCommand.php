@@ -20,14 +20,14 @@ class ProjectCheckCommand extends SyntraCommand
     {
         parent::configure();
 
-        $this->setName('health:project')
-            ->setDescription('Run basic health checks: composer, phpstan, phpunit, etc.')
-            ->setHelp('Usage: vendor/bin/syntra health:project');
+        $this->setName('health:all')
+            ->setDescription('Run all health checks: composer, phpstan, phpunit, etc.')
+            ->setHelp('Usage: vendor/bin/syntra health:all');
     }
 
     public function perform(): int
     {
-        $this->output->section('Starting project health check...');
+        $this->output->section('Starting full health check...');
 
         $checks = [
             ['name' => 'PHP Version', 'class' => PhpVersionCheckCommand::class],
@@ -50,7 +50,7 @@ class ProjectCheckCommand extends SyntraCommand
             return self::FAILURE;
         }
 
-        $this->output->success('Project check completed without critical errors.');
+        $this->output->success('All health checks completed without critical errors.');
         return self::SUCCESS;
     }
 }

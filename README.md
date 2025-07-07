@@ -33,7 +33,7 @@ composer require vix/syntra
 2. **Run your first health check**:
 
     ```bash
-    vendor/bin/syntra health:project
+    vendor/bin/syntra health:all
     ```
 
 3. **Explore available commands**:
@@ -54,7 +54,7 @@ vendor/bin/syntra [command] [options]
 
 ```bash
 # Run health checks on current project
-vendor/bin/syntra health:project
+vendor/bin/syntra health:all
 
 # Find TODO comments in specific directory
 vendor/bin/syntra analyze:find-todos /path/to/project
@@ -102,7 +102,7 @@ All commands support these standard options (with an optional `[path]` argument 
 | `health:phpstan`     | Run PHPStan static analysis                                  | `[path]`, `--dry-run`, `--no-cache` |
 | `health:phpunit`     | Execute PHPUnit tests                                        | `[path]`, `--dry-run`, `--no-cache` |
 | `health:security`    | Check Composer dependencies for known vulnerabilities        | `[path]`, `--dry-run`, `--no-cache` |
-| `health:project`     | Run all health checks (composer, phpstan, phpunit, security) | `[path]`, `--dry-run`, `--no-cache` |
+| `health:all`         | Run all health checks (composer, phpstan, phpunit, security) | `[path]`, `--dry-run`, `--no-cache` |
 
 #### Additional checks to consider
 
@@ -189,7 +189,7 @@ The PHPStan health check reads from `config/phpstan.neon` by default, so tweak t
 
     ```bash
     # Run everything
-    vendor/bin/syntra health:project
+    vendor/bin/syntra health:all
 
     # Or individually
     vendor/bin/syntra health:composer
@@ -234,7 +234,7 @@ Add to your CI pipeline:
 # .github/workflows/syntra.yml
 - name: Run Syntra Health Checks
   run: |
-      vendor/bin/syntra health:project
+      vendor/bin/syntra health:all
       vendor/bin/syntra analyze:find-debug-calls
 
 # Fail the pipeline on warnings
