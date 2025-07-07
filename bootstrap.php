@@ -7,6 +7,11 @@ if (!defined('PACKAGE_ROOT')) {
     define('PACKAGE_ROOT', __DIR__);
 }
 
+// Define configuration directory
+if (!defined('CONFIG_DIR')) {
+    define('CONFIG_DIR', PACKAGE_ROOT . '/config');
+}
+
 // Load helper functions
 require_once __DIR__ . '/helpers.php';
 

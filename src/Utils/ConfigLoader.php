@@ -4,9 +4,21 @@ declare(strict_types=1);
 
 namespace Vix\Syntra\Utils;
 
+use Vix\Syntra\Enums\CommandGroup;
+
 class ConfigLoader
 {
-    private array $coreGroups = ['refactor', 'health', 'analyze', 'general'];
+    /**
+     * List of built-in command groups.
+     *
+     * @var string[]
+     */
+    private array $coreGroups = [
+        CommandGroup::REFACTOR->value,
+        CommandGroup::HEALTH->value,
+        CommandGroup::ANALYZE->value,
+        CommandGroup::GENERAL->value,
+    ];
 
     private ?string $projectRoot = null;
 

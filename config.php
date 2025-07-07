@@ -6,6 +6,7 @@ use Vix\Syntra\Commands\Analyze\FindBadPracticesCommand;
 use Vix\Syntra\Commands\Analyze\FindDebugCallsCommand;
 use Vix\Syntra\Commands\Analyze\FindLongMethodsCommand;
 use Vix\Syntra\Commands\Analyze\FindTodosCommand;
+use Vix\Syntra\Commands\Analyze\AnalyzeAllCommand;
 use Vix\Syntra\Commands\Extension\Yii\YiiAllCommand;
 use Vix\Syntra\Commands\Extension\Yii\YiiCanHelpersCommand;
 use Vix\Syntra\Commands\Extension\Yii\YiiCheckTranslationsCommand;
@@ -20,8 +21,10 @@ use Vix\Syntra\Commands\Extension\Laravel\LaravelToRouteCommand;
 use Vix\Syntra\Commands\General\GenerateCommandCommand;
 use Vix\Syntra\Commands\General\GenerateDocsCommand;
 use Vix\Syntra\Commands\Health\ComposerCheckCommand;
+use Vix\Syntra\Commands\Health\EditorConfigCheckCommand;
 use Vix\Syntra\Commands\Health\PhpStanCheckCommand;
 use Vix\Syntra\Commands\Health\PhpUnitCheckCommand;
+use Vix\Syntra\Commands\Health\PhpVersionCheckCommand;
 use Vix\Syntra\Commands\Health\ProjectCheckCommand;
 use Vix\Syntra\Commands\Health\SecurityCheckCommand;
 use Vix\Syntra\Commands\Refactor\DocblockRefactorer;
@@ -29,6 +32,8 @@ use Vix\Syntra\Commands\Refactor\ImportRefactorer;
 use Vix\Syntra\Commands\Refactor\PhpCsFixerRefactorer;
 use Vix\Syntra\Commands\Refactor\RectorRefactorer;
 use Vix\Syntra\Commands\Refactor\VarCommentsRefactorer;
+use Vix\Syntra\Commands\Refactor\RefactorAllCommand;
+use Vix\Syntra\Enums\CommandGroup;
 
 /**
  * Syntra Configuration
@@ -59,9 +64,13 @@ return [
     'web' => [
         'enabled' => true,
     ],
-
+  
     // Command configurations
-    'refactor' => [
+    CommandGroup::REFACTOR->value => [
+        RefactorAllCommand::class => [
+            'enabled' => true,
+            'web_enabled' => true,
+        ],
         DocblockRefactorer::class => [
             'enabled' => true,
             'web_enabled' => true,
@@ -73,7 +82,7 @@ return [
         PhpCsFixerRefactorer::class => [
             'enabled' => true,
             'web_enabled' => true,
-            'config' => PACKAGE_ROOT . '/config/php_cs_fixer.php',
+            'config' => config_path('php_cs_fixer.php'),
         ],
         VarCommentsRefactorer::class => [
             'enabled' => true,
@@ -82,19 +91,27 @@ return [
         RectorRefactorer::class => [
             'enabled' => true,
             'web_enabled' => true,
-            'config' => PACKAGE_ROOT . '/config/rector.php',
-            'commands_config' => PACKAGE_ROOT . '/config/rector_only_custom.php',
+            'config' => config_path('rector.php'),
+            'commands_config' => config_path('rector_only_custom.php'),
         ],
     ],
-    'health' => [
+    CommandGroup::HEALTH->value => [
+        PhpVersionCheckCommand::class => [
+            'enabled' => true,
+            'web_enabled' => true,
+        ],
         ComposerCheckCommand::class => [
+            'enabled' => true,
+            'web_enabled' => true,
+        ],
+        EditorConfigCheckCommand::class => [
             'enabled' => true,
             'web_enabled' => true,
         ],
         PhpStanCheckCommand::class => [
             'enabled' => true,
             'web_enabled' => true,
-            'config' => PACKAGE_ROOT . '/config/phpstan.neon',
+            'config' => config_path('phpstan.neon'),
             'level' => 5,
         ],
         PhpUnitCheckCommand::class => [
@@ -110,7 +127,11 @@ return [
             'web_enabled' => true,
         ],
     ],
-    'analyze' => [
+    CommandGroup::ANALYZE->value => [
+        AnalyzeAllCommand::class => [
+            'enabled' => true,
+            'web_enabled' => true,
+        ],
         FindTodosCommand::class => [
             'enabled' => true,
             'web_enabled' => true,
@@ -128,7 +149,7 @@ return [
             'web_enabled' => true,
         ],
     ],
-    'general' => [
+    CommandGroup::GENERAL->value => [
         GenerateCommandCommand::class => [
             'enabled' => true,
             'web_enabled' => true,
@@ -138,7 +159,7 @@ return [
             'web_enabled' => true,
         ],
     ],
-    'yii' => [
+    CommandGroup::YII->value => [
         YiiAllCommand::class => [
             'enabled' => true,
             'web_enabled' => true,
@@ -180,7 +201,7 @@ return [
             'web_enabled' => true,
         ],
     ],
-    'laravel' => [
+    CommandGroup::LARAVEL->value => [
         LaravelToRouteCommand::class => [
             'enabled' => true,
             'web_enabled' => true,

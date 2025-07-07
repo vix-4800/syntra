@@ -28,6 +28,16 @@ if (!function_exists('find_composer_autoload')) {
     }
 }
 
+if (!function_exists('config_path')) {
+    /**
+     * Get path inside config directory
+     */
+    function config_path(string $file = ''): string
+    {
+        return $file === '' ? CONFIG_DIR : CONFIG_DIR . '/' . ltrim($file, '/');
+    }
+}
+
 if (!function_exists('find_composer_bin')) {
     /**
      * Find composer binary
