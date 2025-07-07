@@ -60,6 +60,6 @@ class SecurityCheckCommand extends SyntraCommand implements HealthCheckCommandIn
 
         $result = $this->runCheck();
 
-        return $this->handleResult($result, 'Composer security audit completed.');
+        return $this->handleResult($result, 'Composer security audit completed.', $this->failOnWarning);
     }
 }

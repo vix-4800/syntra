@@ -59,6 +59,6 @@ class PhpUnitCheckCommand extends SyntraCommand implements HealthCheckCommandInt
             return self::FAILURE;
         }
 
-        return $this->handleResult($result, 'PHPUnit tests finished.');
+        return $this->handleResult($result, 'PHPUnit tests finished.', $this->failOnWarning);
     }
 }
