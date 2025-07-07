@@ -65,10 +65,15 @@ class FindOneFindAllShortcutRector extends AbstractRector
             return null;
         }
 
-        // Allow optional ->limit(1) before ->one()/all()
+        // Allow optional ->limit(1) immediately before ->one()
         $whereCall = $node->var;
         if ($whereCall instanceof MethodCall && $whereCall->name instanceof Identifier && $whereCall->name->toString() === 'limit') {
-            if (count($whereCall->args) !== 1) {
+            // limit is only allowed when calling ->one()
+            if ($methodName !== 'one') {
+                return null;
+            }
+
+            if (count($whereCall->args) < 1) {
                 return null;
             }
 
