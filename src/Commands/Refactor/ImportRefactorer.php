@@ -144,12 +144,8 @@ class ImportRefactorer extends SyntraRefactorCommand
         if ($namespace) {
             $parts[] = trim($namespace);
         }
-        if (!empty($useBlocks)) {
-            $parts[] = rtrim(implode('', array_column($useBlocks, 0)), "\r\n");
-        }
-        if (!empty($varBlocks)) {
-            $parts[] = rtrim(implode("\n", array_column($varBlocks, 0)), "\r\n");
-        }
+        $parts[] = rtrim(implode('', array_column($useBlocks, 0)), "\r\n");
+        $parts[] = rtrim(implode("\n", array_column($varBlocks, 0)), "\r\n");
         $newHeader = implode("\n\n", $parts) . "\n\n";
 
         // 9. Final assembled content

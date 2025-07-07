@@ -8,6 +8,9 @@ use Vix\Syntra\Facades\Facade;
 use Vix\Syntra\Tests\Fixtures\Foo;
 use Vix\Syntra\Tests\Fixtures\FooInterface;
 
+/**
+ * @method static string name()
+ */
 class FooFacade extends Facade
 {
     protected static function getFacadeAccessor(): string

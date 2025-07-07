@@ -21,11 +21,9 @@ trait ContainerAwareTrait
      */
     protected function getContainer(): ?ContainerInterface
     {
-        if (
-            method_exists($this, 'getApplication') &&
-            $this->getApplication() instanceof Application
-        ) {
-            return $this->getApplication()->getContainer();
+        $app = $this->getApplication();
+        if ($app instanceof Application) {
+            return $app->getContainer();
         }
 
         return null;
@@ -34,7 +32,7 @@ trait ContainerAwareTrait
     /**
      * Get a service from the container with fallback
      *
-     * @template T
+     * @template T of object
      * @param  class-string<T> $id       Service identifier
      * @param  callable|null   $fallback Function to create service if container unavailable
      * @return T

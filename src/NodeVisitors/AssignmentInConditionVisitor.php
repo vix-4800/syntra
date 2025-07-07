@@ -14,7 +14,7 @@ use PhpParser\PrettyPrinter\Standard;
 
 class AssignmentInConditionVisitor extends NodeVisitor
 {
-    public function enterNode(Node $node): void
+    public function enterNode(Node $node)
     {
         if ($node instanceof If_ || $node instanceof ElseIf_ || $node instanceof While_) {
             $assignments = $this->findAssignments($node->cond);
@@ -26,6 +26,8 @@ class AssignmentInConditionVisitor extends NodeVisitor
                 ];
             }
         }
+
+        return null;
     }
 
     private function findAssignments($cond): array

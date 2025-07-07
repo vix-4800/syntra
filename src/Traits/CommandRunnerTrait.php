@@ -14,8 +14,8 @@ trait CommandRunnerTrait
     /**
      * Run any other Syntra command by class name.
      *
-     * @param class-string<SyntraCommand> $class
-     * @param array<string, mixed>        $input
+     * @param class-string         $class
+     * @param array<string, mixed> $input
      */
     protected function runCommand(string $class, array $input = []): int
     {
@@ -23,14 +23,15 @@ trait CommandRunnerTrait
             throw new RuntimeException("$class must extend " . SyntraCommand::class);
         }
 
-        if (method_exists($this, 'getApplication') && $this->getApplication() instanceof Application) {
-            $container = $this->getApplication()->getContainer();
-            /** @var SyntraCommand $command */
-            $command = $container->make($class);
-            $command->setApplication($this->getApplication());
-        } else {
+        $app = $this->getApplication();
+        if (!$app instanceof Application) {
             throw new RuntimeException('Application container not available');
         }
+
+        $container = $app->getContainer();
+        /** @var SyntraCommand $command */
+        $command = $container->make($class);
+        $command->setApplication($app);
 
         return $command->run(new ArrayInput($input), $this->output);
     }

@@ -13,13 +13,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Vix\Syntra\Enums\CommandStatus;
 use Vix\Syntra\Enums\ProgressIndicatorType;
 use Vix\Syntra\Exceptions\CommandException;
 use Vix\Syntra\Exceptions\MissingBinaryException;
 use Vix\Syntra\Facades\Config;
-use Vix\Syntra\Facades\Installer;
 use Vix\Syntra\Facades\File;
+use Vix\Syntra\Facades\Installer;
 use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
 use Vix\Syntra\ProgressIndicators\ProgressIndicatorInterface;
 use Vix\Syntra\Traits\HandlesResultTrait;
@@ -144,7 +143,6 @@ abstract class SyntraCommand extends Command
         $this->output->error($e->getMessage());
 
         if ($e->suggestedInstall && $this->input->isInteractive()) {
-            /** @var QuestionHelper $helper */
             $helper = $this->getHelper('question');
             if ($helper instanceof QuestionHelper) {
                 $question = new ConfirmationQuestion(
@@ -157,22 +155,7 @@ abstract class SyntraCommand extends Command
                     $this->output->writeln("Running: $e->suggestedInstall");
                     $commandResult = Installer::install($e->suggestedInstall);
 
-                    if (method_exists($this, 'handleResult')) {
-                        $this->handleResult($commandResult, 'Installation finished.');
-                    } else {
-                        $status = $commandResult->status;
-                        if ($status === CommandStatus::OK) {
-                            $this->output->success('Installation finished.');
-                        } elseif ($status === CommandStatus::WARNING) {
-                            $this->output->warning('Installation finished with warnings.');
-                        } else {
-                            $this->output->error('Installation failed.');
-                        }
-
-                        foreach ($commandResult->messages as $msg) {
-                            $this->output->writeln('  - ' . $msg);
-                        }
-                    }
+                    $this->handleResult($commandResult, 'Installation finished.');
                 }
             }
         }
