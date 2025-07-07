@@ -6,7 +6,7 @@ on:
   pull_request:
 
 jobs:
-  phpunit:
+  phpstan:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -16,5 +16,5 @@ jobs:
           php-version: "8.2"
       - name: Install Dependencies
         run: composer install --no-interaction --no-progress
-      - name: Run tests
-        run: vendor/bin/phpunit
+      - name: Static Analysis
+        run: vendor/bin/phpstan --configuration=config/phpstan.neon --no-progress --error-format=github
