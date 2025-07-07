@@ -15,6 +15,7 @@ class ProcessRunner
      * @param string               $command
      * @param string[]             $args
      * @param array<string, mixed> $options
+     * @param callable|null        $callback
      *
      * @return ProcessResult
      *
