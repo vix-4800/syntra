@@ -28,6 +28,7 @@ use Vix\Syntra\Commands\Refactor\ImportRefactorer;
 use Vix\Syntra\Commands\Refactor\PhpCsFixerRefactorer;
 use Vix\Syntra\Commands\Refactor\RectorRefactorer;
 use Vix\Syntra\Commands\Refactor\VarCommentsRefactorer;
+use Vix\Syntra\Enums\CommandGroup;
 
 /**
  * Syntra Configuration
@@ -60,7 +61,7 @@ return [
     ],
 
     // Command configurations
-    'refactor' => [
+    CommandGroup::REFACTOR->value => [
         DocblockRefactorer::class => [
             'enabled' => true,
             'web_enabled' => true,
@@ -85,7 +86,7 @@ return [
             'commands_config' => PACKAGE_ROOT . '/config/rector_only_custom.php',
         ],
     ],
-    'health' => [
+    CommandGroup::HEALTH->value => [
         ComposerCheckCommand::class => [
             'enabled' => true,
             'web_enabled' => true,
@@ -109,7 +110,7 @@ return [
             'web_enabled' => true,
         ],
     ],
-    'analyze' => [
+    CommandGroup::ANALYZE->value => [
         FindTodosCommand::class => [
             'enabled' => true,
             'web_enabled' => true,
@@ -127,7 +128,7 @@ return [
             'web_enabled' => true,
         ],
     ],
-    'general' => [
+    CommandGroup::GENERAL->value => [
         GenerateCommandCommand::class => [
             'enabled' => true,
             'web_enabled' => true,
@@ -137,7 +138,7 @@ return [
             'web_enabled' => true,
         ],
     ],
-    'yii' => [
+    CommandGroup::YII->value => [
         YiiAllCommand::class => [
             'enabled' => true,
             'web_enabled' => true,
@@ -179,7 +180,7 @@ return [
             'web_enabled' => true,
         ],
     ],
-    'laravel' => [
+    CommandGroup::LARAVEL->value => [
         //
     ],
 ];

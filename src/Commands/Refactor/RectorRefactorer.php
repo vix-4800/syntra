@@ -6,6 +6,7 @@ namespace Vix\Syntra\Commands\Refactor;
 
 use Vix\Syntra\Commands\SyntraRefactorCommand;
 use Vix\Syntra\Enums\DangerLevel;
+use Vix\Syntra\Enums\CommandGroup;
 use Vix\Syntra\Exceptions\MissingBinaryException;
 use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\Process;
@@ -39,7 +40,7 @@ class RectorRefactorer extends SyntraRefactorCommand
         $result = Process::run($binary, [
             'process',
             Config::getProjectRoot(),
-            "--config=" . Config::getCommandOption('refactor', self::class, 'config'),
+            "--config=" . Config::getCommandOption(CommandGroup::REFACTOR->value, self::class, 'config'),
             "--clear-cache",
         ], callback: $outputCallback);
 

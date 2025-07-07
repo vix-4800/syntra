@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Vix\Syntra\Commands\Refactor;
 
 use Vix\Syntra\Commands\SyntraRefactorCommand;
+use Vix\Syntra\Enums\CommandGroup;
 use Vix\Syntra\Exceptions\MissingBinaryException;
 use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\Process;
@@ -34,7 +35,7 @@ class PhpCsFixerRefactorer extends SyntraRefactorCommand
             $this->advanceProgress();
         };
 
-        $config = Config::getCommandOption('refactor', self::class, 'config');
+        $config = Config::getCommandOption(CommandGroup::REFACTOR->value, self::class, 'config');
 
         $result = Process::run($binary, [
             'fix',
