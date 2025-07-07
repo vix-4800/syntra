@@ -19,6 +19,8 @@ class RefactorAllCommand extends SyntraRefactorCommand
 {
     use CommandRunnerTrait;
 
+    protected DangerLevel $dangerLevel = DangerLevel::HIGH;
+
     private bool $runFramework = false;
 
     protected function configure(): void
@@ -29,7 +31,6 @@ class RefactorAllCommand extends SyntraRefactorCommand
             ->setName('refactor:all')
             ->setDescription('Runs all enabled refactor commands in sequence')
             ->setHelp('Usage: vendor/bin/syntra refactor:all [--framework]')
-            ->setDangerLevel(DangerLevel::HIGH)
             ->addOption('framework', null, InputOption::VALUE_NONE, 'Also run framework-specific refactorings (Yii or Laravel)');
     }
 

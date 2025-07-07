@@ -19,12 +19,13 @@ class DangerLevelWarningTest extends TestCase
         $container->get(ConfigLoader::class)->setProjectRoot(sys_get_temp_dir());
 
         $command = new class () extends SyntraRefactorCommand {
+            protected DangerLevel $dangerLevel = DangerLevel::HIGH;
+
             protected function configure(): void
             {
                 parent::configure();
                 $this->setName('dummy:danger')
-                    ->setDescription('desc')
-                    ->setDangerLevel(DangerLevel::HIGH);
+                    ->setDescription('desc');
             }
 
             public function perform(): int
