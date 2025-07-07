@@ -16,6 +16,7 @@ use Vix\Syntra\Utils\StubHelper;
 class DocblockRefactorer extends SyntraRefactorCommand
 {
     protected ProgressIndicatorType $progressType = ProgressIndicatorType::PROGRESS_BAR;
+    protected DangerLevel $dangerLevel = DangerLevel::MEDIUM;
 
     protected function configure(): void
     {
@@ -26,8 +27,7 @@ class DocblockRefactorer extends SyntraRefactorCommand
             ->setHelp('Usage: vendor/bin/syntra refactor:docblocks [--dry-run] [--force] [--author=NAME] [--link=URL] [--category=CATEGORY]')
             ->addOption('author', null, InputOption::VALUE_OPTIONAL, 'Value for the @author tag')
             ->addOption('link', null, InputOption::VALUE_OPTIONAL, 'URL used for the @link tag')
-            ->addOption('category', null, InputOption::VALUE_OPTIONAL, 'Value for the @category tag')
-            ->setDangerLevel(DangerLevel::MEDIUM);
+            ->addOption('category', null, InputOption::VALUE_OPTIONAL, 'Value for the @category tag');
     }
 
     public function perform(): int

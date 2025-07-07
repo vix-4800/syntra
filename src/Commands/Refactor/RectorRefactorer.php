@@ -13,14 +13,15 @@ use Vix\Syntra\Facades\Process;
 
 class RectorRefactorer extends SyntraRefactorCommand
 {
+    protected DangerLevel $dangerLevel = DangerLevel::HIGH;
+
     protected function configure(): void
     {
         parent::configure();
 
         $this->setName('refactor:rector')
             ->setDescription('Runs Rector for automated refactoring')
-            ->setHelp('Usage: vendor/bin/syntra refactor:rector [--dry-run] [--force]')
-            ->setDangerLevel(DangerLevel::HIGH);
+            ->setHelp('Usage: vendor/bin/syntra refactor:rector [--dry-run] [--force]');
     }
 
     public function perform(): int

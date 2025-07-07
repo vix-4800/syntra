@@ -32,14 +32,6 @@ trait HasDangerLevel
         return $this->dangerLevel;
     }
 
-    /**
-     * Set the danger level dynamically.
-     */
-    protected function setDangerLevel(DangerLevel $level): static
-    {
-        $this->dangerLevel = $level;
-        return $this;
-    }
 
     /**
      * Ask for confirmation if the command is dangerous and not forced.
