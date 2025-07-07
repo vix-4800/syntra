@@ -21,6 +21,7 @@ use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\Installer;
 use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
 use Vix\Syntra\ProgressIndicators\ProgressIndicatorInterface;
+use Vix\Syntra\Traits\HandlesResultTrait;
 use Vix\Syntra\Traits\HasStyledOutput;
 use Vix\Syntra\Utils\FileHelper;
 use Vix\Syntra\Utils\TeeOutput;
@@ -28,6 +29,7 @@ use Vix\Syntra\Utils\TeeOutput;
 abstract class SyntraCommand extends Command
 {
     use HasStyledOutput;
+    use HandlesResultTrait;
 
     protected InputInterface $input;
 
