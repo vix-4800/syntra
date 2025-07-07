@@ -19,8 +19,8 @@ class YiiConvertAccessChainCommand extends RectorRunnerCommand
             ->setHelp('Usage: vendor/bin/syntra yii:convert-access-chain');
     }
 
-    protected function getRectorRules(): string
+    protected function getRectorRules(): array
     {
-        return ConvertAccessChainRector::class;
+        return [ConvertAccessChainRector::class];
     }
 }

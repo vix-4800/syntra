@@ -19,8 +19,8 @@ class YiiFindShortcutsCommand extends RectorRunnerCommand
             ->setHelp('Usage: vendor/bin/syntra yii:find-shortcuts');
     }
 
-    protected function getRectorRules(): string
+    protected function getRectorRules(): array
     {
-        return FindOneFindAllShortcutRector::class;
+        return [FindOneFindAllShortcutRector::class];
     }
 }

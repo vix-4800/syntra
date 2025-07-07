@@ -19,8 +19,8 @@ class YiiDeleteShortcutCommand extends RectorRunnerCommand
             ->setHelp('Usage: vendor/bin/syntra yii:delete-shortcut');
     }
 
-    protected function getRectorRules(): string
+    protected function getRectorRules(): array
     {
-        return DeleteAllShortcutRector::class;
+        return [DeleteAllShortcutRector::class];
     }
 }

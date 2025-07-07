@@ -19,8 +19,8 @@ class YiiFindOneIdCommand extends RectorRunnerCommand
             ->setHelp('Usage: vendor/bin/syntra yii:find-one-id');
     }
 
-    protected function getRectorRules(): string
+    protected function getRectorRules(): array
     {
-        return FindOneIdShortcutRector::class;
+        return [FindOneIdShortcutRector::class];
     }
 }

@@ -20,9 +20,9 @@ abstract class RectorRunnerCommand extends SyntraRefactorCommand
     /**
      * Return Rector rule class(es) to execute.
      *
-     * @return string|array
+     * @return string[] Array of Rector rule class names
      */
-    abstract protected function getRectorRules(): string|array;
+    abstract protected function getRectorRules(): array;
 
     /**
      * Build additional Rector CLI arguments.
