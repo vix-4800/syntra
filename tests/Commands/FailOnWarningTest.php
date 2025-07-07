@@ -35,7 +35,6 @@ class FailOnWarningTest extends TestCase
     public function testFailOnWarningOption(): void
     {
         $app = new Application();
-        $app->getContainer();
         Config::setProjectRoot(sys_get_temp_dir());
 
         $command = $this->makeCommand();
@@ -50,7 +49,6 @@ class FailOnWarningTest extends TestCase
     public function testCiModeFailsOnWarning(): void
     {
         $app = new Application();
-        $app->getContainer();
         Config::setProjectRoot(sys_get_temp_dir());
 
         $command = $this->makeCommand();

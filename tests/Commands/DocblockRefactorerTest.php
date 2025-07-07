@@ -37,7 +37,6 @@ class DocblockRefactorerTest extends TestCase
     private function runCommand(): string
     {
         $app = new Application();
-        $app->getContainer();
         File::clearCache();
         Config::setProjectRoot($this->dir);
 

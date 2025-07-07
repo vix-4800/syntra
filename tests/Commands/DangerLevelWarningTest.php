@@ -15,7 +15,6 @@ class DangerLevelWarningTest extends TestCase
     public function testWarningShownForHighDanger(): void
     {
         $app = new Application();
-        $app->getContainer();
         Config::setProjectRoot(sys_get_temp_dir());
 
         $command = new class () extends SyntraRefactorCommand {
