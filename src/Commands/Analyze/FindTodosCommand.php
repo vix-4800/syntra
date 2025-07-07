@@ -83,7 +83,12 @@ class FindTodosCommand extends SyntraCommand
             return Command::SUCCESS;
         }
 
-        $this->table(['File', 'Line', 'Tag', 'Comment'], $matches);
+        $rows = array_map(
+            static fn (array $row): array => array_map('strval', $row),
+            $matches,
+        );
+
+        $this->table(['File', 'Line', 'Tag', 'Comment'], $rows);
 
         $this->output->success('Scan complete (' . count($matches) . ' matches). Review your TODO/FIXME/deprecated and other notes!');
 

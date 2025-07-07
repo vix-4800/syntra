@@ -16,7 +16,7 @@ class LongMethodVisitor extends NodeVisitor
         $this->results = &$results;
     }
 
-    public function enterNode(Node $node): void
+    public function enterNode(Node $node)
     {
         if (
             $node instanceof ClassMethod ||
@@ -47,5 +47,7 @@ class LongMethodVisitor extends NodeVisitor
                 $method->setAttribute('parent', $node);
             }
         }
+
+        return null;
     }
 }

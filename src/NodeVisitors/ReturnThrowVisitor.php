@@ -11,7 +11,7 @@ use PhpParser\PrettyPrinter\Standard;
 
 class ReturnThrowVisitor extends NodeVisitor
 {
-    public function enterNode(Node $node): void
+    public function enterNode(Node $node)
     {
         if (
             $node instanceof Return_
@@ -23,6 +23,8 @@ class ReturnThrowVisitor extends NodeVisitor
                 'message' => 'Return throw',
             ];
         }
+
+        return null;
     }
 
     private function prettyPrintNode($node): string

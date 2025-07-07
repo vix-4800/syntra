@@ -78,7 +78,6 @@ class FindBadPracticesCommand extends SyntraCommand
 
             // Get findings from visitors
             foreach ($visitors as $visitor) {
-                /** @var NodeVisitor $visitor */
                 foreach ($visitor->getResults() as $finding) {
                     $rows[] = [
                         $file,
@@ -99,9 +98,14 @@ class FindBadPracticesCommand extends SyntraCommand
             return Command::SUCCESS;
         }
 
+        $rows = array_map(
+            static fn (array $row): array => array_map('strval', $row),
+            $rows,
+        );
+
         $this->table(
             ['File', 'Line', 'Code', 'Comment'],
-            $rows
+            $rows,
         );
 
         return Command::FAILURE;

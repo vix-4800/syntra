@@ -85,9 +85,14 @@ class FindDebugCallsCommand extends SyntraCommand
 
         usort($matches, fn ($a, $b): int => [$a[0], $a[1]] <=> [$b[0], $b[1]]);
 
+        $rows = array_map(
+            static fn (array $row): array => array_map('strval', $row),
+            $matches,
+        );
+
         $this->table(
             ['File', 'Line', 'Type', 'Code'],
-            $matches
+            $rows,
         );
 
         $this->output->warning('Found ' . count($matches) . ' debug calls/comments. Please remove them before production!');

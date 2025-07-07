@@ -15,12 +15,15 @@ trait HandlesResultTrait
 {
     protected function handleResult(CommandResult $result, string $successMessage, bool $failOnWarning = false): int
     {
-        if ($result->status === CommandStatus::OK) {
+        /** @var CommandStatus $status */
+        $status = CommandStatus::from($result->status->value);
+
+        if ($status === CommandStatus::OK) {
             $this->output->success($successMessage);
             return Command::SUCCESS;
         }
 
-        if ($result->status === CommandStatus::WARNING) {
+        if ($status === CommandStatus::WARNING) {
             $this->output->warning($successMessage);
         } else {
             $this->output->error($successMessage);
@@ -30,10 +33,12 @@ trait HandlesResultTrait
             $this->output->writeln('  - ' . $msg);
         }
 
-        if ($result->status === CommandStatus::WARNING && !$failOnWarning) {
+        if ($status === CommandStatus::WARNING && !$failOnWarning) {
             return Command::SUCCESS;
         }
 
-        return $result->status === CommandStatus::OK ? Command::SUCCESS : Command::FAILURE;
+        // OK status handled above, but keep explicit check for clarity
+        /** @phpstan-ignore-next-line */
+        return $status === CommandStatus::OK ? Command::SUCCESS : Command::FAILURE;
     }
 }

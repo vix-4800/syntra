@@ -9,7 +9,7 @@ use PhpParser\Node\Stmt\Class_;
 
 class DocsVisitor extends NodeVisitor
 {
-    public function enterNode(Node $node): void
+    public function enterNode(Node $node)
     {
         if (
             $node instanceof Class_
@@ -53,5 +53,7 @@ class DocsVisitor extends NodeVisitor
                 }
             }
         }
+
+        return null;
     }
 }
