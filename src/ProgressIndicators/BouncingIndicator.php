@@ -14,14 +14,20 @@ class BouncingIndicator extends AbstractProgressIndicator
 
     private bool $isRunning = false;
 
-    public function __construct(protected SymfonyStyle $output, private readonly int $width = 10)
-    {
+    private float $lastUpdate = 0.0;
+
+    public function __construct(
+        protected SymfonyStyle $output,
+        private readonly int $width = 10,
+        private readonly float $updateInterval = 0.1
+    ) {
         parent::__construct($output);
     }
 
     public function start(): void
     {
         $this->isRunning = true;
+        $this->lastUpdate = microtime(true);
         $this->render();
     }
 
@@ -30,6 +36,13 @@ class BouncingIndicator extends AbstractProgressIndicator
         if (!$this->isRunning) {
             return;
         }
+
+        $now = microtime(true);
+        if ($now - $this->lastUpdate < $this->updateInterval) {
+            return;
+        }
+
+        $this->lastUpdate = $now;
 
         $this->position += $this->direction;
 
