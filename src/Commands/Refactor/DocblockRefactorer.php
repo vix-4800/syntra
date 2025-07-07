@@ -95,12 +95,13 @@ class DocblockRefactorer extends SyntraRefactorCommand
             if (!$hasDocBlock) {
                 $insertIndex = $i;
 
-                // Place docblock before class modifiers like final or abstract
+                // Place docblock before class modifiers like final, abstract, or readonly
                 $checkIndex = $prevTokenIndex;
+                $modifiers = $this->getClassModifierTokens();
                 while (
                     $checkIndex !== null &&
                     is_array($tokens[$checkIndex]) &&
-                    in_array($tokens[$checkIndex][0], [T_FINAL, T_ABSTRACT], true)
+                    in_array($tokens[$checkIndex][0], $modifiers, true)
                 ) {
                     $insertIndex = $checkIndex;
                     $checkIndex = $this->getPreviousTokenIndex($tokens, $insertIndex);
@@ -182,6 +183,16 @@ class DocblockRefactorer extends SyntraRefactorCommand
             return $i;
         }
         return null;
+    }
+
+    /**
+     * Returns an array of tokens that represent class modifiers.
+     *
+     * @return array<int>
+     */
+    private function getClassModifierTokens(): array
+    {
+        return [T_FINAL, T_ABSTRACT, T_READONLY];
     }
 
     /**

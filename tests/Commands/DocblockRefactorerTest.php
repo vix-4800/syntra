@@ -74,4 +74,26 @@ class DocblockRefactorerTest extends TestCase
         $this->assertMatchesRegularExpression('/\/\*\*.*Class.*\*\/\s*abstract class/s', $result);
         $this->assertDoesNotMatchRegularExpression('/abstract\s*\n\s*\/\*/', $result);
     }
+
+    public function testDocblockInsertedBeforeReadonlyClass(): void
+    {
+        $content = "<?php\nreadonly class Baz {}\n";
+        $this->createFile($content);
+
+        $result = $this->runCommand();
+
+        $this->assertMatchesRegularExpression('/\/\*\*.*Class.*\*\/\s*readonly class/s', $result);
+        $this->assertDoesNotMatchRegularExpression('/readonly\s*\n\s*\/\*/', $result);
+    }
+
+    public function testDocblockInsertedBeforeFinalReadonlyClass(): void
+    {
+        $content = "<?php\nfinal readonly class Qux {}\n";
+        $this->createFile($content);
+
+        $result = $this->runCommand();
+
+        $this->assertMatchesRegularExpression('/\/\*\*.*Class.*\*\/\s*final readonly class/s', $result);
+        $this->assertDoesNotMatchRegularExpression('/readonly\s*\n\s*\/\*/', $result);
+    }
 }
