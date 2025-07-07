@@ -147,6 +147,8 @@ return [
 ];
 ```
 
+The PHPStan health check reads from `config/phpstan.neon` by default, so tweak that file to customize analysis settings.
+
 ## 💡 Tips & Best Practices
 
 ### Safety First
