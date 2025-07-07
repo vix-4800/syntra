@@ -93,7 +93,20 @@ class DocblockRefactorer extends SyntraRefactorCommand
             }
 
             if (!$hasDocBlock) {
-                $insertions[$i] = (new StubHelper("class-docblock"))->render([
+                $insertIndex = $i;
+
+                // Place docblock before class modifiers like final or abstract
+                $checkIndex = $prevTokenIndex;
+                while (
+                    $checkIndex !== null &&
+                    is_array($tokens[$checkIndex]) &&
+                    in_array($tokens[$checkIndex][0], [T_FINAL, T_ABSTRACT], true)
+                ) {
+                    $insertIndex = $checkIndex;
+                    $checkIndex = $this->getPreviousTokenIndex($tokens, $insertIndex);
+                }
+
+                $insertions[$insertIndex] = (new StubHelper("class-docblock"))->render([
                     'description' => str_replace(getcwd() . DIRECTORY_SEPARATOR, '', $filePath),
                     'category' => (string) ($this->input->getOption('category') ?: 'Class'),
                     'author' => (string) ($this->input->getOption('author') ?: 'author <author@gmail.com>'),
