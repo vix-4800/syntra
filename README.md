@@ -144,6 +144,12 @@ All commands support these standard options (with an optional `[path]` argument 
 | `yii:convert-access-chain`     | Replaces `user->identity->hasAccessChain/hasNoAccessChain` with `user->canAny/cannotAny`             | N/A          | `[path]`, `--dry-run`, `--no-cache` |
 | `yii:user-findone-to-identity` | Replaces redundant `User::findOne(...)` lookups for current user with `Yii::$app->user->identity`    | N/A          | `[path]`, `--dry-run`, `--no-cache` |
 
+### 🧩 Laravel Framework Extensions
+
+| Command                       | Description                                                         | Danger Level | Options                          |
+| ----------------------------- | ------------------------------------------------------------------- | ------------ | -------------------------------- |
+| `laravel:dispatch-shortcut`   | Rewrites `dispatch(new SomeJob($args))` to `SomeJob::dispatch($args)` | 🟢 LOW       | `[path]`, `--dry-run`, `--force` |
+
 ## 📁 Configuration
 
 Configuration is defined in PHP via `config.php`, allowing you to enable/disable commands or set options per tool. Example:
@@ -215,10 +221,11 @@ The PHPStan health check reads from `config/phpstan.neon` by default, so tweak t
 
 4. **Framework-Specific Optimizations** (Yii example):
     ```bash
-    vendor/bin/syntra yii:find-shortcuts --dry-run
-    vendor/bin/syntra yii:find-one-id --dry-run
-    vendor/bin/syntra yii:check-translations
-    ```
+vendor/bin/syntra yii:find-shortcuts --dry-run
+vendor/bin/syntra yii:find-one-id --dry-run
+vendor/bin/syntra yii:check-translations
+vendor/bin/syntra laravel:dispatch-shortcut --dry-run
+```
 
 ### Integration with CI/CD
 
