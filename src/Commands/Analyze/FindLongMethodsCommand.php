@@ -14,6 +14,7 @@ use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\File;
 use Vix\Syntra\NodeVisitors\LongMethodVisitor;
+use Vix\Syntra\Enums\ProgressIndicatorType;
 use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
 use Vix\Syntra\Traits\ContainerAwareTrait;
 
@@ -21,7 +22,7 @@ class FindLongMethodsCommand extends SyntraCommand
 {
     use ContainerAwareTrait;
 
-    protected string $progressType = ProgressIndicatorFactory::TYPE_PROGRESS_BAR;
+    protected ProgressIndicatorType $progressType = ProgressIndicatorType::PROGRESS_BAR;
 
     protected function configure(): void
     {

@@ -7,6 +7,7 @@ namespace Vix\Syntra\Commands\Health;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Vix\Syntra\Commands\Health\ComposerCheckCommand;
+use Vix\Syntra\Commands\Health\EditorConfigCheckCommand;
 use Vix\Syntra\Commands\Health\PhpStanCheckCommand;
 use Vix\Syntra\Commands\Health\PhpUnitCheckCommand;
 use Vix\Syntra\Commands\Health\PhpVersionCheckCommand;
@@ -33,6 +34,7 @@ class ProjectCheckCommand extends SyntraCommand
 
         $checks = [
             ['name' => 'PHP Version', 'class' => PhpVersionCheckCommand::class],
+            ['name' => 'EditorConfig', 'class' => EditorConfigCheckCommand::class],
             ['name' => 'Composer', 'class' => ComposerCheckCommand::class],
             ['name' => 'PHPStan', 'class' => PhpStanCheckCommand::class],
             ['name' => 'PHPUnit', 'class' => PhpUnitCheckCommand::class],

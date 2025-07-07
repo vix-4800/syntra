@@ -13,6 +13,7 @@
 -   **Cache Reset**: Call `FileHelper::clearCache()` to manually reset cached file lists when working with temporary directories or tests.
 -   **No-Cache Option**: Use `--no-cache` to disable caching for a single command run.
 -   **Facades**: Convenient static access to common services.
+-   **Progress Indicators**: Choose between spinner, progress bar, bouncing, or none via the `ProgressIndicatorType` enum.
 
 ## 📦 Installation
 
@@ -72,6 +73,8 @@ All commands support these standard options (with an optional `[path]` argument 
 -   `--force` / `-f`: Force execution, ignore warnings (refactor commands only)
 -   `--no-progress`: Disable progress output
 -   `--no-cache`: Disable file caching (useful for temporary directories)
+-   `--fail-on-warning`: Return exit code 1 if warnings were found
+-   `--ci`: CI mode, implies `--no-progress` and `--fail-on-warning`
 -   `--help` / `-h`: Display help for the command
 -   `--quiet` / `-q`: Only show errors
 -   `--verbose` / `-v/-vv/-vvv`: Increase verbosity level
@@ -86,6 +89,7 @@ All commands support these standard options (with an optional `[path]` argument 
 | `analyze:find-debug-calls`   | Checks that var_dump, dd, print_r, eval, and other calls prohibited in production | `[path]`, `--dry-run`, `--no-cache`          |
 | `analyze:find-long-methods`  | Finds all methods or functions that exceed a specified number of lines            | `[path]`, `--dry-run`, `--max`, `--no-cache` |
 | `analyze:find-bad-practices` | Detects bad practices in code like magic numbers, nested ternaries                | `[path]`, `--dry-run`, `--no-cache`          |
+| `analyze:all`                | Runs all enabled analyze commands sequentially                                     | `[path]`, `--dry-run`, `--no-cache`  |
 
 ### 🏥 Health
 
@@ -116,13 +120,14 @@ All commands support these standard options (with an optional `[path]` argument 
 | `refactor:var-comments` | Standardizes @var comments to `/** @var Type $var */`             | 🟢 LOW       | `[path]`, `--dry-run`, `--no-cache`, `--force`                                     |
 | `refactor:docblocks`    | Adds a file-level PHPDoc block and class PHPDoc blocks if missing | 🟡 MEDIUM    | `[path]`, `--dry-run`, `--no-cache`, `--force`, `--author`, `--link`, `--category` |
 | `refactor:rector`       | Runs Rector for automated refactoring                             | 🔴 HIGH      | `[path]`, `--dry-run`, `--no-cache`, `--force`                                     |
+| `refactor:all`          | Runs all enabled refactor commands sequentially    | 🔴 HIGH      | `[path]`, `--dry-run`, `--no-cache`, `--force`                                  |
 
 ### 🧠 General
 
 | Command                    | Description                                                                                                          | Options                                                                |
 | -------------------------- | -------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
 | `general:generate-command` | Generates a scaffold for a new Symfony Console command                                                               | `[path]`, `--dry-run`, `--no-cache`, `--group`, `--cli-name`, `--desc` |
-| `general:generate-docs`    | Scans project controllers and generates a markdown file listing all action routes (framework detected automatically) | `[path]`, `--dry-run`, `--no-cache`, `[controllerDir]`                 |
+| `general:generate-docs`    | Scans project controllers and generates a markdown file listing all action routes (framework detected automatically) | `[path]`, `--controllerDir`, `--dry-run`, `--no-cache`                 |
 
 ### 🧩 Yii Framework Extensions
 
@@ -143,19 +148,25 @@ All commands support these standard options (with an optional `[path]` argument 
 
 Configuration is defined in PHP via `config.php`, allowing you to enable/disable commands or set options per tool. Example:
 
+The default group names are provided as enum cases in `Vix\Syntra\Enums\CommandGroup`.
+
 ```php
+use Vix\Syntra\Enums\CommandGroup;
+
 return [
-    'refactor' => [
+    CommandGroup::REFACTOR->value => [
         PhpCsFixerRefactorer::class => [
             'enabled' => true,
             'config' => __DIR__ . '/config/php_cs_fixer.php',
         ],
     ],
-    'yii' => [
+    CommandGroup::YII->value => [
         YiiFindShortcutsCommand::class => true,
     ],
 ];
 ```
+
+The PHPStan health check reads from `config/phpstan.neon` by default, so tweak that file to customize analysis settings.
 
 ## 💡 Tips & Best Practices
 
@@ -219,6 +230,9 @@ Add to your CI pipeline:
   run: |
       vendor/bin/syntra health:project
       vendor/bin/syntra analyze:find-debug-calls
+
+# Fail the pipeline on warnings
+      vendor/bin/syntra health:composer --ci
 ```
 
 ### Running Tests

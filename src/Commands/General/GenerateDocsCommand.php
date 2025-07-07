@@ -8,12 +8,13 @@ use PhpParser\NodeTraverser;
 use PhpParser\Parser;
 use PhpParser\ParserFactory;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 use Throwable;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\File;
 use Vix\Syntra\NodeVisitors\DocsVisitor;
+use Vix\Syntra\Enums\ProgressIndicatorType;
 use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
 use Vix\Syntra\Traits\ContainerAwareTrait;
 use Vix\Syntra\Utils\ProjectDetector;
@@ -22,7 +23,7 @@ class GenerateDocsCommand extends SyntraCommand
 {
     use ContainerAwareTrait;
 
-    protected string $progressType = ProgressIndicatorFactory::TYPE_PROGRESS_BAR;
+    protected ProgressIndicatorType $progressType = ProgressIndicatorType::PROGRESS_BAR;
 
     protected function configure(): void
     {
@@ -31,8 +32,8 @@ class GenerateDocsCommand extends SyntraCommand
         $this
             ->setName('general:generate-docs')
             ->setDescription('Scans project controllers and generates a markdown file listing all action routes (currently only Yii is supported).')
-            ->setHelp('Usage: vendor/bin/syntra general:generate-docs [controllerDir]')
-            ->addArgument('controllerDir', InputArgument::OPTIONAL, 'Relative path to controllers directory', 'backend/controllers');
+            ->setHelp('Usage: vendor/bin/syntra general:generate-docs [--controllerDir=controllerDir]')
+            ->addOption('controllerDir', null, InputOption::VALUE_OPTIONAL, 'Relative path to controllers directory', 'backend/controllers');
     }
 
     public function perform(): int
@@ -53,8 +54,8 @@ class GenerateDocsCommand extends SyntraCommand
 
     private function generateForYii(string $projectRoot): int
     {
-        $controllerDirArg = $this->input->getArgument('controllerDir');
-        $controllerDir = $projectRoot . '/' . ltrim((string) ($controllerDirArg ?? 'backend/controllers'), '/');
+        $controllerDirOption = $this->input->getOption('controllerDir');
+        $controllerDir = $projectRoot . '/' . ltrim((string) ($controllerDirOption ?? 'backend/controllers'), '/');
 
         $parser = $this->getService(Parser::class, fn (): Parser => (new ParserFactory())->create(ParserFactory::PREFER_PHP7));
 
