@@ -9,8 +9,8 @@ use Symfony\Component\Console\Application as SymfonyApplication;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\DI\ContainerFactory;
 use Vix\Syntra\DI\ContainerInterface;
+use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\Facade;
-use Vix\Syntra\Utils\ConfigLoader;
 
 class Application extends SymfonyApplication
 {
@@ -45,8 +45,8 @@ class Application extends SymfonyApplication
             Facade::setContainer($this->container);
         }
 
-        $this->registerCommands();
-        $this->registerExtensionCommands();
+        $this->registerFromConfig(Config::getEnabledCommands());
+        $this->registerFromConfig(Config::getEnabledExtensionCommands());
     }
 
     /**
@@ -55,20 +55,6 @@ class Application extends SymfonyApplication
     public function getContainer(): ContainerInterface
     {
         return $this->container;
-    }
-
-    private function registerCommands(): void
-    {
-        $configLoader = $this->container->get(ConfigLoader::class);
-
-        $this->registerFromConfig($configLoader->getEnabledCommands());
-    }
-
-    private function registerExtensionCommands(): void
-    {
-        $configLoader = $this->container->get(ConfigLoader::class);
-
-        $this->registerFromConfig($configLoader->getEnabledExtensionCommands());
     }
 
     /**
