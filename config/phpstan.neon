@@ -8,4 +8,4 @@ parameters:
         - ../src
         - ../tests
     excludePaths:
-        - ../vendor/rector/rector/vendor/*
+        - ../vendor/*
