@@ -11,6 +11,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Enums\ProgressIndicatorType;
 use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
 use Vix\Syntra\ProgressIndicators\ProgressIndicatorInterface;
 use Vix\Syntra\Traits\HasStyledOutput;
@@ -28,7 +29,7 @@ abstract class SyntraCommand extends Command
 
     protected ProgressIndicatorInterface $progressIndicator;
 
-    protected string $progressType = ProgressIndicatorFactory::TYPE_SPINNER;
+    protected ProgressIndicatorType $progressType = ProgressIndicatorType::SPINNER;
 
     protected int $progressMax = 0;
 
@@ -72,7 +73,7 @@ abstract class SyntraCommand extends Command
 
     protected function startProgress(): void
     {
-        $type = $this->noProgress ? ProgressIndicatorFactory::TYPE_NONE : $this->progressType;
+        $type = $this->noProgress ? ProgressIndicatorType::NONE : $this->progressType;
 
         $this->progressIndicator = ProgressIndicatorFactory::create(
             $type,
