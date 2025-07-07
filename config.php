@@ -81,7 +81,7 @@ return [
         PhpCsFixerRefactorer::class => [
             'enabled' => true,
             'web_enabled' => true,
-            'config' => PACKAGE_ROOT . '/config/php_cs_fixer.php',
+            'config' => config_path('php_cs_fixer.php'),
         ],
         VarCommentsRefactorer::class => [
             'enabled' => true,
@@ -90,8 +90,8 @@ return [
         RectorRefactorer::class => [
             'enabled' => true,
             'web_enabled' => true,
-            'config' => PACKAGE_ROOT . '/config/rector.php',
-            'commands_config' => PACKAGE_ROOT . '/config/rector_only_custom.php',
+            'config' => config_path('rector.php'),
+            'commands_config' => config_path('rector_only_custom.php'),
         ],
     ],
     CommandGroup::HEALTH->value => [
@@ -110,7 +110,7 @@ return [
         PhpStanCheckCommand::class => [
             'enabled' => true,
             'web_enabled' => true,
-            'config' => PACKAGE_ROOT . '/config/phpstan.neon',
+            'config' => config_path('phpstan.neon'),
             'level' => 5,
         ],
         PhpUnitCheckCommand::class => [
