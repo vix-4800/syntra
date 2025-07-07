@@ -22,35 +22,19 @@ class RectorCommandExecutor
     }
 
     /**
-     * Execute a specific Rector rule
+     * Execute Rector rule(s)
      *
-     * @param string $rectorClass    The Rector rule class name
-     * @param array  $additionalArgs Additional arguments to pass to Rector
-     *
-     * @return ProcessResult
-     *
-     * @throws MissingBinaryException
-     */
-    public function executeRule(string $rectorClass, array $additionalArgs = [], ?callable $outputCallback = null): ProcessResult
-    {
-        $binary = $this->findRectorBinary();
-        $args = $this->buildRectorArgs($rectorClass, $additionalArgs);
-
-        return Process::run($binary, $args, callback: $outputCallback);
-    }
-
-    /**
-     * Execute multiple Rector rules in sequence
-     *
-     * @param array $rectorClasses  Array of Rector rule class names
-     * @param array $additionalArgs Additional arguments to pass to Rector
+     * @param string|array $rectorClasses Rector rule class name(s)
+     * @param array        $additionalArgs Additional arguments to pass to Rector
      *
      * @return ProcessResult The result of the last executed rule
      *
      * @throws MissingBinaryException
      */
-    public function executeRules(array $rectorClasses, array $additionalArgs = [], ?callable $outputCallback = null): ProcessResult
+    public function executeRules(string|array $rectorClasses, array $additionalArgs = [], ?callable $outputCallback = null): ProcessResult
     {
+        $rectorClasses = (array) $rectorClasses;
+
         $binary = $this->findRectorBinary();
         $result = null;
 
