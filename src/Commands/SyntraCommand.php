@@ -35,11 +35,6 @@ abstract class SyntraCommand extends Command
 
     protected int $progressMax = 0;
 
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     protected function configure(): void
     {
         $this
