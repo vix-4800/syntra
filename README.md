@@ -134,15 +134,19 @@ All commands support these standard options (with an optional `[path]` argument 
 
 Configuration is defined in PHP via `config.php`, allowing you to enable/disable commands or set options per tool. Example:
 
+The default group names are provided as enum cases in `Vix\Syntra\Enums\CommandGroup`.
+
 ```php
+use Vix\Syntra\Enums\CommandGroup;
+
 return [
-    'refactor' => [
+    CommandGroup::REFACTOR->value => [
         PhpCsFixerRefactorer::class => [
             'enabled' => true,
             'config' => __DIR__ . '/config/php_cs_fixer.php',
         ],
     ],
-    'yii' => [
+    CommandGroup::YII->value => [
         YiiFindShortcutsCommand::class => true,
     ],
 ];
