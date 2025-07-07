@@ -10,6 +10,9 @@ use Vix\Syntra\DI\Providers\ParserServiceProvider;
 
 class ContainerFactory
 {
+/**
+ * Create a new instance.
+ */
     public static function create(): ContainerInterface
     {
         $container = new Container();

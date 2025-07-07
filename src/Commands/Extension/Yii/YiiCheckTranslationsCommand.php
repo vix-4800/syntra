@@ -12,6 +12,9 @@ use Vix\Syntra\Facades\File;
 
 class YiiCheckTranslationsCommand extends SyntraCommand
 {
+/**
+ * Configure the command options.
+ */
     protected function configure(): void
     {
         parent::configure();
@@ -23,6 +26,9 @@ class YiiCheckTranslationsCommand extends SyntraCommand
             ->addOption('lang', null, InputOption::VALUE_OPTIONAL, 'Language to check (default: all found)', null);
     }
 
+/**
+ * Perform the command actions.
+ */
     public function perform(): int
     {
         $projectRoot = Config::getProjectRoot();

@@ -9,6 +9,9 @@ use Vix\Syntra\Commands\RectorRunnerCommand;
 
 class YiiCanHelpersCommand extends RectorRunnerCommand
 {
+/**
+ * Configure the command options.
+ */
     protected function configure(): void
     {
         parent::configure();
@@ -19,6 +22,9 @@ class YiiCanHelpersCommand extends RectorRunnerCommand
             ->setHelp('Usage: vendor/bin/syntra yii:can-helpers');
     }
 
+/**
+ * Get a service from the container.rector rules.
+ */
     protected function getRectorRules(): string
     {
         return CanHelpersRector::class;

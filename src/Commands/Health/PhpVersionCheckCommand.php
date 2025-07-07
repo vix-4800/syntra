@@ -13,6 +13,9 @@ class PhpVersionCheckCommand extends SyntraCommand implements HealthCheckCommand
 {
     use HandlesResultTrait;
 
+/**
+ * Configure the command options.
+ */
     protected function configure(): void
     {
         parent::configure();
@@ -20,6 +23,9 @@ class PhpVersionCheckCommand extends SyntraCommand implements HealthCheckCommand
             ->setDescription('Validates composer PHP version constraint.');
     }
 
+/**
+ * Run check.
+ */
     public function runCheck(): CommandResult
     {
         $composer = Config::getProjectRoot() . '/composer.json';
@@ -45,6 +51,9 @@ class PhpVersionCheckCommand extends SyntraCommand implements HealthCheckCommand
         return CommandResult::warning(["Unable to determine PHP version from \"$version\""]);
     }
 
+/**
+ * Perform the command actions.
+ */
     public function perform(): int
     {
         $this->output->section('Checking PHP version requirement...');

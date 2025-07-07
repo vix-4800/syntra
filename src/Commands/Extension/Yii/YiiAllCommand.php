@@ -16,6 +16,9 @@ use Vix\Syntra\Commands\RectorRunnerCommand;
 
 class YiiAllCommand extends RectorRunnerCommand
 {
+/**
+ * Configure the command options.
+ */
     protected function configure(): void
     {
         parent::configure();
@@ -26,6 +29,9 @@ class YiiAllCommand extends RectorRunnerCommand
             ->setHelp('Usage: vendor/bin/syntra yii:all');
     }
 
+/**
+ * Get a service from the container.rector rules.
+ */
     protected function getRectorRules(): array
     {
         return [
@@ -40,11 +46,17 @@ class YiiAllCommand extends RectorRunnerCommand
         ];
     }
 
+/**
+ * Get a service from the container.success message.
+ */
     protected function getSuccessMessage(): string
     {
         return 'All Yii Rector refactorings completed.';
     }
 
+/**
+ * Get a service from the container.error message.
+ */
     protected function getErrorMessage(): string
     {
         return 'Yii Rector refactoring crashed.';

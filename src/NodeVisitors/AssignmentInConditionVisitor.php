@@ -17,6 +17,9 @@ class AssignmentInConditionVisitor extends NodeVisitorAbstract
 {
     public $findings = [];
 
+/**
+ * Enter node.
+ */
     public function enterNode(Node $node): void
     {
         if ($node instanceof If_ || $node instanceof ElseIf_ || $node instanceof While_) {
@@ -31,6 +34,9 @@ class AssignmentInConditionVisitor extends NodeVisitorAbstract
         }
     }
 
+/**
+ * Find assignments.
+ */
     private function findAssignments($cond): array
     {
         $assignments = [];
@@ -57,6 +63,9 @@ class AssignmentInConditionVisitor extends NodeVisitorAbstract
         return $assignments;
     }
 
+/**
+ * Pretty print node.
+ */
     private function prettyPrintNode(Expr $node): string
     {
         return (new Standard())->prettyPrintExpr($node);

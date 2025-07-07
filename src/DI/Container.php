@@ -34,6 +34,9 @@ class Container implements ContainerInterface
     /** @var array<string, true> */
     private array $resolving = [];
 
+/**
+ * Bind a service into the container.
+ */
     public function bind(string $id, callable|string|object $concrete, bool $singleton = false): void
     {
         $this->bindings[$id] = $concrete;
@@ -43,22 +46,34 @@ class Container implements ContainerInterface
         unset($this->instances[$id]);
     }
 
+/**
+ * Register a singleton service.
+ */
     public function singleton(string $id, callable|string|object $concrete): void
     {
         $this->bind($id, $concrete, true);
     }
 
+/**
+ * Register an existing instance.
+ */
     public function instance(string $id, object $instance): void
     {
         $this->instances[$id] = $instance;
         $this->singletons[$id] = true;
     }
 
+/**
+ * Check if the service exists.
+ */
     public function has(string $id): bool
     {
         return $this->canResolve($id);
     }
 
+/**
+ * Can resolve.
+ */
     public function canResolve(string $id): bool
     {
         return isset($this->bindings[$id])
@@ -67,6 +82,9 @@ class Container implements ContainerInterface
             || interface_exists($id);
     }
 
+/**
+ * Get a service from the container.
+ */
     public function get(string $id): mixed
     {
         try {
@@ -76,6 +94,9 @@ class Container implements ContainerInterface
         }
     }
 
+/**
+ * Resolve a class instance.
+ */
     public function make(string $class): object
     {
         return $this->resolve($class);
@@ -121,7 +142,7 @@ class Container implements ContainerInterface
     }
 
     /**
-     * Get the concrete implementation for a service
+     * Get a service from the container.the concrete implementation for a service
      *
      * @param  string            $id Service identifier
      * @return mixed

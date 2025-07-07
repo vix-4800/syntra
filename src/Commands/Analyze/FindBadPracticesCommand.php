@@ -23,6 +23,9 @@ class FindBadPracticesCommand extends SyntraCommand
 
     protected ProgressIndicatorType $progressType = ProgressIndicatorType::PROGRESS_BAR;
 
+/**
+ * Configure the command options.
+ */
     protected function configure(): void
     {
         parent::configure();
@@ -33,6 +36,9 @@ class FindBadPracticesCommand extends SyntraCommand
             ->setHelp('Usage: vendor/bin/syntra analyze:find-bad-practices');
     }
 
+/**
+ * Perform the command actions.
+ */
     public function perform(): int
     {
         $projectRoot = Config::getProjectRoot();
@@ -107,6 +113,9 @@ class FindBadPracticesCommand extends SyntraCommand
         return Command::FAILURE;
     }
 
+/**
+ * Return a code snippet.
+ */
     private function snippet(string $code, int $maxLen = 60): string
     {
         $code = trim((string) preg_replace('/\s+/', ' ', $code));

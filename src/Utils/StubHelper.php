@@ -8,6 +8,9 @@ class StubHelper
 {
     private readonly string $stubPath;
 
+/**
+ * Class constructor.
+ */
     public function __construct(string $stubName)
     {
         if (!str_ends_with($stubName, ".stub")) {
@@ -17,6 +20,9 @@ class StubHelper
         $this->stubPath = PACKAGE_ROOT . "/stubs/{$stubName}";
     }
 
+/**
+ * Render the progress output.
+ */
     public function render(array $replacements): string
     {
         $content = file_get_contents($this->stubPath);

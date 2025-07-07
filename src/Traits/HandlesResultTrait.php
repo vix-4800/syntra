@@ -13,6 +13,9 @@ use Vix\Syntra\Enums\CommandStatus;
  */
 trait HandlesResultTrait
 {
+/**
+ * Handle result.
+ */
     protected function handleResult(CommandResult $result, string $successMessage, bool $failOnWarning = false): int
     {
         if ($result->status === CommandStatus::OK) {

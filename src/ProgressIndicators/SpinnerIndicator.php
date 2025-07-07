@@ -12,12 +12,18 @@ class SpinnerIndicator extends AbstractProgressIndicator
 
     private bool $isRunning = false;
 
+/**
+ * Start the progress indicator.
+ */
     public function start(): void
     {
         $this->isRunning = true;
         $this->render();
     }
 
+/**
+ * Advance the progress indicator.
+ */
     public function advance(int $step = 1): void
     {
         if (!$this->isRunning) {
@@ -28,6 +34,9 @@ class SpinnerIndicator extends AbstractProgressIndicator
         $this->render();
     }
 
+/**
+ * Finish the progress indicator.
+ */
     public function finish(): void
     {
         if (!$this->isRunning) {
@@ -39,6 +48,9 @@ class SpinnerIndicator extends AbstractProgressIndicator
         $this->output->writeln("<info>✓</info> {$this->message}");
     }
 
+/**
+ * Render the progress output.
+ */
     private function render(): void
     {
         $spinner = $this->spinnerChars[$this->spinnerIndex];

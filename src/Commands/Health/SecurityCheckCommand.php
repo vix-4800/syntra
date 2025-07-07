@@ -15,6 +15,9 @@ class SecurityCheckCommand extends SyntraCommand implements HealthCheckCommandIn
 {
     use HandlesResultTrait;
 
+/**
+ * Configure the command options.
+ */
     protected function configure(): void
     {
         parent::configure();
@@ -22,6 +25,9 @@ class SecurityCheckCommand extends SyntraCommand implements HealthCheckCommandIn
             ->setDescription('Checks Composer dependencies for known security vulnerabilities.');
     }
 
+/**
+ * Run check.
+ */
     public function runCheck(): CommandResult
     {
         $result = Process::run(
@@ -54,6 +60,9 @@ class SecurityCheckCommand extends SyntraCommand implements HealthCheckCommandIn
         return CommandResult::warning($messages);
     }
 
+/**
+ * Perform the command actions.
+ */
     public function perform(): int
     {
         $this->output->section('Running Composer security audit...');

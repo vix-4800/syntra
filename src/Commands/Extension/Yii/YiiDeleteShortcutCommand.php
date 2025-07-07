@@ -9,6 +9,9 @@ use Vix\Syntra\Commands\RectorRunnerCommand;
 
 class YiiDeleteShortcutCommand extends RectorRunnerCommand
 {
+/**
+ * Configure the command options.
+ */
     protected function configure(): void
     {
         parent::configure();
@@ -19,6 +22,9 @@ class YiiDeleteShortcutCommand extends RectorRunnerCommand
             ->setHelp('Usage: vendor/bin/syntra yii:delete-shortcut');
     }
 
+/**
+ * Get a service from the container.rector rules.
+ */
     protected function getRectorRules(): string
     {
         return DeleteAllShortcutRector::class;

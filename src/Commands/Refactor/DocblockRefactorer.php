@@ -18,6 +18,9 @@ class DocblockRefactorer extends SyntraRefactorCommand
     protected ProgressIndicatorType $progressType = ProgressIndicatorType::PROGRESS_BAR;
     protected DangerLevel $dangerLevel = DangerLevel::MEDIUM;
 
+/**
+ * Configure the command options.
+ */
     protected function configure(): void
     {
         parent::configure();
@@ -30,6 +33,9 @@ class DocblockRefactorer extends SyntraRefactorCommand
             ->addOption('category', null, InputOption::VALUE_OPTIONAL, 'Value for the @category tag');
     }
 
+/**
+ * Perform the command actions.
+ */
     public function perform(): int
     {
         $files = File::collectFiles(Config::getProjectRoot());

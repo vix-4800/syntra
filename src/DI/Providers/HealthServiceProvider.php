@@ -15,11 +15,17 @@ use Vix\Syntra\DI\ServiceProviderInterface;
  */
 class HealthServiceProvider implements ServiceProviderInterface
 {
+/**
+ * Register health checker services.
+ */
     public function register(ContainerInterface $container): void
     {
         // Register SecurityChecker factory (placeholder for future use)
     }
 
+/**
+ * Boot any health-related services.
+ */
     public function boot(ContainerInterface $container): void
     {
         // No additional booting needed for health checkers

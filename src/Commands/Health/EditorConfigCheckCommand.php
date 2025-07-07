@@ -44,6 +44,9 @@ insert_final_newline = true
 trim_trailing_whitespace = true
 CFG;
 
+/**
+ * Configure the command options.
+ */
     protected function configure(): void
     {
         parent::configure();
@@ -52,6 +55,9 @@ CFG;
             ->addOption('generate', 'g', InputOption::VALUE_NONE, 'Generate a default .editorconfig file if missing');
     }
 
+/**
+ * Run check.
+ */
     public function runCheck(): CommandResult
     {
         $path = Config::getProjectRoot() . '/.editorconfig';
@@ -65,6 +71,9 @@ CFG;
         ]);
     }
 
+/**
+ * Perform the command actions.
+ */
     public function perform(): int
     {
         $this->output->section('Checking for .editorconfig...');

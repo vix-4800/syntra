@@ -20,6 +20,9 @@ class ImportRefactorer extends SyntraRefactorCommand
 {
     protected ProgressIndicatorType $progressType = ProgressIndicatorType::PROGRESS_BAR;
 
+/**
+ * Configure the command options.
+ */
     protected function configure(): void
     {
         parent::configure();
@@ -29,6 +32,9 @@ class ImportRefactorer extends SyntraRefactorCommand
             ->setHelp('Usage: vendor/bin/syntra refactor:imports [--dry-run] [--force]');
     }
 
+/**
+ * Perform the command actions.
+ */
     public function perform(): int
     {
         $files = File::collectFiles(Config::getProjectRoot());

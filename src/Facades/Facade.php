@@ -59,6 +59,9 @@ abstract class Facade
      */
     abstract protected static function getFacadeAccessor(): string;
 
+/**
+ * Call static.
+ */
     public static function __callStatic(string $method, array $args): mixed
     {
         return static::getFacadeRoot()->$method(...$args);

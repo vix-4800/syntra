@@ -18,6 +18,9 @@ class Application extends SymfonyApplication
 
     private static ?string $packageVersion = null;
 
+/**
+ * Get package version.
+ */
     public static function getPackageVersion(): string
     {
         if (self::$packageVersion === null) {
@@ -34,6 +37,9 @@ class Application extends SymfonyApplication
         return self::$packageVersion;
     }
 
+/**
+ * Class constructor.
+ */
     public function __construct(string $name = 'Syntra', string $version = '')
     {
         parent::__construct($name, $version ?: self::getPackageVersion());

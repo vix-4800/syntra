@@ -14,6 +14,9 @@ class NestedTernaryVisitor extends NodeVisitorAbstract
 {
     public $findings = [];
 
+/**
+ * Enter node.
+ */
     public function enterNode(Node $node): void
     {
         if ($node instanceof Ternary) {
@@ -29,6 +32,9 @@ class NestedTernaryVisitor extends NodeVisitorAbstract
         }
     }
 
+/**
+ * Pretty print node.
+ */
     private function prettyPrintNode(Expr $node): string
     {
         return (new Standard())->prettyPrintExpr($node);

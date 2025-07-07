@@ -17,6 +17,9 @@ use Vix\Syntra\Utils\ConfigLoader;
  */
 class Config extends Facade
 {
+/**
+ * Get the facade accessor class name.
+ */
     protected static function getFacadeAccessor(): string
     {
         return ConfigLoader::class;

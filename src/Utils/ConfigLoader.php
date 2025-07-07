@@ -24,27 +24,42 @@ class ConfigLoader
 
     private readonly array $commands;
 
+/**
+ * Class constructor.
+ */
     public function __construct(?string $projectRoot = null)
     {
         $this->projectRoot = $projectRoot ?? getcwd();
         $this->commands = require PACKAGE_ROOT . '/config.php';
     }
 
+/**
+ * Set project root.
+ */
     public function setProjectRoot(string $path): void
     {
         $this->projectRoot = rtrim($path, '/');
     }
 
+/**
+ * Get project root.
+ */
     public function getProjectRoot(): ?string
     {
         return $this->projectRoot;
     }
 
+/**
+ * Get command config.
+ */
     public function getCommandConfig(string $group, string $commandClass): array|bool
     {
         return $this->commands[$group][$commandClass] ?? false;
     }
 
+/**
+ * Is command enabled.
+ */
     public function isCommandEnabled(string $group, string $commandClass): bool
     {
         $cfg = $this->getCommandConfig($group, $commandClass);
@@ -56,6 +71,9 @@ class ConfigLoader
         return (bool)$cfg;
     }
 
+/**
+ * Get command option.
+ */
     public function getCommandOption(string $group, string $commandClass, string $option, $default = null)
     {
         $cfg = $this->getCommandConfig($group, $commandClass);
@@ -67,16 +85,25 @@ class ConfigLoader
         return $default;
     }
 
+/**
+ * Get enabled commands.
+ */
     public function getEnabledCommands(): array
     {
         return $this->filterEnabledCommands(true);
     }
 
+/**
+ * Get enabled extension commands.
+ */
     public function getEnabledExtensionCommands(): array
     {
         return $this->filterEnabledCommands(false);
     }
 
+/**
+ * Filter enabled commands.
+ */
     private function filterEnabledCommands(bool $core): array
     {
         $result = [];

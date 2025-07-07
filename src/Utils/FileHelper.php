@@ -30,6 +30,9 @@ class FileHelper
         self::$filesCache = [];
     }
 
+/**
+ * Set cache enabled.
+ */
     public static function setCacheEnabled(bool $enabled): void
     {
         self::$cacheEnabled = $enabled;
@@ -108,6 +111,9 @@ class FileHelper
         }
     }
 
+/**
+ * Resolve a class instance.relative.
+ */
     public function makeRelative(string $path, string $root): string
     {
         $root = rtrim($root, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;

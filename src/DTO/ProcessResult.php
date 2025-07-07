@@ -6,6 +6,9 @@ namespace Vix\Syntra\DTO;
 
 class ProcessResult
 {
+/**
+ * Class constructor.
+ */
     public function __construct(
         public readonly int $exitCode,
         public readonly string $output,

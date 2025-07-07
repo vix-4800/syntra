@@ -23,6 +23,9 @@ class FindLongMethodsCommand extends SyntraCommand
 
     protected ProgressIndicatorType $progressType = ProgressIndicatorType::PROGRESS_BAR;
 
+/**
+ * Configure the command options.
+ */
     protected function configure(): void
     {
         parent::configure();
@@ -34,6 +37,9 @@ class FindLongMethodsCommand extends SyntraCommand
             ->addOption('max', null, InputOption::VALUE_OPTIONAL, 'Max allowed method length (lines)', 75);
     }
 
+/**
+ * Perform the command actions.
+ */
     public function perform(): int
     {
         $projectRoot = Config::getProjectRoot();

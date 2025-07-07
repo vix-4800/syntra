@@ -16,6 +16,9 @@ class ProjectCheckCommand extends SyntraCommand
 {
     use CommandRunnerTrait;
 
+/**
+ * Configure the command options.
+ */
     protected function configure(): void
     {
         parent::configure();
@@ -25,6 +28,9 @@ class ProjectCheckCommand extends SyntraCommand
             ->setHelp('Usage: vendor/bin/syntra health:project');
     }
 
+/**
+ * Perform the command actions.
+ */
     public function perform(): int
     {
         $this->output->section('Starting project health check...');

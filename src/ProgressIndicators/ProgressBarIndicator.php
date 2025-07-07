@@ -11,6 +11,9 @@ class ProgressBarIndicator extends AbstractProgressIndicator
 {
     private readonly ProgressBar $progressBar;
 
+/**
+ * Class constructor.
+ */
     public function __construct(SymfonyStyle $output, int $maxSteps)
     {
         parent::__construct($output);
@@ -24,22 +27,34 @@ class ProgressBarIndicator extends AbstractProgressIndicator
         $this->progressBar->setProgressCharacter("\033[32m➤\033[0m");
     }
 
+/**
+ * Start the progress indicator.
+ */
     public function start(): void
     {
         $this->progressBar->start();
     }
 
+/**
+ * Advance the progress indicator.
+ */
     public function advance(int $step = 1): void
     {
         $this->progressBar->advance($step);
     }
 
+/**
+ * Finish the progress indicator.
+ */
     public function finish(): void
     {
         $this->progressBar->finish();
         $this->output->newLine();
     }
 
+/**
+ * Set message.
+ */
     public function setMessage(string $message): void
     {
         $this->progressBar->setMessage($message);

@@ -16,6 +16,9 @@ use Vix\Syntra\Facades\Process;
  */
 class RectorCommandExecutor
 {
+/**
+ * Class constructor.
+ */
     public function __construct()
     {
         //

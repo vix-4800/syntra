@@ -27,6 +27,9 @@ class FindDebugCallsCommand extends SyntraCommand
         'xdebug_break',
     ];
 
+/**
+ * Configure the command options.
+ */
     protected function configure(): void
     {
         parent::configure();
@@ -37,6 +40,9 @@ class FindDebugCallsCommand extends SyntraCommand
             ->setHelp('Usage: vendor/bin/syntra analyze:find-debug-calls');
     }
 
+/**
+ * Perform the command actions.
+ */
     public function perform(): int
     {
         $projectRoot = Config::getProjectRoot();

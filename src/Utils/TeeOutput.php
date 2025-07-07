@@ -12,17 +12,26 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class TeeOutput extends Output
 {
+/**
+ * Class constructor.
+ */
     public function __construct(private readonly OutputInterface $first, private readonly OutputInterface $second)
     {
         parent::__construct($first->getVerbosity(), $first->isDecorated(), $first->getFormatter());
     }
 
+/**
+ * Do write.
+ */
     protected function doWrite(string $message, bool $newline): void
     {
         $this->first->write($message, $newline);
         $this->second->write($message, $newline);
     }
 
+/**
+ * Set decorated.
+ */
     public function setDecorated(bool $decorated): void
     {
         parent::setDecorated($decorated);
@@ -30,6 +39,9 @@ class TeeOutput extends Output
         $this->second->setDecorated($decorated);
     }
 
+/**
+ * Set verbosity.
+ */
     public function setVerbosity(int $level): void
     {
         parent::setVerbosity($level);

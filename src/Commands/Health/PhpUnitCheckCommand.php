@@ -16,6 +16,9 @@ class PhpUnitCheckCommand extends SyntraCommand implements HealthCheckCommandInt
 {
     use HandlesResultTrait;
 
+/**
+ * Configure the command options.
+ */
     protected function configure(): void
     {
         parent::configure();
@@ -23,6 +26,9 @@ class PhpUnitCheckCommand extends SyntraCommand implements HealthCheckCommandInt
             ->setDescription('Runs the PHPUnit test suite.');
     }
 
+/**
+ * Run check.
+ */
     public function runCheck(): CommandResult
     {
         $binary = find_composer_bin('phpunit', Config::getProjectRoot());
@@ -47,6 +53,9 @@ class PhpUnitCheckCommand extends SyntraCommand implements HealthCheckCommandInt
         return CommandResult::error($messages);
     }
 
+/**
+ * Perform the command actions.
+ */
     public function perform(): int
     {
         $this->output->section('Running PHPUnit tests...');

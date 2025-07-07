@@ -26,6 +26,9 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
  */
 class CanHelpersRector extends AbstractRector
 {
+/**
+ * Get a service from the container.rule definition.
+ */
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition(
@@ -117,6 +120,9 @@ class CanHelpersRector extends AbstractRector
         );
     }
 
+/**
+ * Resolve method name.
+ */
     private function resolveMethodName(Node $node, bool $isNegated): ?string
     {
         if ($node instanceof BooleanOr) {

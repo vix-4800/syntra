@@ -15,6 +15,9 @@ class RectorRefactorer extends SyntraRefactorCommand
 {
     protected DangerLevel $dangerLevel = DangerLevel::HIGH;
 
+/**
+ * Configure the command options.
+ */
     protected function configure(): void
     {
         parent::configure();
@@ -24,6 +27,9 @@ class RectorRefactorer extends SyntraRefactorCommand
             ->setHelp('Usage: vendor/bin/syntra refactor:rector [--dry-run] [--force]');
     }
 
+/**
+ * Perform the command actions.
+ */
     public function perform(): int
     {
         $binary = find_composer_bin('rector', Config::getProjectRoot());

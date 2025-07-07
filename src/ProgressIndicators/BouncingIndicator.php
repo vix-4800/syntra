@@ -14,17 +14,26 @@ class BouncingIndicator extends AbstractProgressIndicator
 
     private bool $isRunning = false;
 
+/**
+ * Class constructor.
+ */
     public function __construct(protected SymfonyStyle $output, private readonly int $width = 10)
     {
         parent::__construct($output);
     }
 
+/**
+ * Start the progress indicator.
+ */
     public function start(): void
     {
         $this->isRunning = true;
         $this->render();
     }
 
+/**
+ * Advance the progress indicator.
+ */
     public function advance(int $step = 1): void
     {
         if (!$this->isRunning) {
@@ -44,6 +53,9 @@ class BouncingIndicator extends AbstractProgressIndicator
         $this->render();
     }
 
+/**
+ * Finish the progress indicator.
+ */
     public function finish(): void
     {
         if (!$this->isRunning) {
@@ -55,6 +67,9 @@ class BouncingIndicator extends AbstractProgressIndicator
         $this->output->writeln("<info>✓</info> {$this->message}");
     }
 
+/**
+ * Render the progress output.
+ */
     private function render(): void
     {
         $line = str_repeat(' ', $this->position) . '<comment>●</comment>' . str_repeat(' ', $this->width - $this->position - 1);

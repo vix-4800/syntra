@@ -10,6 +10,9 @@ class ProjectDetector
     public const TYPE_YII = 'yii';
     public const TYPE_LARAVEL = 'laravel';
 
+/**
+ * Detect the project type.
+ */
     public function detect(string $projectRoot): string
     {
         $composerPath = rtrim($projectRoot, '/').'/composer.json';

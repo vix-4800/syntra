@@ -21,6 +21,9 @@ use Vix\Syntra\NodeVisitors\ReturnThrowVisitor;
  */
 class ParserServiceProvider implements ServiceProviderInterface
 {
+/**
+ * Register parser services with the container.
+ */
     public function register(ContainerInterface $container): void
     {
         // Register PHP Parser as singleton
@@ -49,6 +52,9 @@ class ParserServiceProvider implements ServiceProviderInterface
         });
     }
 
+/**
+ * Boot the parser services.
+ */
     public function boot(ContainerInterface $container): void
     {
         // No additional booting needed for parser services

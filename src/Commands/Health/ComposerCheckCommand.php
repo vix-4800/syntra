@@ -15,6 +15,9 @@ class ComposerCheckCommand extends SyntraCommand implements HealthCheckCommandIn
 {
     use HandlesResultTrait;
 
+/**
+ * Configure the command options.
+ */
     protected function configure(): void
     {
         parent::configure();
@@ -22,6 +25,9 @@ class ComposerCheckCommand extends SyntraCommand implements HealthCheckCommandIn
             ->setDescription('Checks Composer dependencies for updates.');
     }
 
+/**
+ * Run check.
+ */
     public function runCheck(): CommandResult
     {
         $result = Process::run(
@@ -47,6 +53,9 @@ class ComposerCheckCommand extends SyntraCommand implements HealthCheckCommandIn
         return CommandResult::warning($packages);
     }
 
+/**
+ * Perform the command actions.
+ */
     public function perform(): int
     {
         $this->output->section('Running Composer check...');

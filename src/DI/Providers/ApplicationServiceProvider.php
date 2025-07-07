@@ -20,6 +20,9 @@ use Vix\Syntra\Utils\RectorCommandExecutor;
  */
 class ApplicationServiceProvider implements ServiceProviderInterface
 {
+/**
+ * Register core application services.
+ */
     public function register(ContainerInterface $container): void
     {
         // Register ConfigLoader as singleton
@@ -38,6 +41,9 @@ class ApplicationServiceProvider implements ServiceProviderInterface
         $container->singleton(RectorCommandExecutor::class, fn (): RectorCommandExecutor => new RectorCommandExecutor());
     }
 
+/**
+ * Boot the registered services.
+ */
     public function boot(ContainerInterface $container): void
     {
         // No additional booting needed for core services

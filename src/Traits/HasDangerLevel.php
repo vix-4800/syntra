@@ -78,6 +78,9 @@ trait HasDangerLevel
         );
     }
 
+/**
+ * Add force option.
+ */
     protected function addForceOption(): static
     {
         return $this->addOption('force', 'f', InputOption::VALUE_NONE, 'Force execution, ignore warnings');

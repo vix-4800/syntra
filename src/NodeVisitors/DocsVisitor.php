@@ -12,6 +12,9 @@ class DocsVisitor extends NodeVisitorAbstract
 {
     public array $routes = [];
 
+/**
+ * Enter node.
+ */
     public function enterNode(Node $node): void
     {
         if (

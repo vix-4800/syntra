@@ -45,6 +45,9 @@ abstract class SyntraCommand extends Command
 
     protected int $progressMax = 0;
 
+/**
+ * Configure the command options.
+ */
     protected function configure(): void
     {
         $this
@@ -57,6 +60,9 @@ abstract class SyntraCommand extends Command
             ->addOption('output-file', null, InputOption::VALUE_OPTIONAL, 'Write command output to the given file');
     }
 
+/**
+ * Initialize internal state.
+ */
     protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->input = $input;
@@ -91,6 +97,9 @@ abstract class SyntraCommand extends Command
         }
     }
 
+/**
+ * Execute the command logic.
+ */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         try {
@@ -104,8 +113,14 @@ abstract class SyntraCommand extends Command
         }
     }
 
+/**
+ * Perform the command actions.
+ */
     abstract public function perform(): int;
 
+/**
+ * Start the progress indicator.
+ */
     protected function startProgress(): void
     {
         $type = $this->noProgress ? ProgressIndicatorType::NONE : $this->progressType;
@@ -119,16 +134,25 @@ abstract class SyntraCommand extends Command
         $this->progressIndicator->start();
     }
 
+/**
+ * Advance the progress indicator.
+ */
     protected function advanceProgress(int $step = 1): void
     {
         $this->progressIndicator->advance($step);
     }
 
+/**
+ * Finish the progress indicator.
+ */
     protected function finishProgress(): void
     {
         $this->progressIndicator->finish();
     }
 
+/**
+ * Set progress max.
+ */
     protected function setProgressMax(int $max): void
     {
         $this->progressMax = $max;

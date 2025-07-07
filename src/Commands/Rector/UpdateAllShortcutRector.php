@@ -46,7 +46,7 @@ class UpdateAllShortcutRector extends AbstractRector
     }
 
     /**
-     * Performs the transformation for matching MethodCall nodes.
+     * Perform the command actions. the transformation for matching MethodCall nodes.
      *
      * @param  MethodCall      $node
      * @return StaticCall|null

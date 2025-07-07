@@ -11,6 +11,9 @@ use Vix\Syntra\ProgressIndicators\ProgressIndicatorInterface;
 
 class ProgressIndicatorFactory
 {
+/**
+ * Create a new instance.
+ */
     public static function create(
         ProgressIndicatorType $type,
         SymfonyStyle $output,

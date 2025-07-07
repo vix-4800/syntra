@@ -11,7 +11,7 @@ use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\File;
 
 /**
- * Refactors @var comments by standardizing the order of type and variable name.
+ * Refactor the provided files. @var comments by standardizing the order of type and variable name.
  *
  * Converts comments like `/* @var $varName Type *\/` to the standardized format `/** @var Type $varName *\/`
  * across all PHP files in the specified directory and its subdirectories.
@@ -20,6 +20,9 @@ class VarCommentsRefactorer extends SyntraRefactorCommand
 {
     protected ProgressIndicatorType $progressType = ProgressIndicatorType::PROGRESS_BAR;
 
+/**
+ * Configure the command options.
+ */
     protected function configure(): void
     {
         parent::configure();
@@ -29,6 +32,9 @@ class VarCommentsRefactorer extends SyntraRefactorCommand
             ->setHelp('Transforms all single-line @var annotations such as /* @var ... */ to PHPDoc-style /** @var Type $var */. Usage: vendor/bin/syntra refactor:var-comments [--dry-run] [--force]');
     }
 
+/**
+ * Perform the command actions.
+ */
     public function perform(): int
     {
         $files = File::collectFiles(Config::getProjectRoot());

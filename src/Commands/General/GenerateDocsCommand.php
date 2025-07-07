@@ -24,6 +24,9 @@ class GenerateDocsCommand extends SyntraCommand
 
     protected ProgressIndicatorType $progressType = ProgressIndicatorType::PROGRESS_BAR;
 
+/**
+ * Configure the command options.
+ */
     protected function configure(): void
     {
         parent::configure();
@@ -35,6 +38,9 @@ class GenerateDocsCommand extends SyntraCommand
             ->addOption('controllerDir', null, InputOption::VALUE_OPTIONAL, 'Relative path to controllers directory', 'backend/controllers');
     }
 
+/**
+ * Perform the command actions.
+ */
     public function perform(): int
     {
         $projectRoot = Config::getProjectRoot();
@@ -51,6 +57,9 @@ class GenerateDocsCommand extends SyntraCommand
         return Command::SUCCESS;
     }
 
+/**
+ * Generate for yii.
+ */
     private function generateForYii(string $projectRoot): int
     {
         $controllerDirOption = $this->input->getOption('controllerDir');
@@ -111,6 +120,9 @@ class GenerateDocsCommand extends SyntraCommand
         return Command::SUCCESS;
     }
 
+/**
+ * Write to markdown.
+ */
     private function writeToMarkdown(string $filePath, array $routes, string $suffix = ''): string
     {
         $md = '# 📘 Route documentation' . ($suffix ? " ($suffix)" : '') . "\n\n";

@@ -12,6 +12,9 @@ use Vix\Syntra\Utils\ProcessRunner;
  */
 class Process extends Facade
 {
+/**
+ * Get the facade accessor class name.
+ */
     protected static function getFacadeAccessor(): string
     {
         return ProcessRunner::class;

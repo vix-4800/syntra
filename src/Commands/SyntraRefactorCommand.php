@@ -14,6 +14,9 @@ abstract class SyntraRefactorCommand extends SyntraCommand
 {
     use HasDangerLevel;
 
+/**
+ * Configure the command options.
+ */
     protected function configure(): void
     {
         parent::configure();
@@ -21,6 +24,9 @@ abstract class SyntraRefactorCommand extends SyntraCommand
         $this->addForceOption();
     }
 
+/**
+ * Initialize internal state.
+ */
     protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->force = (bool) $input->getOption('force');
@@ -28,6 +34,9 @@ abstract class SyntraRefactorCommand extends SyntraCommand
         parent::initialize($input, $output);
     }
 
+/**
+ * Execute the command logic.
+ */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (!$this->askDangerConfirmation($input, $output)) {

@@ -26,6 +26,9 @@ class FindTodosCommand extends SyntraCommand
         '@internal',
     ];
 
+/**
+ * Configure the command options.
+ */
     protected function configure(): void
     {
         parent::configure();
@@ -36,6 +39,9 @@ class FindTodosCommand extends SyntraCommand
             ->setHelp('Usage: vendor/bin/syntra analyze:find-todos');
     }
 
+/**
+ * Perform the command actions.
+ */
     public function perform(): int
     {
         $projectRoot = Config::getProjectRoot();

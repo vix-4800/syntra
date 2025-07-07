@@ -46,7 +46,7 @@ class FindOneFindAllShortcutRector extends AbstractRector
     }
 
     /**
-     * Performs the transformation on matching MethodCall nodes.
+     * Perform the command actions. the transformation on matching MethodCall nodes.
      *
      * @param MethodCall $node
      *

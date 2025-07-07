@@ -13,6 +13,9 @@ use Vix\Syntra\Utils\StubHelper;
 
 class GenerateCommandCommand extends SyntraCommand
 {
+/**
+ * Configure the command options.
+ */
     protected function configure(): void
     {
         parent::configure();
@@ -26,6 +29,9 @@ class GenerateCommandCommand extends SyntraCommand
             ->addOption('desc', null, InputOption::VALUE_OPTIONAL, 'Description of the command');
     }
 
+/**
+ * Perform the command actions.
+ */
     public function perform(): int
     {
         /** @var QuestionHelper $helper */

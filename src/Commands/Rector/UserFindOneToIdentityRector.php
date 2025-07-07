@@ -16,6 +16,9 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 class UserFindOneToIdentityRector extends AbstractRector
 {
+/**
+ * Get a service from the container.rule definition.
+ */
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition(
@@ -61,6 +64,9 @@ class UserFindOneToIdentityRector extends AbstractRector
         return null;
     }
 
+/**
+ * Is user find one call.
+ */
     private function isUserFindOneCall(StaticCall $node): bool
     {
         if (!$this->isName($node->name, 'findOne')) {
@@ -76,6 +82,9 @@ class UserFindOneToIdentityRector extends AbstractRector
         return false;
     }
 
+/**
+ * Is yii user id property fetch.
+ */
     private function isYiiUserIdPropertyFetch(Expr $expr): bool
     {
         return $expr instanceof PropertyFetch
@@ -87,6 +96,9 @@ class UserFindOneToIdentityRector extends AbstractRector
             && $this->isName($expr->var->var->name, 'app');
     }
 
+/**
+ * Is array of single yii user id.
+ */
     private function isArrayOfSingleYiiUserId(Expr $expr): bool
     {
         if ($expr instanceof Array_ && count($expr->items) === 1) {
@@ -99,6 +111,9 @@ class UserFindOneToIdentityRector extends AbstractRector
         return false;
     }
 
+/**
+ * Create a new instance.yii user identity property fetch.
+ */
     private function createYiiUserIdentityPropertyFetch(): PropertyFetch
     {
         return new PropertyFetch(

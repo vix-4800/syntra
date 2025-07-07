@@ -8,5 +8,8 @@ use Vix\Syntra\DTO\CommandResult;
 
 interface HealthCheckCommandInterface
 {
+/**
+ * Run check.
+ */
     public function runCheck(): CommandResult;
 }

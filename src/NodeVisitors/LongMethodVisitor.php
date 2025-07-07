@@ -14,11 +14,17 @@ class LongMethodVisitor extends NodeVisitorAbstract
 {
     public array $results;
 
+/**
+ * Class constructor.
+ */
     public function __construct(private readonly string $filePath, private readonly int $maxLength, &$results)
     {
         $this->results = &$results;
     }
 
+/**
+ * Enter node.
+ */
     public function enterNode(Node $node): void
     {
         if (

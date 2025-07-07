@@ -49,7 +49,7 @@ class FindOneIdShortcutRector extends AbstractRector
     }
 
     /**
-     * Performs the transformation for matching StaticCall nodes.
+     * Perform the command actions. the transformation for matching StaticCall nodes.
      *
      * @param  StaticCall      $node
      * @return StaticCall|null

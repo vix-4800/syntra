@@ -12,6 +12,9 @@ use Vix\Syntra\Facades\Process;
 
 class PhpCsFixerRefactorer extends SyntraRefactorCommand
 {
+/**
+ * Configure the command options.
+ */
     protected function configure(): void
     {
         parent::configure();
@@ -21,6 +24,9 @@ class PhpCsFixerRefactorer extends SyntraRefactorCommand
             ->setHelp('Usage: vendor/bin/syntra refactor:cs-fixer [--dry-run] [--force]');
     }
 
+/**
+ * Perform the command actions.
+ */
     public function perform(): int
     {
         $binary = find_composer_bin('php-cs-fixer', Config::getProjectRoot());

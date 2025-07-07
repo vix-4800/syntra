@@ -23,6 +23,9 @@ class RefactorAllCommand extends SyntraRefactorCommand
 
     private bool $runFramework = false;
 
+/**
+ * Configure the command options.
+ */
     protected function configure(): void
     {
         parent::configure();
@@ -34,6 +37,9 @@ class RefactorAllCommand extends SyntraRefactorCommand
             ->addOption('framework', null, InputOption::VALUE_NONE, 'Also run framework-specific refactorings (Yii or Laravel)');
     }
 
+/**
+ * Initialize internal state.
+ */
     protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->runFramework = (bool) $input->getOption('framework');
@@ -41,6 +47,9 @@ class RefactorAllCommand extends SyntraRefactorCommand
         parent::initialize($input, $output);
     }
 
+/**
+ * Perform the command actions.
+ */
     public function perform(): int
     {
         $enabled = Config::getEnabledCommands();

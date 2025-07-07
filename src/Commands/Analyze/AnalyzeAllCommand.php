@@ -12,6 +12,9 @@ class AnalyzeAllCommand extends SyntraCommand
 {
     use CommandRunnerTrait;
 
+/**
+ * Configure the command options.
+ */
     protected function configure(): void
     {
         parent::configure();
@@ -22,6 +25,9 @@ class AnalyzeAllCommand extends SyntraCommand
             ->setHelp('Usage: vendor/bin/syntra analyze:all');
     }
 
+/**
+ * Perform the command actions.
+ */
     public function perform(): int
     {
         $enabled = Config::getEnabledCommands();

@@ -16,6 +16,9 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 class FindAllIdShortcutRector extends AbstractRector
 {
+/**
+ * Get a service from the container.rule definition.
+ */
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition(
@@ -24,11 +27,17 @@ class FindAllIdShortcutRector extends AbstractRector
         );
     }
 
+/**
+ * Get a service from the container.node types.
+ */
     public function getNodeTypes(): array
     {
         return [StaticCall::class];
     }
 
+/**
+ * Refactor the provided files.
+ */
     public function refactor(Node $node): ?Node
     {
         if (!$node instanceof StaticCall) {

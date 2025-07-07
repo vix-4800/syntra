@@ -12,6 +12,9 @@ use Vix\Syntra\Utils\RectorCommandExecutor;
  */
 abstract class RectorRunnerCommand extends SyntraRefactorCommand
 {
+/**
+ * Class constructor.
+ */
     public function __construct(protected RectorCommandExecutor $rectorExecutor)
     {
         parent::__construct();
@@ -55,7 +58,7 @@ abstract class RectorRunnerCommand extends SyntraRefactorCommand
     }
 
     /**
-     * Execute the Rector rule(s).
+     * Execute the command logic.the Rector rule(s).
      */
     public function perform(): int
     {

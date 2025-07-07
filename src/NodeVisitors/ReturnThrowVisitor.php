@@ -14,6 +14,9 @@ class ReturnThrowVisitor extends NodeVisitorAbstract
 {
     public $findings = [];
 
+/**
+ * Enter node.
+ */
     public function enterNode(Node $node): void
     {
         if (
@@ -28,6 +31,9 @@ class ReturnThrowVisitor extends NodeVisitorAbstract
         }
     }
 
+/**
+ * Pretty print node.
+ */
     private function prettyPrintNode($node): string
     {
         return (new Standard())->prettyPrintExpr($node);
