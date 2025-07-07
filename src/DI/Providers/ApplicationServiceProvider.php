@@ -8,8 +8,8 @@ use Vix\Syntra\DI\ContainerInterface;
 use Vix\Syntra\DI\ServiceProviderInterface;
 use Vix\Syntra\Utils\ConfigLoader;
 use Vix\Syntra\Utils\FileHelper;
-use Vix\Syntra\Utils\ProcessRunner;
 use Vix\Syntra\Utils\PackageInstaller;
+use Vix\Syntra\Utils\ProcessRunner;
 
 /**
  * Application Service Provider

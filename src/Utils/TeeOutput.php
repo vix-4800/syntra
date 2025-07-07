@@ -12,7 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class TeeOutput extends Output
 {
-    public function __construct(private OutputInterface $first, private OutputInterface $second)
+    public function __construct(private readonly OutputInterface $first, private readonly OutputInterface $second)
     {
         parent::__construct($first->getVerbosity(), $first->isDecorated(), $first->getFormatter());
     }

@@ -32,7 +32,6 @@ trait HasDangerLevel
         return $this->dangerLevel;
     }
 
-
     /**
      * Ask for confirmation if the command is dangerous and not forced.
      */

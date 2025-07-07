@@ -6,8 +6,6 @@ namespace Vix\Syntra\Commands\Health;
 
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
-use Vix\Syntra\Traits\HandlesResultTrait;
-use Vix\Syntra\Facades\Installer;
 use Vix\Syntra\Commands\Health\ComposerCheckCommand;
 use Vix\Syntra\Commands\Health\EditorConfigCheckCommand;
 use Vix\Syntra\Commands\Health\PhpStanCheckCommand;
@@ -16,7 +14,9 @@ use Vix\Syntra\Commands\Health\PhpVersionCheckCommand;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Exceptions\CommandException;
 use Vix\Syntra\Exceptions\MissingBinaryException;
+use Vix\Syntra\Facades\Installer;
 use Vix\Syntra\Traits\CommandRunnerTrait;
+use Vix\Syntra\Traits\HandlesResultTrait;
 
 class ProjectCheckCommand extends SyntraCommand
 {
