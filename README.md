@@ -89,27 +89,25 @@ All commands support these standard options (with an optional `[path]` argument 
 | `analyze:find-debug-calls`   | Checks that var_dump, dd, print_r, eval, and other calls prohibited in production | `[path]`, `--dry-run`, `--no-cache`          |
 | `analyze:find-long-methods`  | Finds all methods or functions that exceed a specified number of lines            | `[path]`, `--dry-run`, `--max`, `--no-cache` |
 | `analyze:find-bad-practices` | Detects bad practices in code like magic numbers, nested ternaries                | `[path]`, `--dry-run`, `--no-cache`          |
-| `analyze:all`                | Runs all enabled analyze commands sequentially                                     | `[path]`, `--dry-run`, `--no-cache`  |
+| `analyze:all`                | Runs all enabled analyze commands sequentially                                    | `[path]`, `--dry-run`, `--no-cache`          |
 
 ### 🏥 Health
 
-| Command           | Description                                                  | Options                             |
-| ----------------- | ------------------------------------------------------------ | ----------------------------------- |
-| `health:composer` | Check Composer dependencies for updates                      | `[path]`, `--dry-run`, `--no-cache` |
-| `health:php-version` | Validate PHP version requirement in composer.json
-  | `[path]`, `--dry-run`, `--no-cache` |
-| `health:phpstan`  | Run PHPStan static analysis                                  | `[path]`, `--dry-run`, `--no-cache` |
-| `health:phpunit`  | Execute PHPUnit tests                                        | `[path]`, `--dry-run`, `--no-cache` |
-| `health:security` | Check Composer dependencies for known vulnerabilities        | `[path]`, `--dry-run`, `--no-cache` |
-| `health:project`  | Run all health checks (composer, phpstan, phpunit, security) | `[path]`, `--dry-run`, `--no-cache` |
+| Command              | Description                                                  | Options                             |
+| -------------------- | ------------------------------------------------------------ | ----------------------------------- |
+| `health:composer`    | Check Composer dependencies for updates                      | `[path]`, `--dry-run`, `--no-cache` |
+| `health:php-version` | Validate PHP version requirement in composer.json            | `[path]`, `--dry-run`, `--no-cache` |
+| `health:phpstan`     | Run PHPStan static analysis                                  | `[path]`, `--dry-run`, `--no-cache` |
+| `health:phpunit`     | Execute PHPUnit tests                                        | `[path]`, `--dry-run`, `--no-cache` |
+| `health:security`    | Check Composer dependencies for known vulnerabilities        | `[path]`, `--dry-run`, `--no-cache` |
+| `health:project`     | Run all health checks (composer, phpstan, phpunit, security) | `[path]`, `--dry-run`, `--no-cache` |
 
 #### Additional checks to consider
 
-- Ensure an `.editorconfig` file is present for consistent formatting
-- Run PHP-CS-Fixer in dry-run mode to enforce PSR-12 style
-- Check for `declare(strict_types=1)` at the top of PHP files
-- Verify Composer package licenses match your project policy
-
+-   Ensure an `.editorconfig` file is present for consistent formatting
+-   Run PHP-CS-Fixer in dry-run mode to enforce PSR-12 style
+-   Check for `declare(strict_types=1)` at the top of PHP files
+-   Verify Composer package licenses match your project policy
 
 ### 🔧 Refactor
 
@@ -120,7 +118,7 @@ All commands support these standard options (with an optional `[path]` argument 
 | `refactor:var-comments` | Standardizes @var comments to `/** @var Type $var */`             | 🟢 LOW       | `[path]`, `--dry-run`, `--no-cache`, `--force`                                     |
 | `refactor:docblocks`    | Adds a file-level PHPDoc block and class PHPDoc blocks if missing | 🟡 MEDIUM    | `[path]`, `--dry-run`, `--no-cache`, `--force`, `--author`, `--link`, `--category` |
 | `refactor:rector`       | Runs Rector for automated refactoring                             | 🔴 HIGH      | `[path]`, `--dry-run`, `--no-cache`, `--force`                                     |
-| `refactor:all`          | Runs all enabled refactor commands sequentially    | 🔴 HIGH      | `[path]`, `--dry-run`, `--no-cache`, `--force`, `--framework`                                  |
+| `refactor:all`          | Runs all enabled refactor commands sequentially                   | 🔴 HIGH      | `[path]`, `--dry-run`, `--no-cache`, `--force`, `--framework`                      |
 
 ### 🧠 General
 
@@ -146,10 +144,9 @@ All commands support these standard options (with an optional `[path]` argument 
 
 ### 🧩 Laravel Framework Extensions
 
-| Command | Description | Danger Level | Options |
-| ---------------------- | --------------------------------------------- | ------------ | ---------------------------- |
-| `laravel:all` | Runs all Laravel-specific Rector refactorings in sequence | 🟢 LOW | `[path]`, `--dry-run`, `--force` |
-
+| Command       | Description                                               | Danger Level | Options                          |
+| ------------- | --------------------------------------------------------- | ------------ | -------------------------------- |
+| `laravel:all` | Runs all Laravel-specific Rector refactorings in sequence | 🟢 LOW       | `[path]`, `--dry-run`, `--force` |
 
 ## 📁 Configuration
 
