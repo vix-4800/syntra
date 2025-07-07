@@ -51,6 +51,7 @@ class PhpVersionCheckCommandTest extends TestCase
     {
         $container = new Container();
         $container->instance(ConfigLoader::class, self::$config);
+
         self::$config->setProjectRoot($this->dir);
         Facade::setContainer($container);
         return new PhpVersionCheckCommand();

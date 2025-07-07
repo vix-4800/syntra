@@ -155,7 +155,7 @@ return [
 ### Extension Commands
 
 -   **`yii`** (`CommandGroup::YII`): Yii framework-specific commands
--   **`laravel`** (`CommandGroup::LARAVEL`): Laravel framework-specific commands (planned)
+-   **`laravel`** (`CommandGroup::LARAVEL`): Laravel framework-specific commands
 
 ## Security Considerations
 

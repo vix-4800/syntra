@@ -6,10 +6,10 @@ namespace Vix\Syntra\Utils;
 
 use Vix\Syntra\Commands\Refactor\RectorRefactorer;
 use Vix\Syntra\DTO\ProcessResult;
+use Vix\Syntra\Enums\CommandGroup;
 use Vix\Syntra\Exceptions\MissingBinaryException;
 use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\Process;
-use Vix\Syntra\Enums\CommandGroup;
 
 /**
  * Utility class for executing Rector commands with specific rules

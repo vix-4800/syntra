@@ -3,10 +3,11 @@
 namespace Vix\Syntra\Tests\Commands;
 
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
+use Symfony\Component\Console\Tester\CommandTester;
+use Vix\Syntra\Application;
 use Vix\Syntra\Commands\Health\EditorConfigCheckCommand;
 use Vix\Syntra\DI\Container;
-use Vix\Syntra\Application;
-use Symfony\Component\Console\Tester\CommandTester;
 use Vix\Syntra\Enums\CommandStatus;
 use Vix\Syntra\Facades\Facade;
 use Vix\Syntra\Utils\ConfigLoader;
@@ -65,7 +66,7 @@ class EditorConfigCheckCommandTest extends TestCase
         $tester->execute(['path' => $dir, '--generate' => true]);
 
         $this->assertFileExists("$dir/.editorconfig");
-        $ref = new \ReflectionClass(EditorConfigCheckCommand::class);
+        $ref = new ReflectionClass(EditorConfigCheckCommand::class);
         $expected = trim((string) $ref->getConstant('DEFAULT_CONFIG'));
         $actual = trim((string) file_get_contents("$dir/.editorconfig"));
         $this->assertSame($expected, $actual);

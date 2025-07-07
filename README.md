@@ -14,6 +14,7 @@
 -   **No-Cache Option**: Use `--no-cache` to disable caching for a single command run.
 -   **Facades**: Convenient static access to common services.
 -   **Progress Indicators**: Choose between spinner, progress bar, bouncing, or none via the `ProgressIndicatorType` enum.
+-   **Output Logging**: Use `--output-file=FILE` to save command output.
 
 ## 📦 Installation
 
@@ -75,6 +76,7 @@ All commands support these standard options (with an optional `[path]` argument 
 -   `--no-cache`: Disable file caching (useful for temporary directories)
 -   `--fail-on-warning`: Return exit code 1 if warnings were found
 -   `--ci`: CI mode, implies `--no-progress` and `--fail-on-warning`
+-   `--output-file=FILE`: Write all command output to FILE
 -   `--help` / `-h`: Display help for the command
 -   `--quiet` / `-q`: Only show errors
 -   `--verbose` / `-v/-vv/-vvv`: Increase verbosity level
@@ -89,27 +91,25 @@ All commands support these standard options (with an optional `[path]` argument 
 | `analyze:find-debug-calls`   | Checks that var_dump, dd, print_r, eval, and other calls prohibited in production | `[path]`, `--dry-run`, `--no-cache`          |
 | `analyze:find-long-methods`  | Finds all methods or functions that exceed a specified number of lines            | `[path]`, `--dry-run`, `--max`, `--no-cache` |
 | `analyze:find-bad-practices` | Detects bad practices in code like magic numbers, nested ternaries                | `[path]`, `--dry-run`, `--no-cache`          |
-| `analyze:all`                | Runs all enabled analyze commands sequentially                                     | `[path]`, `--dry-run`, `--no-cache`  |
+| `analyze:all`                | Runs all enabled analyze commands sequentially                                    | `[path]`, `--dry-run`, `--no-cache`          |
 
 ### 🏥 Health
 
-| Command           | Description                                                  | Options                             |
-| ----------------- | ------------------------------------------------------------ | ----------------------------------- |
-| `health:composer` | Check Composer dependencies for updates                      | `[path]`, `--dry-run`, `--no-cache` |
-| `health:php-version` | Validate PHP version requirement in composer.json
-  | `[path]`, `--dry-run`, `--no-cache` |
-| `health:phpstan`  | Run PHPStan static analysis                                  | `[path]`, `--dry-run`, `--no-cache` |
-| `health:phpunit`  | Execute PHPUnit tests                                        | `[path]`, `--dry-run`, `--no-cache` |
-| `health:security` | Check Composer dependencies for known vulnerabilities        | `[path]`, `--dry-run`, `--no-cache` |
-| `health:project`  | Run all health checks (composer, phpstan, phpunit, security) | `[path]`, `--dry-run`, `--no-cache` |
+| Command              | Description                                                  | Options                             |
+| -------------------- | ------------------------------------------------------------ | ----------------------------------- |
+| `health:composer`    | Check Composer dependencies for updates                      | `[path]`, `--dry-run`, `--no-cache` |
+| `health:php-version` | Validate PHP version requirement in composer.json            | `[path]`, `--dry-run`, `--no-cache` |
+| `health:phpstan`     | Run PHPStan static analysis                                  | `[path]`, `--dry-run`, `--no-cache` |
+| `health:phpunit`     | Execute PHPUnit tests                                        | `[path]`, `--dry-run`, `--no-cache` |
+| `health:security`    | Check Composer dependencies for known vulnerabilities        | `[path]`, `--dry-run`, `--no-cache` |
+| `health:project`     | Run all health checks (composer, phpstan, phpunit, security) | `[path]`, `--dry-run`, `--no-cache` |
 
 #### Additional checks to consider
 
-- Ensure an `.editorconfig` file is present for consistent formatting
-- Run PHP-CS-Fixer in dry-run mode to enforce PSR-12 style
-- Check for `declare(strict_types=1)` at the top of PHP files
-- Verify Composer package licenses match your project policy
-
+-   Ensure an `.editorconfig` file is present for consistent formatting
+-   Run PHP-CS-Fixer in dry-run mode to enforce PSR-12 style
+-   Check for `declare(strict_types=1)` at the top of PHP files
+-   Verify Composer package licenses match your project policy
 
 ### 🔧 Refactor
 
@@ -120,7 +120,7 @@ All commands support these standard options (with an optional `[path]` argument 
 | `refactor:var-comments` | Standardizes @var comments to `/** @var Type $var */`             | 🟢 LOW       | `[path]`, `--dry-run`, `--no-cache`, `--force`                                     |
 | `refactor:docblocks`    | Adds a file-level PHPDoc block and class PHPDoc blocks if missing | 🟡 MEDIUM    | `[path]`, `--dry-run`, `--no-cache`, `--force`, `--author`, `--link`, `--category` |
 | `refactor:rector`       | Runs Rector for automated refactoring                             | 🔴 HIGH      | `[path]`, `--dry-run`, `--no-cache`, `--force`                                     |
-| `refactor:all`          | Runs all enabled refactor commands sequentially    | 🔴 HIGH      | `[path]`, `--dry-run`, `--no-cache`, `--force`                                  |
+| `refactor:all`          | Runs all enabled refactor commands sequentially                   | 🔴 HIGH      | `[path]`, `--dry-run`, `--no-cache`, `--force`, `--framework`                      |
 
 ### 🧠 General
 
@@ -143,6 +143,12 @@ All commands support these standard options (with an optional `[path]` argument 
 | `yii:check-translations`       | Checks Yii::t translations: finds missing and unused keys across all categories                      | N/A          | `[path]`, `--dry-run`, `--lang`     |
 | `yii:convert-access-chain`     | Replaces `user->identity->hasAccessChain/hasNoAccessChain` with `user->canAny/cannotAny`             | N/A          | `[path]`, `--dry-run`, `--no-cache` |
 | `yii:user-findone-to-identity` | Replaces redundant `User::findOne(...)` lookups for current user with `Yii::$app->user->identity`    | N/A          | `[path]`, `--dry-run`, `--no-cache` |
+
+### 🧩 Laravel Framework Extensions
+
+| Command       | Description                                               | Danger Level | Options                          |
+| ------------- | --------------------------------------------------------- | ------------ | -------------------------------- |
+| `laravel:all` | Runs all Laravel-specific Rector refactorings in sequence | 🟢 LOW       | `[path]`, `--dry-run`, `--force` |
 
 ## 📁 Configuration
 

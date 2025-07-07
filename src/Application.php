@@ -9,8 +9,8 @@ use Symfony\Component\Console\Application as SymfonyApplication;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\DI\ContainerFactory;
 use Vix\Syntra\DI\ContainerInterface;
+use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\Facade;
-use Vix\Syntra\Utils\ConfigLoader;
 
 class Application extends SymfonyApplication
 {
@@ -45,8 +45,8 @@ class Application extends SymfonyApplication
             Facade::setContainer($this->container);
         }
 
-        $this->registerCommands();
-        $this->registerExtensionCommands();
+        $this->registerFromConfig(Config::getEnabledCommands());
+        $this->registerFromConfig(Config::getEnabledExtensionCommands());
     }
 
     /**
@@ -57,37 +57,19 @@ class Application extends SymfonyApplication
         return $this->container;
     }
 
-    private function registerCommands(): void
+    /**
+     * Register commands from configuration
+     *
+     * @param string[] $classes List of command class names
+     */
+    private function registerFromConfig(array $classes): void
     {
-        $configLoader = $this->container->get(ConfigLoader::class);
-
-        foreach ($configLoader->getEnabledCommands() as $class) {
+        foreach ($classes as $class) {
             if (!class_exists($class)) {
                 continue;
             }
 
             // Ensure it's a concrete subclass of Syntra Command
-            $reflectionClass = new ReflectionClass($class);
-
-            if (
-                is_subclass_of($class, SyntraCommand::class)
-                && !$reflectionClass->isAbstract()
-            ) {
-                $instance = $this->container->make($class);
-                $this->add($instance);
-            }
-        }
-    }
-
-    private function registerExtensionCommands(): void
-    {
-        $configLoader = $this->container->get(ConfigLoader::class);
-
-        foreach ($configLoader->getEnabledExtensionCommands() as $class) {
-            if (!class_exists($class)) {
-                continue;
-            }
-
             $reflectionClass = new ReflectionClass($class);
 
             if (

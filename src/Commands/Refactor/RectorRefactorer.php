@@ -5,22 +5,23 @@ declare(strict_types=1);
 namespace Vix\Syntra\Commands\Refactor;
 
 use Vix\Syntra\Commands\SyntraRefactorCommand;
-use Vix\Syntra\Enums\DangerLevel;
 use Vix\Syntra\Enums\CommandGroup;
+use Vix\Syntra\Enums\DangerLevel;
 use Vix\Syntra\Exceptions\MissingBinaryException;
 use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\Process;
 
 class RectorRefactorer extends SyntraRefactorCommand
 {
+    protected DangerLevel $dangerLevel = DangerLevel::HIGH;
+
     protected function configure(): void
     {
         parent::configure();
 
         $this->setName('refactor:rector')
             ->setDescription('Runs Rector for automated refactoring')
-            ->setHelp('Usage: vendor/bin/syntra refactor:rector [--dry-run] [--force]')
-            ->setDangerLevel(DangerLevel::HIGH);
+            ->setHelp('Usage: vendor/bin/syntra refactor:rector [--dry-run] [--force]');
     }
 
     public function perform(): int

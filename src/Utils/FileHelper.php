@@ -18,6 +18,11 @@ class FileHelper
     private static bool $cacheEnabled = true;
 
     /**
+     * @var string[]
+     */
+    private static array $changedFiles = [];
+
+    /**
      * Clears the internal files cache.
      */
     public static function clearCache(): void
@@ -32,6 +37,24 @@ class FileHelper
         if (!$enabled) {
             self::$filesCache = [];
         }
+    }
+
+    /**
+     * Returns the list of files changed by writeChanges().
+     *
+     * @return string[]
+     */
+    public static function getChangedFiles(): array
+    {
+        return self::$changedFiles;
+    }
+
+    /**
+     * Clears the list of changed files.
+     */
+    public static function clearChangedFiles(): void
+    {
+        self::$changedFiles = [];
     }
 
     /**
@@ -81,6 +104,7 @@ class FileHelper
     {
         if ($newContent !== $oldContent) {
             file_put_contents($filePath, $newContent);
+            self::$changedFiles[] = $filePath;
         }
     }
 

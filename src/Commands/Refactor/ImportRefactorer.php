@@ -6,10 +6,9 @@ namespace Vix\Syntra\Commands\Refactor;
 
 use Symfony\Component\Console\Command\Command;
 use Vix\Syntra\Commands\SyntraRefactorCommand;
+use Vix\Syntra\Enums\ProgressIndicatorType;
 use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\File;
-use Vix\Syntra\Enums\ProgressIndicatorType;
-use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
 
 /**
  * Fixes the order of DocBlock comments and import statements in PHP files.
@@ -50,6 +49,20 @@ class ImportRefactorer extends SyntraRefactorCommand
         }
 
         $this->finishProgress();
+
+        $changed = File::getChangedFiles();
+        File::clearChangedFiles();
+
+        if ($changed) {
+            $this->output->section('Changed files');
+            $list = array_map(
+                fn (string $f): string => File::makeRelative($f, Config::getProjectRoot()),
+                $changed
+            );
+            $this->listing($list);
+        } else {
+            $this->output->success('No files needed updating.');
+        }
 
         return Command::SUCCESS;
     }

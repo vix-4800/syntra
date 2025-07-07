@@ -7,7 +7,6 @@ namespace Vix\Syntra\Commands\Health;
 use Vix\Syntra\Commands\Health\HealthCheckCommandInterface;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\DTO\CommandResult;
-use Vix\Syntra\Exceptions\CommandException;
 use Vix\Syntra\Exceptions\MissingBinaryException;
 use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\Process;
@@ -52,12 +51,7 @@ class PhpUnitCheckCommand extends SyntraCommand implements HealthCheckCommandInt
     {
         $this->output->section('Running PHPUnit tests...');
 
-        try {
-            $result = $this->runCheck();
-        } catch (MissingBinaryException|CommandException $e) {
-            $this->output->error($e->getMessage());
-            return self::FAILURE;
-        }
+        $result = $this->runCheck();
 
         return $this->handleResult($result, 'PHPUnit tests finished.', $this->failOnWarning);
     }

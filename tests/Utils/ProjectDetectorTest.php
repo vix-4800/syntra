@@ -27,6 +27,25 @@ class ProjectDetectorTest extends TestCase
         rmdir($dir);
     }
 
+    public function testDetectsLaravelProject(): void
+    {
+        $dir = sys_get_temp_dir() . '/syntra_test_' . uniqid();
+        mkdir($dir);
+        file_put_contents("$dir/composer.json", json_encode([
+            'require' => [
+                'laravel/framework' => '*',
+            ],
+        ]));
+
+        FileHelper::clearCache();
+
+        $detector = new ProjectDetector();
+        $this->assertSame(ProjectDetector::TYPE_LARAVEL, $detector->detect($dir));
+
+        unlink("$dir/composer.json");
+        rmdir($dir);
+    }
+
     public function testDetectsUnknownProject(): void
     {
         $dir = sys_get_temp_dir() . '/syntra_test_' . uniqid();

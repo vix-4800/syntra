@@ -27,7 +27,7 @@ class AnalyzeAllCommand extends SyntraCommand
         $enabled = Config::getEnabledCommands();
         $commands = array_filter(
             $enabled,
-            static fn(string $class): bool => str_contains($class, '\\Commands\\Analyze\\') && $class !== self::class
+            static fn (string $class): bool => str_contains($class, '\\Commands\\Analyze\\') && $class !== self::class
         );
 
         $hasErrors = false;

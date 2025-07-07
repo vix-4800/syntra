@@ -33,7 +33,7 @@ class PhpVersionCheckCommand extends SyntraCommand implements HealthCheckCommand
             return CommandResult::warning(['PHP version requirement missing in composer.json']);
         }
 
-        if (preg_match('/(\d+\.\d+(?:\.\d+)?)/', $version, $m)) {
+        if (preg_match('/(\d+\.\d+(?:\.\d+)?)/', (string) $version, $m)) {
             $min = $m[1];
             if (version_compare($min, '7.4', '<')) {
                 return CommandResult::warning(["PHP requirement seems outdated: \"php\": \"$version\""]);

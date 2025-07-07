@@ -8,15 +8,15 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Vix\Syntra\Commands\SyntraRefactorCommand;
 use Vix\Syntra\Enums\DangerLevel;
+use Vix\Syntra\Enums\ProgressIndicatorType;
 use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\File;
-use Vix\Syntra\Enums\ProgressIndicatorType;
-use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
 use Vix\Syntra\Utils\StubHelper;
 
 class DocblockRefactorer extends SyntraRefactorCommand
 {
     protected ProgressIndicatorType $progressType = ProgressIndicatorType::PROGRESS_BAR;
+    protected DangerLevel $dangerLevel = DangerLevel::MEDIUM;
 
     protected function configure(): void
     {
@@ -27,8 +27,7 @@ class DocblockRefactorer extends SyntraRefactorCommand
             ->setHelp('Usage: vendor/bin/syntra refactor:docblocks [--dry-run] [--force] [--author=NAME] [--link=URL] [--category=CATEGORY]')
             ->addOption('author', null, InputOption::VALUE_OPTIONAL, 'Value for the @author tag')
             ->addOption('link', null, InputOption::VALUE_OPTIONAL, 'URL used for the @link tag')
-            ->addOption('category', null, InputOption::VALUE_OPTIONAL, 'Value for the @category tag')
-            ->setDangerLevel(DangerLevel::MEDIUM);
+            ->addOption('category', null, InputOption::VALUE_OPTIONAL, 'Value for the @category tag');
     }
 
     public function perform(): int
@@ -52,6 +51,20 @@ class DocblockRefactorer extends SyntraRefactorCommand
         }
 
         $this->finishProgress();
+
+        $changed = File::getChangedFiles();
+        File::clearChangedFiles();
+
+        if ($changed) {
+            $this->output->section('Changed files');
+            $list = array_map(
+                fn (string $f): string => File::makeRelative($f, Config::getProjectRoot()),
+                $changed
+            );
+            $this->listing($list);
+        } else {
+            $this->output->success('No files needed updating.');
+        }
 
         return Command::SUCCESS;
     }
@@ -94,7 +107,21 @@ class DocblockRefactorer extends SyntraRefactorCommand
             }
 
             if (!$hasDocBlock) {
-                $insertions[$i] = (new StubHelper("class-docblock"))->render([
+                $insertIndex = $i;
+
+                // Place docblock before class modifiers like final, abstract, or readonly
+                $checkIndex = $prevTokenIndex;
+                $modifiers = $this->getClassModifierTokens();
+                while (
+                    $checkIndex !== null &&
+                    is_array($tokens[$checkIndex]) &&
+                    in_array($tokens[$checkIndex][0], $modifiers, true)
+                ) {
+                    $insertIndex = $checkIndex;
+                    $checkIndex = $this->getPreviousTokenIndex($tokens, $insertIndex);
+                }
+
+                $insertions[$insertIndex] = (new StubHelper("class-docblock"))->render([
                     'description' => str_replace(getcwd() . DIRECTORY_SEPARATOR, '', $filePath),
                     'category' => (string) ($this->input->getOption('category') ?: 'Class'),
                     'author' => (string) ($this->input->getOption('author') ?: 'author <author@gmail.com>'),
@@ -170,6 +197,16 @@ class DocblockRefactorer extends SyntraRefactorCommand
             return $i;
         }
         return null;
+    }
+
+    /**
+     * Returns an array of tokens that represent class modifiers.
+     *
+     * @return array<int>
+     */
+    private function getClassModifierTokens(): array
+    {
+        return [T_FINAL, T_ABSTRACT, T_READONLY];
     }
 
     /**

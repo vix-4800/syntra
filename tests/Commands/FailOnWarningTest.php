@@ -3,8 +3,8 @@
 namespace Vix\Syntra\Tests\Commands;
 
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Tester\CommandTester;
 use Vix\Syntra\Application;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\DTO\CommandResult;
@@ -15,7 +15,7 @@ class FailOnWarningTest extends TestCase
 {
     private function makeCommand(): SyntraCommand
     {
-        return new class extends SyntraCommand {
+        return new class () extends SyntraCommand {
             use HandlesResultTrait;
 
             protected function configure(): void
