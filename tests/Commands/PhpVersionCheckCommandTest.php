@@ -8,6 +8,7 @@ use Vix\Syntra\Commands\Health\PhpVersionCheckCommand;
 use Vix\Syntra\DI\Container;
 use Vix\Syntra\Enums\CommandStatus;
 use Vix\Syntra\Facades\Facade;
+use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Utils\ConfigLoader;
 
 class PhpVersionCheckCommandTest extends TestCase
@@ -51,9 +52,9 @@ class PhpVersionCheckCommandTest extends TestCase
     {
         $container = new Container();
         $container->instance(ConfigLoader::class, self::$config);
-
-        self::$config->setProjectRoot($this->dir);
         Facade::setContainer($container);
+
+        Config::setProjectRoot($this->dir);
         return new PhpVersionCheckCommand();
     }
 

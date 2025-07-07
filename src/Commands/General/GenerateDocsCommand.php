@@ -16,6 +16,7 @@ use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\File;
 use Vix\Syntra\NodeVisitors\DocsVisitor;
 use Vix\Syntra\Traits\ContainerAwareTrait;
+use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Utils\ProjectDetector;
 
 class GenerateDocsCommand extends SyntraCommand
@@ -39,8 +40,7 @@ class GenerateDocsCommand extends SyntraCommand
     {
         $projectRoot = Config::getProjectRoot();
 
-        $detector = $this->getService(ProjectDetector::class, fn (): ProjectDetector => new ProjectDetector());
-        $type = $detector->detect($projectRoot);
+        $type = Project::detect($projectRoot);
 
         if ($type === ProjectDetector::TYPE_YII) {
             return $this->generateForYii($projectRoot);

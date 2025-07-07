@@ -13,6 +13,7 @@ use Vix\Syntra\Commands\SyntraRefactorCommand;
 use Vix\Syntra\Enums\DangerLevel;
 use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Traits\CommandRunnerTrait;
+use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Utils\ProjectDetector;
 
 class RefactorAllCommand extends SyntraRefactorCommand
@@ -58,8 +59,7 @@ class RefactorAllCommand extends SyntraRefactorCommand
         }
 
         if ($this->runFramework) {
-            $detector = new ProjectDetector();
-            $type = $detector->detect((string) Config::getProjectRoot());
+            $type = Project::detect((string) Config::getProjectRoot());
 
             if ($type === ProjectDetector::TYPE_YII) {
                 $exitCode = $this->runCommand(YiiAllCommand::class, $this->getForwardOptions());

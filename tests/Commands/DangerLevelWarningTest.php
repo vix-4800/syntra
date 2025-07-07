@@ -8,15 +8,15 @@ use Symfony\Component\Console\Tester\CommandTester;
 use Vix\Syntra\Application;
 use Vix\Syntra\Commands\SyntraRefactorCommand;
 use Vix\Syntra\Enums\DangerLevel;
-use Vix\Syntra\Utils\ConfigLoader;
+use Vix\Syntra\Facades\Config;
 
 class DangerLevelWarningTest extends TestCase
 {
     public function testWarningShownForHighDanger(): void
     {
         $app = new Application();
-        $container = $app->getContainer();
-        $container->get(ConfigLoader::class)->setProjectRoot(sys_get_temp_dir());
+        $app->getContainer();
+        Config::setProjectRoot(sys_get_temp_dir());
 
         $command = new class () extends SyntraRefactorCommand {
             protected DangerLevel $dangerLevel = DangerLevel::HIGH;

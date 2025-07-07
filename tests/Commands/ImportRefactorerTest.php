@@ -5,7 +5,7 @@ namespace Vix\Syntra\Tests\Commands;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 use Vix\Syntra\Application;
-use Vix\Syntra\Utils\ConfigLoader;
+use Vix\Syntra\Facades\Config;
 
 class ImportRefactorerTest extends TestCase
 {
@@ -36,8 +36,8 @@ class ImportRefactorerTest extends TestCase
     private function runCommand(array $options = []): void
     {
         $app = new Application();
-        $container = $app->getContainer();
-        $container->get(ConfigLoader::class)->setProjectRoot($this->dir);
+        $app->getContainer();
+        Config::setProjectRoot($this->dir);
 
         $command = $app->find('refactor:imports');
         $tester = new CommandTester($command);

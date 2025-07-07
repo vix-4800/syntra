@@ -5,6 +5,7 @@ namespace Vix\Syntra\Tests\Utils;
 use PHPUnit\Framework\TestCase;
 use Vix\Syntra\Application;
 use Vix\Syntra\Facades\File;
+use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Utils\ProjectDetector;
 
 class ProjectDetectorTest extends TestCase
@@ -22,8 +23,7 @@ class ProjectDetectorTest extends TestCase
         new Application();
         File::clearCache();
 
-        $detector = new ProjectDetector();
-        $this->assertSame(ProjectDetector::TYPE_YII, $detector->detect($dir));
+        $this->assertSame(ProjectDetector::TYPE_YII, Project::detect($dir));
 
         unlink("$dir/composer.json");
         rmdir($dir);
@@ -42,8 +42,7 @@ class ProjectDetectorTest extends TestCase
         new Application();
         File::clearCache();
 
-        $detector = new ProjectDetector();
-        $this->assertSame(ProjectDetector::TYPE_LARAVEL, $detector->detect($dir));
+        $this->assertSame(ProjectDetector::TYPE_LARAVEL, Project::detect($dir));
 
         unlink("$dir/composer.json");
         rmdir($dir);
@@ -62,8 +61,7 @@ class ProjectDetectorTest extends TestCase
         new Application();
         File::clearCache();
 
-        $detector = new ProjectDetector();
-        $this->assertSame(ProjectDetector::TYPE_UNKNOWN, $detector->detect($dir));
+        $this->assertSame(ProjectDetector::TYPE_UNKNOWN, Project::detect($dir));
 
         unlink("$dir/composer.json");
         rmdir($dir);
