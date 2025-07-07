@@ -6,17 +6,9 @@ namespace Vix\Syntra\NodeVisitors;
 
 use PhpParser\Node;
 use PhpParser\Node\Stmt\Class_;
-use PhpParser\NodeVisitorAbstract;
 
-class DocsVisitor extends NodeVisitorAbstract
+class DocsVisitor extends NodeVisitor
 {
-    private array $routes = [];
-
-    public function getFindings(): array
-    {
-        return $this->routes;
-    }
-
     public function enterNode(Node $node): void
     {
         if (
@@ -42,7 +34,8 @@ class DocsVisitor extends NodeVisitorAbstract
                     $route = "$ctrl/$action";
 
                     $desc = '';
-                    if ($doc = $method->getDocComment()) {
+                    $doc = $method->getDocComment();
+                    if ($doc) {
                         $lines = explode("\n", $doc->getText());
                         foreach ($lines as $line) {
                             $txt = trim($line, "/* \t");
@@ -53,7 +46,7 @@ class DocsVisitor extends NodeVisitorAbstract
                         }
                     }
 
-                    $this->routes[] = [
+                    $this->results[] = [
                         'route' => $route,
                         'desc' => $desc,
                     ];
