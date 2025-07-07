@@ -17,3 +17,5 @@ jobs:
         run: composer install --no-interaction --no-progress
       - name: Run tests
         run: vendor/bin/phpunit
+      - name: Run PHPStan
+        run: vendor/bin/phpstan --configuration=config/phpstan.neon --no-progress --error-format=github
