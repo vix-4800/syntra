@@ -19,8 +19,8 @@ class YiiCanHelpersCommand extends RectorRunnerCommand
             ->setHelp('Usage: vendor/bin/syntra yii:can-helpers');
     }
 
-    protected function getRectorRules(): string
+    protected function getRectorRules(): array
     {
-        return CanHelpersRector::class;
+        return [CanHelpersRector::class];
     }
 }

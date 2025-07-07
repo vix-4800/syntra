@@ -19,8 +19,8 @@ class YiiUpdateShortcutCommand extends RectorRunnerCommand
             ->setHelp('Usage: vendor/bin/syntra yii:update-shortcut');
     }
 
-    protected function getRectorRules(): string
+    protected function getRectorRules(): array
     {
-        return UpdateAllShortcutRector::class;
+        return [UpdateAllShortcutRector::class];
     }
 }

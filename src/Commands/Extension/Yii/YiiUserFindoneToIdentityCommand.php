@@ -19,8 +19,8 @@ class YiiUserFindoneToIdentityCommand extends RectorRunnerCommand
             ->setHelp('Usage: vendor/bin/syntra yii:user-findone-to-identity');
     }
 
-    protected function getRectorRules(): string
+    protected function getRectorRules(): array
     {
-        return UserFindOneToIdentityRector::class;
+        return [UserFindOneToIdentityRector::class];
     }
 }

@@ -19,8 +19,8 @@ class YiiFindAllIdCommand extends RectorRunnerCommand
             ->setHelp('Usage: vendor/bin/syntra yii:find-all-id');
     }
 
-    protected function getRectorRules(): string
+    protected function getRectorRules(): array
     {
-        return FindAllIdShortcutRector::class;
+        return [FindAllIdShortcutRector::class];
     }
 }

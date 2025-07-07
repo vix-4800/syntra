@@ -20,9 +20,9 @@ abstract class RectorRunnerCommand extends SyntraRefactorCommand
     /**
      * Return Rector rule class(es) to execute.
      *
-     * @return string|array
+     * @return string[] Array of Rector rule class names
      */
-    abstract protected function getRectorRules(): string|array;
+    abstract protected function getRectorRules(): array;
 
     /**
      * Build additional Rector CLI arguments.
@@ -69,15 +69,23 @@ abstract class RectorRunnerCommand extends SyntraRefactorCommand
         };
 
         try {
-            $result = is_array($rules)
-                ? $this->rectorExecutor->executeRules($rules, $additionalArgs, $outputCallback)
-                : $this->rectorExecutor->executeRule($rules, $additionalArgs, $outputCallback);
+            $result = null;
+
+            foreach ($rules as $rule) {
+                $result = $this->rectorExecutor->executeRule($rule, $additionalArgs, $outputCallback);
+
+                if ($result->exitCode !== 0) {
+                    break;
+                }
+            }
+
+            $exitCode = $result?->exitCode ?? self::FAILURE;
 
             $this->progressIndicator->setMessage(
-                $result->exitCode === 0 ? $this->getSuccessMessage() : $this->getErrorMessage()
+                $exitCode === 0 ? $this->getSuccessMessage() : $this->getErrorMessage()
             );
 
-            return $result->exitCode;
+            return $exitCode;
         } catch (Exception $e) {
             $this->progressIndicator->setMessage('Error!');
             $this->output->error('Failed to execute Rector: ' . $e->getMessage());
