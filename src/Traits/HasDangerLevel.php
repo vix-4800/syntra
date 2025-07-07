@@ -42,7 +42,8 @@ trait HasDangerLevel
             $helper = $this->getHelper('question');
 
             $output->writeln(sprintf(
-                '<comment>Warning: the danger level of this command is marked as %s and it may be unsafe.</comment>',
+                '<comment>Warning: the danger level of command "%s" is marked as %s and it may be unsafe.</comment>',
+                $this->getName(),
                 $this->getDangerLevel()->value,
             ));
 
