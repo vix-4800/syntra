@@ -8,8 +8,8 @@ use Symfony\Component\Console\Tester\CommandTester;
 use Vix\Syntra\Application;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\DTO\CommandResult;
-use Vix\Syntra\Traits\HandlesResultTrait;
 use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Traits\HandlesResultTrait;
 
 class FailOnWarningTest extends TestCase
 {

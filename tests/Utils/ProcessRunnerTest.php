@@ -3,8 +3,8 @@
 namespace Vix\Syntra\Tests\Utils;
 
 use PHPUnit\Framework\TestCase;
-use Vix\Syntra\Facades\Process;
 use Vix\Syntra\Application;
+use Vix\Syntra\Facades\Process;
 
 class ProcessRunnerTest extends TestCase
 {

@@ -12,7 +12,6 @@ use Vix\Syntra\Facades\Rector;
  */
 abstract class RectorRunnerCommand extends SyntraRefactorCommand
 {
-
     /**
      * Return Rector rule class(es) to execute.
      *

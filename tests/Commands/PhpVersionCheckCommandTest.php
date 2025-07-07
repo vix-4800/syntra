@@ -7,8 +7,8 @@ use ReflectionClass;
 use Vix\Syntra\Commands\Health\PhpVersionCheckCommand;
 use Vix\Syntra\DI\Container;
 use Vix\Syntra\Enums\CommandStatus;
-use Vix\Syntra\Facades\Facade;
 use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Facades\Facade;
 use Vix\Syntra\Utils\ConfigLoader;
 
 class PhpVersionCheckCommandTest extends TestCase

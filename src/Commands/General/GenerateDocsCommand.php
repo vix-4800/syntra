@@ -14,9 +14,9 @@ use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Enums\ProgressIndicatorType;
 use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\File;
+use Vix\Syntra\Facades\Project;
 use Vix\Syntra\NodeVisitors\DocsVisitor;
 use Vix\Syntra\Traits\ContainerAwareTrait;
-use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Utils\ProjectDetector;
 
 class GenerateDocsCommand extends SyntraCommand

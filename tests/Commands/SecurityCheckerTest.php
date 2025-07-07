@@ -9,7 +9,6 @@ use Vix\Syntra\DI\Container;
 use Vix\Syntra\DTO\ProcessResult;
 use Vix\Syntra\Enums\CommandStatus;
 use Vix\Syntra\Facades\Facade;
-use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Utils\ConfigLoader;
 use Vix\Syntra\Utils\ProcessRunner;
 

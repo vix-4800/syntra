@@ -12,8 +12,8 @@ use Vix\Syntra\Commands\Extension\Yii\YiiAllCommand;
 use Vix\Syntra\Commands\SyntraRefactorCommand;
 use Vix\Syntra\Enums\DangerLevel;
 use Vix\Syntra\Facades\Config;
-use Vix\Syntra\Traits\CommandRunnerTrait;
 use Vix\Syntra\Facades\Project;
+use Vix\Syntra\Traits\CommandRunnerTrait;
 use Vix\Syntra\Utils\ProjectDetector;
 
 class RefactorAllCommand extends SyntraRefactorCommand
