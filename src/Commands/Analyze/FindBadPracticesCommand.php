@@ -77,8 +77,8 @@ class FindBadPracticesCommand extends SyntraCommand
 
             // Get findings from visitors
             foreach ($visitors as $visitor) {
-                if (property_exists($visitor, 'findings')) {
-                    foreach ($visitor->findings as $finding) {
+                if (method_exists($visitor, 'getFindings')) {
+                    foreach ($visitor->getFindings() as $finding) {
                         $rows[] = [
                             $file,
                             $finding['line'],

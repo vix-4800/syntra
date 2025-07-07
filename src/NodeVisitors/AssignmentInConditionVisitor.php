@@ -15,7 +15,12 @@ use PhpParser\PrettyPrinter\Standard;
 
 class AssignmentInConditionVisitor extends NodeVisitorAbstract
 {
-    public $findings = [];
+    private array $findings = [];
+
+    public function getFindings(): array
+    {
+        return $this->findings;
+    }
 
     public function enterNode(Node $node): void
     {

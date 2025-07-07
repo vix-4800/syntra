@@ -12,7 +12,12 @@ use PhpParser\NodeVisitorAbstract;
 
 class LongMethodVisitor extends NodeVisitorAbstract
 {
-    public array $results;
+    private array $results;
+
+    public function getFindings(): array
+    {
+        return $this->results;
+    }
 
     public function __construct(private readonly string $filePath, private readonly int $maxLength, &$results)
     {

@@ -12,7 +12,12 @@ use PhpParser\PrettyPrinter\Standard;
 
 class ReturnThrowVisitor extends NodeVisitorAbstract
 {
-    public $findings = [];
+    private array $findings = [];
+
+    public function getFindings(): array
+    {
+        return $this->findings;
+    }
 
     public function enterNode(Node $node): void
     {

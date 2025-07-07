@@ -10,7 +10,12 @@ use PhpParser\NodeVisitorAbstract;
 
 class DocsVisitor extends NodeVisitorAbstract
 {
-    public array $routes = [];
+    private array $routes = [];
+
+    public function getFindings(): array
+    {
+        return $this->routes;
+    }
 
     public function enterNode(Node $node): void
     {
