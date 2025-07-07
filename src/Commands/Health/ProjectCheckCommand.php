@@ -7,7 +7,7 @@ namespace Vix\Syntra\Commands\Health;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Vix\Syntra\Traits\HandlesResultTrait;
-use Vix\Syntra\Utils\PackageInstaller;
+use Vix\Syntra\Facades\Installer;
 use Vix\Syntra\Commands\Health\ComposerCheckCommand;
 use Vix\Syntra\Commands\Health\EditorConfigCheckCommand;
 use Vix\Syntra\Commands\Health\PhpStanCheckCommand;
@@ -22,14 +22,6 @@ class ProjectCheckCommand extends SyntraCommand
 {
     use CommandRunnerTrait;
     use HandlesResultTrait;
-
-    private PackageInstaller $installer;
-
-    public function __construct(PackageInstaller $installer)
-    {
-        parent::__construct();
-        $this->installer = $installer;
-    }
 
     protected function configure(): void
     {
@@ -71,7 +63,7 @@ class ProjectCheckCommand extends SyntraCommand
 
                     if ($helper->ask($this->input, $this->output, $question)) {
                         $this->output->writeln("Running: $e->suggestedInstall");
-                        $commandResult = $this->installer->install($e->suggestedInstall);
+                        $commandResult = Installer::install($e->suggestedInstall);
 
                         $this->handleResult($commandResult, 'Installation finished.');
                     }
