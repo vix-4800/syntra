@@ -38,6 +38,6 @@ class DangerLevelWarningTest extends TestCase
         $tester = new CommandTester($command);
         $tester->execute([]);
 
-        $this->assertStringContainsString('Warning: the danger level of this command is marked as', $tester->getDisplay());
+        $this->assertStringContainsString('Warning: the danger level of command "dummy:danger" is marked as', $tester->getDisplay());
     }
 }
