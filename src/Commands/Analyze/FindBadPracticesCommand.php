@@ -15,7 +15,6 @@ use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\File;
 use Vix\Syntra\NodeVisitors\AssignmentInConditionVisitor;
 use Vix\Syntra\NodeVisitors\NestedTernaryVisitor;
-use Vix\Syntra\NodeVisitors\NodeVisitor;
 use Vix\Syntra\Traits\ContainerAwareTrait;
 
 class FindBadPracticesCommand extends SyntraCommand

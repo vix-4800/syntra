@@ -8,8 +8,8 @@ use Symfony\Component\Console\Tester\CommandTester;
 use Vix\Syntra\Application;
 use Vix\Syntra\Commands\Extension\Yii\YiiAllCommand;
 use Vix\Syntra\Commands\Refactor\RefactorAllCommand;
-use Vix\Syntra\Utils\ConfigLoader;
 use Vix\Syntra\Facades\File;
+use Vix\Syntra\Utils\ConfigLoader;
 
 class RefactorAllFrameworkTest extends TestCase
 {

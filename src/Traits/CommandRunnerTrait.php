@@ -14,8 +14,8 @@ trait CommandRunnerTrait
     /**
      * Run any other Syntra command by class name.
      *
-     * @param class-string $class
-     * @param array<string, mixed>        $input
+     * @param class-string         $class
+     * @param array<string, mixed> $input
      */
     protected function runCommand(string $class, array $input = []): int
     {
