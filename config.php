@@ -23,6 +23,7 @@ use Vix\Syntra\Commands\Health\ComposerCheckCommand;
 use Vix\Syntra\Commands\Health\EditorConfigCheckCommand;
 use Vix\Syntra\Commands\Health\PhpStanCheckCommand;
 use Vix\Syntra\Commands\Health\PhpUnitCheckCommand;
+use Vix\Syntra\Commands\Health\PhpVersionCheckCommand;
 use Vix\Syntra\Commands\Health\ProjectCheckCommand;
 use Vix\Syntra\Commands\Health\SecurityCheckCommand;
 use Vix\Syntra\Commands\Refactor\DocblockRefactorer;
@@ -94,6 +95,10 @@ return [
         ],
     ],
     CommandGroup::HEALTH->value => [
+        PhpVersionCheckCommand::class => [
+            'enabled' => true,
+            'web_enabled' => true,
+        ],
         ComposerCheckCommand::class => [
             'enabled' => true,
             'web_enabled' => true,
