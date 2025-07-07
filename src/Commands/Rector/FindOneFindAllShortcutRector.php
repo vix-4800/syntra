@@ -8,6 +8,7 @@ use PhpParser\Node;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Expr\StaticCall;
 use PhpParser\Node\Identifier;
+use PhpParser\Node\Scalar\LNumber;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
@@ -78,7 +79,7 @@ class FindOneFindAllShortcutRector extends AbstractRector
             }
 
             $limitArg = $whereCall->args[0]->value;
-            if (!$limitArg instanceof \PhpParser\Node\Scalar\LNumber || $limitArg->value !== 1) {
+            if (!$limitArg instanceof LNumber || $limitArg->value !== 1) {
                 return null;
             }
 
