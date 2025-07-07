@@ -5,8 +5,8 @@ namespace Vix\Syntra\Tests\Commands;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 use Vix\Syntra\Application;
-use Vix\Syntra\Utils\ConfigLoader;
 use Vix\Syntra\Facades\File;
+use Vix\Syntra\Utils\ConfigLoader;
 
 class DocblockRefactorerTest extends TestCase
 {
