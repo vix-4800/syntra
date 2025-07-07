@@ -16,6 +16,8 @@ use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
 use Vix\Syntra\ProgressIndicators\ProgressIndicatorInterface;
 use Vix\Syntra\Traits\HasStyledOutput;
 use Vix\Syntra\Utils\FileHelper;
+use Vix\Syntra\Utils\TeeOutput;
+use Symfony\Component\Console\Output\StreamOutput;
 
 abstract class SyntraCommand extends Command
 {
@@ -28,6 +30,8 @@ abstract class SyntraCommand extends Command
     protected bool $noCache = false;
     protected bool $failOnWarning = false;
     protected bool $ciMode = false;
+
+    protected ?string $outputFile = null;
 
     protected ProgressIndicatorInterface $progressIndicator;
 
@@ -43,12 +47,23 @@ abstract class SyntraCommand extends Command
             ->addOption('no-progress', null, InputOption::VALUE_NONE, 'Disable progress output')
             ->addOption('no-cache', null, InputOption::VALUE_NONE, 'Disable file caching')
             ->addOption('fail-on-warning', null, InputOption::VALUE_NONE, 'Return exit code 1 if warnings were found')
-            ->addOption('ci', null, InputOption::VALUE_NONE, 'CI mode (implies --no-progress and --fail-on-warning)');
+            ->addOption('ci', null, InputOption::VALUE_NONE, 'CI mode (implies --no-progress and --fail-on-warning)')
+            ->addOption('output-file', null, InputOption::VALUE_OPTIONAL, 'Write command output to the given file');
     }
 
     protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->input = $input;
+
+        $this->outputFile = $input->getOption('output-file');
+        if ($this->outputFile !== null) {
+            $stream = fopen($this->outputFile, 'w');
+            if ($stream !== false) {
+                $fileOutput = new StreamOutput($stream);
+                $output = new TeeOutput($output, $fileOutput);
+            }
+        }
+
         $this->output = new SymfonyStyle($input, $output);
 
         $this->dryRun = (bool) $input->getOption('dry-run');

@@ -14,6 +14,7 @@
 -   **No-Cache Option**: Use `--no-cache` to disable caching for a single command run.
 -   **Facades**: Convenient static access to common services.
 -   **Progress Indicators**: Choose between spinner, progress bar, bouncing, or none via the `ProgressIndicatorType` enum.
+-   **Output Logging**: Use `--output-file=FILE` to save command output.
 
 ## 📦 Installation
 
@@ -75,6 +76,7 @@ All commands support these standard options (with an optional `[path]` argument 
 -   `--no-cache`: Disable file caching (useful for temporary directories)
 -   `--fail-on-warning`: Return exit code 1 if warnings were found
 -   `--ci`: CI mode, implies `--no-progress` and `--fail-on-warning`
+-   `--output-file=FILE`: Write all command output to FILE
 -   `--help` / `-h`: Display help for the command
 -   `--quiet` / `-q`: Only show errors
 -   `--verbose` / `-v/-vv/-vvv`: Increase verbosity level
