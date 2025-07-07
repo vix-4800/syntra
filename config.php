@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
+use Vix\Syntra\Commands\Analyze\AnalyzeAllCommand;
 use Vix\Syntra\Commands\Analyze\FindBadPracticesCommand;
 use Vix\Syntra\Commands\Analyze\FindDebugCallsCommand;
 use Vix\Syntra\Commands\Analyze\FindLongMethodsCommand;
 use Vix\Syntra\Commands\Analyze\FindTodosCommand;
-use Vix\Syntra\Commands\Analyze\AnalyzeAllCommand;
+use Vix\Syntra\Commands\Extension\Laravel\LaravelAllCommand;
 use Vix\Syntra\Commands\Extension\Yii\YiiAllCommand;
 use Vix\Syntra\Commands\Extension\Yii\YiiCanHelpersCommand;
 use Vix\Syntra\Commands\Extension\Yii\YiiCheckTranslationsCommand;
@@ -30,8 +31,8 @@ use Vix\Syntra\Commands\Refactor\DocblockRefactorer;
 use Vix\Syntra\Commands\Refactor\ImportRefactorer;
 use Vix\Syntra\Commands\Refactor\PhpCsFixerRefactorer;
 use Vix\Syntra\Commands\Refactor\RectorRefactorer;
-use Vix\Syntra\Commands\Refactor\VarCommentsRefactorer;
 use Vix\Syntra\Commands\Refactor\RefactorAllCommand;
+use Vix\Syntra\Commands\Refactor\VarCommentsRefactorer;
 use Vix\Syntra\Enums\CommandGroup;
 
 /**
@@ -63,7 +64,7 @@ return [
     'web' => [
         'enabled' => true,
     ],
-  
+
     // Command configurations
     CommandGroup::REFACTOR->value => [
         RefactorAllCommand::class => [
@@ -201,7 +202,7 @@ return [
         ],
     ],
     CommandGroup::LARAVEL->value => [
-        \Vix\Syntra\Commands\Extension\Laravel\LaravelAllCommand::class => [
+        LaravelAllCommand::class => [
             'enabled' => true,
             'web_enabled' => true,
         ],
