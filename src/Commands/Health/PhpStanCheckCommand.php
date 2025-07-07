@@ -51,14 +51,16 @@ class PhpStanCheckCommand extends SyntraCommand implements HealthCheckCommandInt
             return CommandResult::error(['PHPStan output is not parseable.']);
         }
 
-        if ($json['totals']['errors'] === 0) {
+        $totals = $json['totals'] + ['errors' => 0, 'file_errors' => 0];
+        if ($totals['errors'] === 0 && $totals['file_errors'] === 0) {
             return CommandResult::ok(['No errors found by PHPStan.']);
         }
 
         $messages = [];
         foreach ($json['files'] ?? [] as $file => $data) {
             foreach ($data['messages'] ?? [] as $msg) {
-                $messages[] = "$file: $msg";
+                $line = isset($msg['line']) ? "({$msg['line']})" : '';
+                $messages[] = "$file$line: {$msg['message']}";
             }
         }
         foreach ($json['errors'] ?? [] as $err) {
