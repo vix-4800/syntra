@@ -41,7 +41,7 @@ use Vix\Syntra\Enums\CommandGroup;
 /**
  * Syntra Configuration
  *
- * This file controls both console and web interface settings.
+ * This file controls console command settings.
  *
  * Structure:
  * - [group] => [
@@ -51,49 +51,33 @@ use Vix\Syntra\Enums\CommandGroup;
  * For detailed command config:
  * [CommandClass] => [
  *     'enabled' => bool: Enable/disable for console
- *     'web_enabled' => bool: Enable/disable for web interface
  *     'config' => string: Path to command-specific config file
  *     // ... other command-specific options
  * ]
  *
- * Global web settings:
- * 'web' => [
- *     'enabled' => bool: Global web interface toggle
- * ]
  */
 
 return [
-    // Global web interface settings
-    'web' => [
-        'enabled' => true,
-    ],
-
     // Command configurations
     CommandGroup::REFACTOR->value => [
         RefactorAllCommand::class => [
             'enabled' => true,
-            'web_enabled' => true,
         ],
         DocblockRefactorer::class => [
             'enabled' => true,
-            'web_enabled' => true,
         ],
         ImportRefactorer::class => [
             'enabled' => true,
-            'web_enabled' => true,
         ],
         PhpCsFixerRefactorer::class => [
             'enabled' => true,
-            'web_enabled' => true,
             'config' => config_path('php_cs_fixer.php'),
         ],
         VarCommentsRefactorer::class => [
             'enabled' => true,
-            'web_enabled' => true,
         ],
         RectorRefactorer::class => [
             'enabled' => true,
-            'web_enabled' => true,
             'config' => config_path('rector.php'),
             'commands_config' => config_path('rector_only_custom.php'),
         ],
@@ -101,124 +85,96 @@ return [
     CommandGroup::HEALTH->value => [
         PhpVersionCheckCommand::class => [
             'enabled' => true,
-            'web_enabled' => true,
         ],
         ComposerCheckCommand::class => [
             'enabled' => true,
-            'web_enabled' => true,
         ],
         EditorConfigCheckCommand::class => [
             'enabled' => true,
-            'web_enabled' => true,
         ],
         PhpStanCheckCommand::class => [
             'enabled' => true,
-            'web_enabled' => true,
             'config' => config_path('phpstan.neon'),
         ],
         PhpUnitCheckCommand::class => [
             'enabled' => true,
-            'web_enabled' => true,
         ],
         SecurityCheckCommand::class => [
             'enabled' => true,
-            'web_enabled' => true,
         ],
         ProjectCheckCommand::class => [
             'enabled' => true,
-            'web_enabled' => true,
         ],
     ],
     CommandGroup::ANALYZE->value => [
         AnalyzeAllCommand::class => [
             'enabled' => true,
-            'web_enabled' => true,
         ],
         FindTodosCommand::class => [
             'enabled' => true,
-            'web_enabled' => true,
         ],
         FindDebugCallsCommand::class => [
             'enabled' => true,
-            'web_enabled' => true,
         ],
         FindLongMethodsCommand::class => [
             'enabled' => true,
-            'web_enabled' => true,
         ],
         FindBadPracticesCommand::class => [
             'enabled' => true,
-            'web_enabled' => true,
         ],
         FindTyposCommand::class => [
             'enabled' => true,
-            'web_enabled' => true,
         ],
         StrictTypesCoverageCommand::class => [
             'enabled' => true,
-            'web_enabled' => true,
         ],
     ],
     CommandGroup::GENERAL->value => [
         GenerateCommandCommand::class => [
             'enabled' => true,
-            'web_enabled' => true,
         ],
         GenerateDocsCommand::class => [
             'enabled' => true,
-            'web_enabled' => true,
         ],
         InitCommand::class => [
             'enabled' => true,
-            'web_enabled' => true,
         ],
     ],
     CommandGroup::YII->value => [
         YiiAllCommand::class => [
             'enabled' => true,
-            'web_enabled' => true,
         ],
         YiiFindShortcutsCommand::class => [
             'enabled' => true,
-            'web_enabled' => true,
         ],
         YiiFindOneIdCommand::class => [
             'enabled' => true,
-            'web_enabled' => true,
         ],
         YiiFindAllIdCommand::class => [
             'enabled' => true,
-            'web_enabled' => true,
         ],
         YiiUpdateShortcutCommand::class => [
             'enabled' => true,
-            'web_enabled' => true,
         ],
         YiiDeleteShortcutCommand::class => [
             'enabled' => true,
-            'web_enabled' => true,
         ],
         YiiCanHelpersCommand::class => [
             'enabled' => true,
-            'web_enabled' => true,
         ],
         YiiCheckTranslationsCommand::class => [
             'enabled' => true,
-            'web_enabled' => true,
         ],
         YiiConvertAccessChainCommand::class => [
             'enabled' => true,
-            'web_enabled' => true,
         ],
         YiiUserFindoneToIdentityCommand::class => [
             'enabled' => true,
-            'web_enabled' => true,
         ],
     ],
     CommandGroup::LARAVEL->value => [
         LaravelAllCommand::class => [
             'enabled' => true,
-            'web_enabled' => true,
         ],
     ],
 ];
