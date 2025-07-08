@@ -7,6 +7,7 @@ namespace Vix\Syntra\Commands\Refactor;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Vix\Syntra\Commands\SyntraRefactorCommand;
+use Vix\Syntra\Traits\ProcessesFilesTrait;
 use Vix\Syntra\Enums\DangerLevel;
 use Vix\Syntra\Enums\ProgressIndicatorType;
 use Vix\Syntra\Facades\File;
@@ -14,6 +15,7 @@ use Vix\Syntra\Utils\StubHelper;
 
 class DocblockRefactorer extends SyntraRefactorCommand
 {
+    use ProcessesFilesTrait;
     protected ProgressIndicatorType $progressType = ProgressIndicatorType::PROGRESS_BAR;
     protected DangerLevel $dangerLevel = DangerLevel::MEDIUM;
 
@@ -31,41 +33,10 @@ class DocblockRefactorer extends SyntraRefactorCommand
 
     public function perform(): int
     {
-        $files = File::collectFiles($this->path);
-
-        $this->setProgressMax(count($files));
-        $this->startProgress();
-
-        foreach ($files as $filePath) {
-            $content = file_get_contents($filePath);
-
+        return $this->processFiles(function (string $content, string $filePath): string {
             $newContent = $this->addDocBlocksToClasses($content, $filePath);
-            $newContent = $this->addFileDocBlock($newContent, $filePath);
-
-            if (!$this->dryRun) {
-                File::writeChanges($filePath, $content, $newContent);
-            }
-
-            $this->advanceProgress();
-        }
-
-        $this->finishProgress();
-
-        $changed = File::getChangedFiles();
-        File::clearChangedFiles();
-
-        if ($changed) {
-            $this->output->section('Changed files');
-            $list = array_map(
-                fn (string $f): string => File::makeRelative($f, $this->path),
-                $changed
-            );
-            $this->listing($list);
-        } else {
-            $this->output->success('No files needed updating.');
-        }
-
-        return Command::SUCCESS;
+            return $this->addFileDocBlock($newContent, $filePath);
+        });
     }
 
     /**
