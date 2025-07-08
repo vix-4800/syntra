@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Vix\Syntra\Commands\Analyze;
 
 use Peck\Kernel;
+use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Console\Command\Command;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Enums\ProgressIndicatorType;
@@ -28,6 +29,10 @@ class FindTyposCommand extends SyntraCommand
     public function perform(): int
     {
         $projectRoot = Config::getProjectRoot();
+        $finder = new ExecutableFinder();
+        if ($finder->find('aspell') === null) {
+            throw new \Vix\Syntra\Exceptions\MissingBinaryException('aspell');
+        }
 
         $kernel = Kernel::default();
 
