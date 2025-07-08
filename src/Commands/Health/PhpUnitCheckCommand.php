@@ -7,14 +7,16 @@ namespace Vix\Syntra\Commands\Health;
 use Vix\Syntra\Commands\Health\HealthCheckCommandInterface;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\DTO\CommandResult;
-use Vix\Syntra\Exceptions\MissingBinaryException;
 use Vix\Syntra\Facades\Process;
 use Vix\Syntra\Facades\Project;
+use Vix\Syntra\Tools\PhpUnitTool;
 use Vix\Syntra\Traits\HandlesResultTrait;
+use Vix\Syntra\Traits\HasBinaryTool;
 
 class PhpUnitCheckCommand extends SyntraCommand implements HealthCheckCommandInterface
 {
     use HandlesResultTrait;
+    use HasBinaryTool;
 
     protected function configure(): void
     {
@@ -25,16 +27,9 @@ class PhpUnitCheckCommand extends SyntraCommand implements HealthCheckCommandInt
 
     public function runCheck(): CommandResult
     {
-        $binary = find_composer_bin('phpunit', Project::getRootPath());
-
-        if (!$binary) {
-            throw new MissingBinaryException('phpunit', 'composer require --dev phpunit/phpunit');
-        }
-
         $result = Process::run(
-            $binary,
-            [],
-            ['working_dir' => Project::getRootPath()]
+            $this->binary,
+            options: ['working_dir' => Project::getRootPath()]
         );
 
         if ($result->exitCode === 0) {
@@ -51,6 +46,7 @@ class PhpUnitCheckCommand extends SyntraCommand implements HealthCheckCommandInt
     {
         $this->output->section('Running PHPUnit tests...');
 
+        $this->findBinaryTool(new PhpUnitTool());
         $result = $this->runCheck();
 
         return $this->handleResult($result, 'PHPUnit tests finished.', $this->failOnWarning);

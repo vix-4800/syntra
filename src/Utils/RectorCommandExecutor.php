@@ -10,13 +10,16 @@ use Vix\Syntra\Enums\CommandGroup;
 use Vix\Syntra\Exceptions\MissingBinaryException;
 use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\Process;
-use Vix\Syntra\Facades\Project;
+use Vix\Syntra\Tools\RectorTool;
+use Vix\Syntra\Traits\HasBinaryTool;
 
 /**
  * Utility class for executing Rector commands with specific rules
  */
 class RectorCommandExecutor
 {
+    use HasBinaryTool;
+
     /**
      * Execute Rector rule(s)
      *
@@ -29,12 +32,12 @@ class RectorCommandExecutor
      */
     public function executeRules(string $path, array $rectorClasses, array $additionalArgs = [], ?callable $outputCallback = null): ProcessResult
     {
-        $binary = $this->findRectorBinary();
+        $this->findBinaryTool(new RectorTool());
         $result = null;
 
         foreach ($rectorClasses as $rectorClass) {
             $args = $this->buildRectorArgs($path, $rectorClass, $additionalArgs);
-            $result = Process::run($binary, $args, callback: $outputCallback);
+            $result = Process::run($this->binary, $args, callback: $outputCallback);
 
             // Stop on first failure
             if ($result->exitCode !== 0) {
@@ -43,36 +46,6 @@ class RectorCommandExecutor
         }
 
         return $result;
-    }
-
-    /**
-     * Check if Rector is available
-     */
-    public function isRectorAvailable(): bool
-    {
-        try {
-            $this->findRectorBinary();
-
-            return true;
-        } catch (MissingBinaryException) {
-            return false;
-        }
-    }
-
-    /**
-     * Get the path to the Rector binary
-     *
-     * @throws MissingBinaryException
-     */
-    private function findRectorBinary(): string
-    {
-        $binary = find_composer_bin('rector', Project::getRootPath());
-
-        if (!$binary) {
-            throw new MissingBinaryException("rector", "composer require --dev rector/rector");
-        }
-
-        return $binary;
     }
 
     /**
