@@ -60,7 +60,12 @@ class InitCommand extends SyntraCommand
 
         foreach ($files as $path) {
             if (file_exists($path)) {
-                $dest = File::makeRelative($path, $projectRoot);
+                $relative = File::makeRelative($path, PACKAGE_ROOT);
+                $dest = rtrim($projectRoot, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $relative;
+
+                if (!is_dir(dirname($dest))) {
+                    mkdir(dirname($dest), 0777, true);
+                }
 
                 copy($path, $dest);
                 $display = File::makeRelative($dest, $projectRoot);
