@@ -19,11 +19,6 @@ use Vix\Syntra\Traits\HasBinaryTool;
 class RectorCommandExecutor
 {
     use HasBinaryTool;
-    
-    public function __construct()
-    {
-        //
-    }
 
     /**
      * Execute Rector rule(s)

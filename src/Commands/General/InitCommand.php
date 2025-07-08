@@ -63,18 +63,22 @@ class InitCommand extends SyntraCommand
             'config/rector_only_custom.php',
         ];
 
-        foreach ($files as $rel) {
-            $src = PACKAGE_ROOT . '/' . $rel;
-            $dest = $projectRoot . '/' . $rel;
-
-            if (!file_exists($dest) && file_exists($src)) {
-                if (!is_dir(dirname($dest))) {
-                    mkdir(dirname($dest), 0777, true);
-                }
-                copy($src, $dest);
-                $display = File::makeRelative($dest, $projectRoot);
-                $this->output->writeln("Created $display");
+        foreach ($files as $path) {
+            if (!file_exists($path)) {
+                continue;
             }
+
+            $relative = File::makeRelative($path, PACKAGE_ROOT);
+            $dest = rtrim($projectRoot, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $relative;
+
+            if (!is_dir(dirname($dest))) {
+                mkdir(dirname($dest), 0777, true);
+            }
+
+            copy($path, $dest);
+            $display = File::makeRelative($dest, $projectRoot);
+
+            $this->output->writeln("Created $display");
         }
 
         $this->output->success('Syntra initialization completed.');
