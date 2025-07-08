@@ -10,7 +10,6 @@ use PhpParser\Node\Expr\Assign;
 use PhpParser\Node\Stmt\ElseIf_;
 use PhpParser\Node\Stmt\If_;
 use PhpParser\Node\Stmt\While_;
-use PhpParser\PrettyPrinter\Standard;
 
 class AssignmentInConditionVisitor extends NodeVisitor
 {
@@ -56,8 +55,4 @@ class AssignmentInConditionVisitor extends NodeVisitor
         return $assignments;
     }
 
-    private function prettyPrintNode(Expr $node): string
-    {
-        return (new Standard())->prettyPrintExpr($node);
-    }
 }
