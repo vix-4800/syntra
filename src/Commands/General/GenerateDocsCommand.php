@@ -133,20 +133,8 @@ class GenerateDocsCommand extends SyntraCommand
             $this->finishProgress();
             $mdFile = $this->writeToMarkdown("$rootPath/docs", $routesGrouped, $refCounts, 'Yii');
 
-            $rows = array_map(
-                static fn (array $r): array => [strval($r['route']), (string) $refCounts[$r['route']]],
-                $routes
-            );
-            $this->table(['Route', 'Refs'], $rows);
-
-            $totalRefs = array_sum($refCounts);
-
             $this->output->success(
-                sprintf(
-                    'Routes successfully saved to %s. Found %d references.',
-                    $mdFile,
-                    $totalRefs
-                )
+                sprintf('Routes successfully saved to %s.', $mdFile)
             );
         } else {
             $mdFile = $this->writeToMarkdown("$rootPath/docs", $routesGrouped, [], 'Yii');
