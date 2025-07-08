@@ -30,13 +30,19 @@ composer require vix/syntra
     composer require vix/syntra
     ```
 
-2. **Run your first health check**:
+2. **Initialize Syntra**:
+
+    ```bash
+    vendor/bin/syntra general:init
+    ```
+
+3. **Run your first health check**:
 
     ```bash
     vendor/bin/syntra health:all
     ```
 
-3. **Explore available commands**:
+4. **Explore available commands**:
 
     ```bash
     vendor/bin/syntra list

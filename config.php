@@ -162,6 +162,10 @@ return [
             'enabled' => true,
             'web_enabled' => true,
         ],
+        \Vix\Syntra\Commands\General\InitCommand::class => [
+            'enabled' => true,
+            'web_enabled' => true,
+        ],
     ],
     CommandGroup::YII->value => [
         YiiAllCommand::class => [
