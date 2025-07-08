@@ -2,18 +2,23 @@
 
 declare(strict_types=1);
 
-if (!function_exists('find_composer_autoload')) {
+use Symfony\Component\Process\ExecutableFinder;
+
+if (!function_exists('find_in_vendor')) {
     /**
-     * Find composer autoloader
+     * Recursively search for a path inside the vendor directory up the
+     * directory tree.
+     *
+     * @param callable $check Callback that validates the found path
      */
-    function find_composer_autoload(string $startDir): ?string
+    function find_in_vendor(string $startDir, string $relativePath, callable $check): ?string
     {
         $dir = $startDir;
 
         do {
-            $autoload = "$dir/vendor/autoload.php";
-            if (is_file($autoload)) {
-                return $autoload;
+            $path = $dir . '/vendor/' . ltrim($relativePath, '/');
+            if ($check($path)) {
+                return $path;
             }
 
             $parent = dirname($dir);
@@ -40,25 +45,20 @@ if (!function_exists('config_path')) {
 
 if (!function_exists('find_composer_bin')) {
     /**
-     * Find composer binary
+     * Find composer binary. Searches the vendor directories upwards first and
+     * falls back to the system PATH using Symfony's ExecutableFinder.
      */
     function find_composer_bin(string $binary, string $startDir): ?string
     {
-        $dir = $startDir;
+        $path = find_in_vendor($startDir, "bin/$binary", 'is_executable');
 
-        do {
-            $path = "$dir/vendor/bin/$binary";
-            if (is_executable($path)) {
-                return $path;
-            }
+        if ($path !== null) {
+            return $path;
+        }
 
-            $parent = dirname($dir);
-            if ($dir === $parent) {
-                break;
-            }
-
-            $dir = $parent;
-        } while (true);
+        if (class_exists('\\Symfony\\Component\\Process\\ExecutableFinder')) {
+            return (new ExecutableFinder())->find($binary);
+        }
 
         return null;
     }
