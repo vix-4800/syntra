@@ -11,11 +11,10 @@ use Symfony\Component\Console\Command\Command;
 use Throwable;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Enums\ProgressIndicatorType;
-use Vix\Syntra\Facades\File;
 use Vix\Syntra\NodeVisitors\AssignmentInConditionVisitor;
 use Vix\Syntra\NodeVisitors\NestedTernaryVisitor;
-use Vix\Syntra\Traits\ContainerAwareTrait;
 use Vix\Syntra\Traits\AnalyzesFilesTrait;
+use Vix\Syntra\Traits\ContainerAwareTrait;
 
 class FindBadPracticesCommand extends SyntraCommand
 {

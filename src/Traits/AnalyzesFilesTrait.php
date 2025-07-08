@@ -35,8 +35,8 @@ trait AnalyzesFilesTrait
     /**
      * Iterate over the given files with progress indicators.
      *
-     * @param string[]               $files
-     * @param callable(string):void  $callback
+     * @param string[]              $files
+     * @param callable(string):void $callback
      */
     protected function iterateFiles(array $files, callable $callback): void
     {
