@@ -8,15 +8,17 @@ use Vix\Syntra\Commands\Health\HealthCheckCommandInterface;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\DTO\CommandResult;
 use Vix\Syntra\Enums\CommandGroup;
-use Vix\Syntra\Exceptions\MissingBinaryException;
 use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\Process;
 use Vix\Syntra\Facades\Project;
+use Vix\Syntra\Tools\PhpStanTool;
 use Vix\Syntra\Traits\HandlesResultTrait;
+use Vix\Syntra\Traits\FindsToolBinaryTrait;
 
 class PhpStanCheckCommand extends SyntraCommand implements HealthCheckCommandInterface
 {
     use HandlesResultTrait;
+    use FindsToolBinaryTrait;
 
     protected function configure(): void
     {
@@ -27,11 +29,8 @@ class PhpStanCheckCommand extends SyntraCommand implements HealthCheckCommandInt
 
     public function runCheck(): CommandResult
     {
-        $binary = find_composer_bin('phpstan', Project::getRootPath());
-
-        if (!$binary) {
-            throw new MissingBinaryException('phpstan', 'composer require --dev phpstan/phpstan');
-        }
+        $tool = new PhpStanTool();
+        $binary = $this->findToolBinary($tool);
 
         $args = [
             'analyse',

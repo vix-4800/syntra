@@ -7,14 +7,16 @@ namespace Vix\Syntra\Commands\Health;
 use Vix\Syntra\Commands\Health\HealthCheckCommandInterface;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\DTO\CommandResult;
-use Vix\Syntra\Exceptions\MissingBinaryException;
 use Vix\Syntra\Facades\Process;
 use Vix\Syntra\Facades\Project;
+use Vix\Syntra\Tools\PhpUnitTool;
 use Vix\Syntra\Traits\HandlesResultTrait;
+use Vix\Syntra\Traits\FindsToolBinaryTrait;
 
 class PhpUnitCheckCommand extends SyntraCommand implements HealthCheckCommandInterface
 {
     use HandlesResultTrait;
+    use FindsToolBinaryTrait;
 
     protected function configure(): void
     {
@@ -25,11 +27,8 @@ class PhpUnitCheckCommand extends SyntraCommand implements HealthCheckCommandInt
 
     public function runCheck(): CommandResult
     {
-        $binary = find_composer_bin('phpunit', Project::getRootPath());
-
-        if (!$binary) {
-            throw new MissingBinaryException('phpunit', 'composer require --dev phpunit/phpunit');
-        }
+        $tool = new PhpUnitTool();
+        $binary = $this->findToolBinary($tool);
 
         $result = Process::run(
             $binary,

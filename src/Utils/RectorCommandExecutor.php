@@ -11,12 +11,15 @@ use Vix\Syntra\Exceptions\MissingBinaryException;
 use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\Process;
 use Vix\Syntra\Facades\Project;
+use Vix\Syntra\Tools\RectorTool;
+use Vix\Syntra\Traits\FindsToolBinaryTrait;
 
 /**
  * Utility class for executing Rector commands with specific rules
  */
 class RectorCommandExecutor
 {
+    use FindsToolBinaryTrait;
     public function __construct()
     {
         //
@@ -71,11 +74,8 @@ class RectorCommandExecutor
      */
     private function findRectorBinary(): string
     {
-        $binary = find_composer_bin('rector', Project::getRootPath());
-
-        if (!$binary) {
-            throw new MissingBinaryException("rector", "composer require --dev rector/rector");
-        }
+        $tool = new RectorTool();
+        $binary = $this->findToolBinary($tool);
 
         return $binary;
     }

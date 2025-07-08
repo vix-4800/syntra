@@ -11,6 +11,10 @@ use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Facades\File;
 use Vix\Syntra\Facades\Installer;
 use Vix\Syntra\Facades\Project;
+use Vix\Syntra\Tools\PhpCsFixerTool;
+use Vix\Syntra\Tools\PhpStanTool;
+use Vix\Syntra\Tools\PhpUnitTool;
+use Vix\Syntra\Tools\RectorTool;
 
 class InitCommand extends SyntraCommand
 {
@@ -29,42 +33,46 @@ class InitCommand extends SyntraCommand
         /** @var QuestionHelper $helper */
         $helper = $this->getHelper('question');
 
-        $packages = [
-            'rector/rector' => 'Rector (code refactoring)',
-            'friendsofphp/php-cs-fixer' => 'PHP CS Fixer (code style fixes)',
-            'phpstan/phpstan' => 'PHPStan (static analysis)',
-            'phpunit/phpunit' => 'PHPUnit (running tests)',
+        $toolObjects = [
+            new RectorTool(),
+            new PhpCsFixerTool(),
+            new PhpStanTool(),
+            new PhpUnitTool(),
         ];
 
-        foreach ($packages as $pkg => $desc) {
+        foreach ($toolObjects as $tool) {
+            $pkg = $tool->packageName();
             $question = new ConfirmationQuestion(
-                "Install $pkg - $desc? (y/N): ",
+                "Install $pkg - {$tool->description()}? (y/N): ",
                 false,
                 '/^(y|yes)/i'
             );
 
             if ($helper->ask($this->input, $this->output, $question)) {
-                $result = Installer::install("composer require --dev $pkg");
+                $result = Installer::install($tool->installCommand());
                 $this->handleResult($result, "$pkg installation finished.");
             }
         }
 
         $projectRoot = Project::getRootPath();
         $files = [
-            PACKAGE_ROOT . '/config.php',
-            config_path('php_cs_fixer.php'),
-            config_path('phpstan.neon'),
-            config_path('rector.php'),
-            config_path('rector_only_custom.php'),
+            'config.php',
+            'config/php_cs_fixer.php',
+            'config/phpstan.neon',
+            'config/rector.php',
+            'config/rector_only_custom.php',
         ];
 
-        foreach ($files as $path) {
-            if (file_exists($path)) {
-                $dest = File::makeRelative($path, $projectRoot);
+        foreach ($files as $rel) {
+            $src = PACKAGE_ROOT . '/' . $rel;
+            $dest = $projectRoot . '/' . $rel;
 
-                copy($path, $dest);
+            if (!file_exists($dest) && file_exists($src)) {
+                if (!is_dir(dirname($dest))) {
+                    mkdir(dirname($dest), 0777, true);
+                }
+                copy($src, $dest);
                 $display = File::makeRelative($dest, $projectRoot);
-
                 $this->output->writeln("Created $display");
             }
         }
