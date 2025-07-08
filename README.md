@@ -64,6 +64,8 @@ vendor/bin/syntra refactor:cs-fixer --dry-run
 
 # Generate a new command
 vendor/bin/syntra general:generate-command --group=analyze --cli-name=analyze:custom
+# Generate route docs and count usage (markdown includes a Refs column)
+vendor/bin/syntra general:generate-docs
 ```
 
 ### Common Options
@@ -127,7 +129,7 @@ All commands support these standard options (with an optional `[path]` argument 
 | Command                    | Description                                                                                                          | Options                                                                |
 | -------------------------- | -------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
 | `general:generate-command` | Generates a scaffold for a new Symfony Console command                                                               | `[path]`, `--dry-run`, `--no-cache`, `--group`, `--cli-name`, `--desc` |
-| `general:generate-docs`    | Scans project controllers and generates a markdown file listing all action routes (framework detected automatically) | `[path]`, `--controllerDir`, `--dry-run`, `--no-cache`                 |
+| `general:generate-docs`    | Scans project controllers and generates a markdown file listing all action routes (framework detected automatically). Counts route references in controllers and views and includes them in a `Refs` column. | `[path]`, `--controllerDir`, `--dry-run`, `--no-cache`                 |
 
 ### 🧩 Yii Framework Extensions
 

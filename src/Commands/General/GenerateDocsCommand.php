@@ -103,28 +103,65 @@ class GenerateDocsCommand extends SyntraCommand
                 'desc' => $route['desc'],
             ];
         }
+        // Count references to each route across controllers and view files
+        $searchFiles = File::collectFiles(
+            $projectRoot,
+            ['php', 'phtml', 'twig']
+        );
+        $searchFiles = array_filter(
+            $searchFiles,
+            static fn(string $f): bool => str_contains($f, 'controllers') || str_contains($f, 'views')
+        );
 
-        $mdFile = $this->writeToMarkdown("$projectRoot/docs", $routesGrouped, 'Yii');
+        $refCounts = [];
+        foreach ($routes as $route) {
+            $count = 0;
+            foreach ($searchFiles as $f) {
+                $content = file_get_contents($f);
+                if ($content === false) {
+                    continue;
+                }
+                $count += substr_count($content, (string) $route['route']);
+            }
+            $refCounts[(string) $route['route']] = $count;
+        }
+        $mdFile = $this->writeToMarkdown("$projectRoot/docs", $routesGrouped, $refCounts, 'Yii');
 
-        $this->output->success("Routes successfully saved to $mdFile");
+        $rows = array_map(
+            static fn(array $r): array => [strval($r['route']), (string) $refCounts[$r['route']]],
+            $routes
+        );
+        $this->table(['Route', 'Refs'], $rows);
+
+        $totalRefs = array_sum($refCounts);
+
+        $this->output->success(
+            sprintf(
+                'Routes successfully saved to %s. Found %d references.',
+                $mdFile,
+                $totalRefs
+            )
+        );
 
         return Command::SUCCESS;
     }
 
-    private function writeToMarkdown(string $filePath, array $routes, string $suffix = ''): string
+    private function writeToMarkdown(string $filePath, array $routes, array $refCounts = [], string $suffix = ''): string
     {
         $md = '# 📘 Route documentation' . ($suffix ? " ($suffix)" : '') . "\n\n";
         ksort($routes);
 
         foreach ($routes as $controller => $actions) {
             $md .= "## `$controller`\n\n";
-            $md .= "| Method                    | Description                                        |\n";
-            $md .= "|---------------------------|----------------------------------------------------|\n";
+            $md .= "| Method                    | Refs | Description                     |\n";
+            $md .= "|---------------------------|------|----------------------------------------------|\n";
 
             foreach ($actions as $a) {
                 $method = "`{$a['action']}`";
                 $desc = $a['desc'] ?: '';
-                $md .= sprintf("| %-25s | %-50s |\n", $method, $desc);
+                $routeKey = $controller . '/' . $a['action'];
+                $refs = $refCounts[$routeKey] ?? 0;
+                $md .= sprintf("| %-25s | %4d | %-50s |\n", $method, $refs, $desc);
             }
 
             $md .= "\n";
