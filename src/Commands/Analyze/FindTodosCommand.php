@@ -13,7 +13,7 @@ class FindTodosCommand extends SyntraCommand
 {
     protected ProgressIndicatorType $progressType = ProgressIndicatorType::PROGRESS_BAR;
 
-    protected static array $TAGS = [
+    private const TAGS = [
         'TODO',
         'FIXME',
         '@todo',
@@ -40,7 +40,7 @@ class FindTodosCommand extends SyntraCommand
         $files = File::collectFiles($this->path);
 
         $matches = [];
-        $allTags = implode('|', array_map('preg_quote', self::$TAGS));
+        $allTags = implode('|', array_map('preg_quote', self::TAGS));
         $pattern = "/(?:\/\/|#|\*|\s)\s*($allTags)\b(.*)/i";
 
         $this->setProgressMax(count($files));

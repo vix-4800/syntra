@@ -13,7 +13,7 @@ class FindDebugCallsCommand extends SyntraCommand
 {
     protected ProgressIndicatorType $progressType = ProgressIndicatorType::PROGRESS_BAR;
 
-    protected static array $DEBUG_FUNCTIONS = [
+    private const DEBUG_FUNCTIONS = [
         'var_dump',
         'print_r',
         'dd',
@@ -41,7 +41,7 @@ class FindDebugCallsCommand extends SyntraCommand
         $files = File::collectFiles($this->path);
 
         $matches = [];
-        $pattern = '/(?<![\w\$])(' . implode('|', array_map('preg_quote', self::$DEBUG_FUNCTIONS)) . ')\s*\(/i';
+        $pattern = '/(?<![\w\$])(' . implode('|', array_map('preg_quote', self::DEBUG_FUNCTIONS)) . ')\s*\(/i';
 
         $this->setProgressMax(count($files));
         $this->startProgress();
