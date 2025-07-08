@@ -59,6 +59,22 @@ class ConfigLoader
         return $this->filterEnabledCommands(true);
     }
 
+    public function getEnabledCommandsByGroup(string $group): array
+    {
+        if (!isset($this->commands[$group])) {
+            return [];
+        }
+
+        $result = [];
+        foreach ($this->commands[$group] as $class => $cfg) {
+            if ($this->isCommandEnabled($group, $class)) {
+                $result[] = $class;
+            }
+        }
+
+        return $result;
+    }
+
     public function getEnabledExtensionCommands(): array
     {
         return $this->filterEnabledCommands(false);

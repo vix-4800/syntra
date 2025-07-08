@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace Vix\Syntra\Commands\Health;
 
-use Vix\Syntra\Commands\Health\ComposerCheckCommand;
-use Vix\Syntra\Commands\Health\EditorConfigCheckCommand;
-use Vix\Syntra\Commands\Health\PhpStanCheckCommand;
-use Vix\Syntra\Commands\Health\PhpUnitCheckCommand;
-use Vix\Syntra\Commands\Health\PhpVersionCheckCommand;
+use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Enums\CommandGroup;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Traits\CommandRunnerTrait;
 
@@ -29,18 +26,15 @@ class ProjectCheckCommand extends SyntraCommand
     {
         $this->output->section('Starting full health check...');
 
-        $checks = [
-            ['name' => 'PHP Version', 'class' => PhpVersionCheckCommand::class],
-            ['name' => 'EditorConfig', 'class' => EditorConfigCheckCommand::class],
-            ['name' => 'Composer', 'class' => ComposerCheckCommand::class],
-            ['name' => 'PHPStan', 'class' => PhpStanCheckCommand::class],
-            ['name' => 'PHPUnit', 'class' => PhpUnitCheckCommand::class],
-            ['name' => 'Security', 'class' => SecurityCheckCommand::class],
-        ];
+        $commands = Config::getEnabledCommandsByGroup(CommandGroup::HEALTH->value);
+        $commands = array_filter(
+            $commands,
+            static fn (string $class): bool => $class !== self::class
+        );
 
         $hasErrors = false;
-        foreach ($checks as $item) {
-            $exitCode = $this->runCommand($item['class']);
+        foreach ($commands as $class) {
+            $exitCode = $this->runCommand($class);
 
             if ($exitCode !== self::SUCCESS) {
                 $hasErrors = true;
