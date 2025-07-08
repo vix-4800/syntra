@@ -8,16 +8,16 @@ use Vix\Syntra\Exceptions\MissingBinaryException;
 use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Tools\ToolInterface;
 
-trait FindsToolBinaryTrait
+trait HasBinaryTool
 {
-    protected function findToolBinary(ToolInterface $tool): string
-    {
-        $binary = find_composer_bin($tool->binaryName(), Project::getRootPath());
+    protected ?string $binary;
 
-        if (!$binary) {
+    public function findBinaryTool(ToolInterface $tool): void
+    {
+        $this->binary = find_composer_bin($tool->binaryName(), Project::getRootPath());
+
+        if (!$this->binary) {
             throw new MissingBinaryException($tool->binaryName(), $tool->installCommand());
         }
-
-        return $binary;
     }
 }

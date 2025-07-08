@@ -11,12 +11,12 @@ use Vix\Syntra\Facades\Process;
 use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Tools\PhpUnitTool;
 use Vix\Syntra\Traits\HandlesResultTrait;
-use Vix\Syntra\Traits\FindsToolBinaryTrait;
+use Vix\Syntra\Traits\HasBinaryTool;
 
 class PhpUnitCheckCommand extends SyntraCommand implements HealthCheckCommandInterface
 {
     use HandlesResultTrait;
-    use FindsToolBinaryTrait;
+    use HasBinaryTool;
 
     protected function configure(): void
     {
@@ -27,13 +27,9 @@ class PhpUnitCheckCommand extends SyntraCommand implements HealthCheckCommandInt
 
     public function runCheck(): CommandResult
     {
-        $tool = new PhpUnitTool();
-        $binary = $this->findToolBinary($tool);
-
         $result = Process::run(
-            $binary,
-            [],
-            ['working_dir' => Project::getRootPath()]
+            $this->binary,
+            options: ['working_dir' => Project::getRootPath()]
         );
 
         if ($result->exitCode === 0) {
@@ -50,6 +46,7 @@ class PhpUnitCheckCommand extends SyntraCommand implements HealthCheckCommandInt
     {
         $this->output->section('Running PHPUnit tests...');
 
+        $this->findBinaryTool(new PhpUnitTool());
         $result = $this->runCheck();
 
         return $this->handleResult($result, 'PHPUnit tests finished.', $this->failOnWarning);
