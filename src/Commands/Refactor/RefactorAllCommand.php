@@ -11,14 +11,15 @@ use Vix\Syntra\Commands\Extension\Laravel\LaravelAllCommand;
 use Vix\Syntra\Commands\Extension\Yii\YiiAllCommand;
 use Vix\Syntra\Commands\SyntraRefactorCommand;
 use Vix\Syntra\Enums\DangerLevel;
-use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Traits\CommandRunnerTrait;
+use Vix\Syntra\Traits\RunsSubCommandsTrait;
 use Vix\Syntra\Utils\ProjectInfo;
 
 class RefactorAllCommand extends SyntraRefactorCommand
 {
     use CommandRunnerTrait;
+    use RunsSubCommandsTrait;
 
     protected DangerLevel $dangerLevel = DangerLevel::HIGH;
 
@@ -44,19 +45,7 @@ class RefactorAllCommand extends SyntraRefactorCommand
 
     public function perform(): int
     {
-        $enabled = Config::getEnabledCommands();
-        $commands = array_filter(
-            $enabled,
-            static fn (string $class): bool => str_contains($class, '\\Commands\\Refactor\\') && $class !== self::class
-        );
-
-        $hasErrors = false;
-        foreach ($commands as $class) {
-            $exitCode = $this->runCommand($class);
-            if ($exitCode !== self::SUCCESS) {
-                $hasErrors = true;
-            }
-        }
+        $hasErrors = $this->runSubCommands('\\Commands\\Refactor\\');
 
         if ($this->runFramework) {
             $type = Project::detect(Project::getRootPath());
