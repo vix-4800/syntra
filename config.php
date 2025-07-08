@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Vix\Syntra\Commands\Analyze\AnalyzeAllCommand;
 use Vix\Syntra\Commands\Analyze\FindBadPracticesCommand;
+use Vix\Syntra\Commands\Analyze\FindTyposCommand;
 use Vix\Syntra\Commands\Analyze\FindDebugCallsCommand;
 use Vix\Syntra\Commands\Analyze\FindLongMethodsCommand;
 use Vix\Syntra\Commands\Analyze\FindTodosCommand;
@@ -145,6 +146,10 @@ return [
             'web_enabled' => true,
         ],
         FindBadPracticesCommand::class => [
+            'enabled' => true,
+            'web_enabled' => true,
+        ],
+        FindTyposCommand::class => [
             'enabled' => true,
             'web_enabled' => true,
         ],
