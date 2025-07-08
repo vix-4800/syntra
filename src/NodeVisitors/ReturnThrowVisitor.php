@@ -7,7 +7,6 @@ namespace Vix\Syntra\NodeVisitors;
 use PhpParser\Node;
 use PhpParser\Node\Expr\Throw_;
 use PhpParser\Node\Stmt\Return_;
-use PhpParser\PrettyPrinter\Standard;
 
 class ReturnThrowVisitor extends NodeVisitor
 {
@@ -27,8 +26,4 @@ class ReturnThrowVisitor extends NodeVisitor
         return null;
     }
 
-    private function prettyPrintNode($node): string
-    {
-        return (new Standard())->prettyPrintExpr($node);
-    }
 }

@@ -7,7 +7,6 @@ namespace Vix\Syntra\NodeVisitors;
 use PhpParser\Node;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\Ternary;
-use PhpParser\PrettyPrinter\Standard;
 
 class NestedTernaryVisitor extends NodeVisitor
 {
@@ -28,8 +27,4 @@ class NestedTernaryVisitor extends NodeVisitor
         return null;
     }
 
-    private function prettyPrintNode(Expr $node): string
-    {
-        return (new Standard())->prettyPrintExpr($node);
-    }
 }
