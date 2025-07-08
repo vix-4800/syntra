@@ -32,8 +32,8 @@ class GenerateDocsCommand extends SyntraCommand
         $this
             ->setName('general:generate-docs')
             ->setDescription('Scans project controllers and generates a markdown file listing all action routes (currently only Yii is supported).')
-            ->setHelp('Usage: vendor/bin/syntra general:generate-docs [--controllerDir=controllerDir] [--count-refs]')
-            ->addOption('controllerDir', null, InputOption::VALUE_OPTIONAL, 'Relative path to controllers directory', 'backend/controllers')
+            ->setHelp('Usage: vendor/bin/syntra general:generate-docs [--controller-dir=controllerDir] [--count-refs]')
+            ->addOption('controller-dir', null, InputOption::VALUE_OPTIONAL, 'Relative path to controllers directory', 'backend/controllers')
             ->addOption('count-refs', null, InputOption::VALUE_NONE, 'Count references to each route in controllers and views');
     }
 
@@ -54,7 +54,7 @@ class GenerateDocsCommand extends SyntraCommand
 
     private function generateForYii(string $projectRoot): int
     {
-        $controllerDirOption = $this->input->getOption('controllerDir');
+        $controllerDirOption = $this->input->getOption('controller-dir');
         $controllerDir = $projectRoot . '/' . ltrim((string) ($controllerDirOption ?? 'backend/controllers'), '/');
 
         $parser = $this->getService(Parser::class, fn (): Parser => (new ParserFactory())->create(ParserFactory::PREFER_PHP7));
