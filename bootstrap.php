@@ -15,8 +15,8 @@ if (!defined('CONFIG_DIR')) {
 // Load helper functions
 require_once __DIR__ . '/helpers.php';
 
-// Locate Composer's autoloader
-$autoload = find_composer_autoload(PACKAGE_ROOT);
+// Locate Composer's autoloader using shared helper
+$autoload = find_in_vendor(PACKAGE_ROOT, 'autoload.php', 'is_file');
 if ($autoload === null) {
     fwrite(STDERR, "ERROR: Composer autoloader not found.\n");
     fwrite(STDERR, "Run 'composer install' in the project root.\n");
