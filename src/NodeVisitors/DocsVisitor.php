@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace Vix\Syntra\NodeVisitors;
 
 use PhpParser\Node;
-use PhpParser\Node\Stmt\Class_;
-use PhpParser\Node\Param;
 use PhpParser\Node\Identifier;
+use PhpParser\Node\IntersectionType;
 use PhpParser\Node\Name;
 use PhpParser\Node\NullableType;
+use PhpParser\Node\Param;
+use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\UnionType;
-use PhpParser\Node\IntersectionType;
 use PhpParser\PrettyPrinter\Standard;
 
 class DocsVisitor extends NodeVisitor
 {
-    private Standard $printer;
+    private readonly Standard $printer;
 
     public function __construct()
     {
@@ -92,19 +92,19 @@ class DocsVisitor extends NodeVisitor
         return trim($type . '$' . $param->var->name . $default);
     }
 
-    private function typeToString(Node\Name|Node\Identifier|Node\NullableType|Node\UnionType|Node\IntersectionType $type): string
+    private function typeToString(Name|Identifier|NullableType|UnionType|IntersectionType $type): string
     {
         if ($type instanceof NullableType) {
             return '?' . $this->typeToString($type->type);
         }
 
         if ($type instanceof UnionType) {
-            $types = array_map(fn ($t) => $this->typeToString($t), $type->types);
+            $types = array_map(fn ($t): string => $this->typeToString($t), $type->types);
             return implode('|', $types);
         }
 
         if ($type instanceof IntersectionType) {
-            $types = array_map(fn ($t) => $this->typeToString($t), $type->types);
+            $types = array_map(fn ($t): string => $this->typeToString($t), $type->types);
             return implode('&', $types);
         }
 

@@ -13,7 +13,7 @@ class GenerateDocsCommandTest extends TestCase
     public function testParametersIncluded(): void
     {
         $dir = sys_get_temp_dir() . '/syntra_test_' . uniqid();
-        mkdir($dir . '/backend/controllers', 0777, true);
+        mkdir("$dir/backend/controllers", 0777, true);
         copy(__DIR__ . '/../Fixtures/backend/controllers/SiteController.php', "$dir/backend/controllers/SiteController.php");
         file_put_contents("$dir/composer.json", json_encode(['require' => ['yiisoft/yii2' => '*']]));
 

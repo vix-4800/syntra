@@ -115,7 +115,7 @@ class GenerateDocsCommand extends SyntraCommand
             );
             $searchFiles = array_filter(
                 $searchFiles,
-                static fn(string $f): bool => str_contains($f, 'controllers') || str_contains($f, 'views')
+                static fn (string $f): bool => str_contains($f, 'controllers') || str_contains($f, 'views')
             );
 
             $this->setProgressMax(count($routes));
@@ -136,7 +136,7 @@ class GenerateDocsCommand extends SyntraCommand
             $mdFile = $this->writeToMarkdown("$projectRoot/docs", $routesGrouped, $refCounts, 'Yii');
 
             $rows = array_map(
-                static fn(array $r): array => [strval($r['route']), (string) $refCounts[$r['route']]],
+                static fn (array $r): array => [strval($r['route']), (string) $refCounts[$r['route']]],
                 $routes
             );
             $this->table(['Route', 'Refs'], $rows);
@@ -173,10 +173,10 @@ class GenerateDocsCommand extends SyntraCommand
                 $method = "`{$a['action']}`";
                 $params = implode(", ", $a["params"]);
                 $desc = $a['desc'] ?: '';
-              
+
                 $routeKey = $controller . '/' . $a['action'];
                 $refs = $refCounts[$routeKey] ?? 0;
-              
+
                 $md .= sprintf("| %-25s | %4d | %-23s | %-50s |\n", $method, $refs, $params, $desc);
             }
 
