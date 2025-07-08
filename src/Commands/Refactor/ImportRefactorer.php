@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Vix\Syntra\Commands\Refactor;
 
-use Symfony\Component\Console\Command\Command;
 use Vix\Syntra\Commands\SyntraRefactorCommand;
 use Vix\Syntra\Enums\ProgressIndicatorType;
-use Vix\Syntra\Facades\File;
 use Vix\Syntra\Traits\ProcessesFilesTrait;
 
 /**
@@ -32,9 +30,7 @@ class ImportRefactorer extends SyntraRefactorCommand
 
     public function perform(): int
     {
-        return $this->processFiles(function (string $content): string {
-            return $this->reorderHeaderBlocks($content);
-        });
+        return $this->processFiles(fn (string $content): string => $this->reorderHeaderBlocks($content));
     }
 
     /**

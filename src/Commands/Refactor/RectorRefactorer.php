@@ -15,7 +15,7 @@ use Vix\Syntra\Traits\HasBinaryTool;
 class RectorRefactorer extends SyntraRefactorCommand
 {
     use HasBinaryTool;
-    
+
     protected DangerLevel $dangerLevel = DangerLevel::HIGH;
 
     protected function configure(): void
