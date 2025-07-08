@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Vix\Syntra\Commands\Health;
 
-use Vix\Syntra\Facades\Config;
-use Vix\Syntra\Enums\CommandGroup;
 use Vix\Syntra\Commands\SyntraCommand;
+use Vix\Syntra\Enums\CommandGroup;
+use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Traits\CommandRunnerTrait;
 
 class ProjectCheckCommand extends SyntraCommand
