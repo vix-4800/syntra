@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace Vix\Syntra\Commands\Health;
 
-use Vix\Syntra\Commands\Health\HealthCheckCommandInterface;
-use Vix\Syntra\Commands\SyntraCommand;
+use Vix\Syntra\Commands\Health\AbstractHealthCommand;
 use Vix\Syntra\DTO\CommandResult;
 use Vix\Syntra\Facades\Process;
 use Vix\Syntra\Facades\Project;
-use Vix\Syntra\Traits\HandlesResultTrait;
 
-class SecurityCheckCommand extends SyntraCommand implements HealthCheckCommandInterface
+
+class SecurityCheckCommand extends AbstractHealthCommand
 {
-    use HandlesResultTrait;
+    protected string $sectionTitle = 'Running Composer security audit...';
+    protected string $successMessage = 'Composer security audit completed.';
 
     protected function configure(): void
     {
@@ -54,12 +54,4 @@ class SecurityCheckCommand extends SyntraCommand implements HealthCheckCommandIn
         return CommandResult::warning($messages);
     }
 
-    public function perform(): int
-    {
-        $this->output->section('Running Composer security audit...');
-
-        $result = $this->runCheck();
-
-        return $this->handleResult($result, 'Composer security audit completed.', $this->failOnWarning);
-    }
 }
