@@ -14,7 +14,7 @@ use Vix\Syntra\Traits\HasBinaryTool;
 class PhpCsFixerRefactorer extends SyntraRefactorCommand
 {
     use HasBinaryTool;
-    
+
     protected function configure(): void
     {
         parent::configure();
