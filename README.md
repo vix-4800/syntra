@@ -93,6 +93,7 @@ All commands support these standard options (with an optional `[path]` argument 
 | `analyze:find-debug-calls`   | Checks that var_dump, dd, print_r, eval, and other calls prohibited in production | `[path]`, `--dry-run`, `--no-cache`          |
 | `analyze:find-long-methods`  | Finds all methods or functions that exceed a specified number of lines            | `[path]`, `--dry-run`, `--max`, `--no-cache` |
 | `analyze:find-bad-practices` | Detects bad practices in code like magic numbers, nested ternaries                | `[path]`, `--dry-run`, `--no-cache`          |
+| `analyze:strict-types`      | Calculates percentage of files declaring `strict_types=1`                          | `[path]`, `--dry-run`, `--no-cache` |
 | `analyze:all`                | Runs all enabled analyze commands sequentially                                    | `[path]`, `--dry-run`, `--no-cache`          |
 
 ### 🏥 Health
@@ -110,7 +111,7 @@ All commands support these standard options (with an optional `[path]` argument 
 
 -   Ensure an `.editorconfig` file is present for consistent formatting
 -   Run PHP-CS-Fixer in dry-run mode to enforce PSR-12 style
--   Check for `declare(strict_types=1)` at the top of PHP files
+-   Check strict types declarations using `analyze:strict-types`
 -   Verify Composer package licenses match your project policy
 
 ### 🔧 Refactor
