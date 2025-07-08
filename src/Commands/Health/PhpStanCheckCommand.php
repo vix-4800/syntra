@@ -67,5 +67,4 @@ class PhpStanCheckCommand extends AbstractHealthCommand
 
         return CommandResult::warning($messages);
     }
-
 }

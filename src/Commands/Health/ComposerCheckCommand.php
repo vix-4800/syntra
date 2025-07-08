@@ -45,5 +45,4 @@ class ComposerCheckCommand extends AbstractHealthCommand
 
         return CommandResult::warning($packages);
     }
-
 }

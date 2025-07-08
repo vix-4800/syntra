@@ -11,7 +11,6 @@ use Vix\Syntra\DTO\CommandResult;
 use Vix\Syntra\Enums\CommandStatus;
 use Vix\Syntra\Facades\Project;
 
-
 class EditorConfigCheckCommand extends AbstractHealthCommand
 {
     protected string $sectionTitle = 'Checking for .editorconfig...';

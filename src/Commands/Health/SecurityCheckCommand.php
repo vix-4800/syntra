@@ -9,7 +9,6 @@ use Vix\Syntra\DTO\CommandResult;
 use Vix\Syntra\Facades\Process;
 use Vix\Syntra\Facades\Project;
 
-
 class SecurityCheckCommand extends AbstractHealthCommand
 {
     protected string $sectionTitle = 'Running Composer security audit...';
@@ -53,5 +52,4 @@ class SecurityCheckCommand extends AbstractHealthCommand
 
         return CommandResult::warning($messages);
     }
-
 }

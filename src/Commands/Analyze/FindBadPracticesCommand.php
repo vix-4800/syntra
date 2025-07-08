@@ -11,14 +11,15 @@ use Symfony\Component\Console\Command\Command;
 use Throwable;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Enums\ProgressIndicatorType;
-use Vix\Syntra\Facades\File;
 use Vix\Syntra\NodeVisitors\AssignmentInConditionVisitor;
 use Vix\Syntra\NodeVisitors\NestedTernaryVisitor;
+use Vix\Syntra\Traits\AnalyzesFilesTrait;
 use Vix\Syntra\Traits\ContainerAwareTrait;
 
 class FindBadPracticesCommand extends SyntraCommand
 {
     use ContainerAwareTrait;
+    use AnalyzesFilesTrait;
 
     protected ProgressIndicatorType $progressType = ProgressIndicatorType::PROGRESS_BAR;
 
@@ -36,22 +37,17 @@ class FindBadPracticesCommand extends SyntraCommand
     {
         $parser = $this->getService(Parser::class, fn (): Parser => (new ParserFactory())->create(ParserFactory::PREFER_PHP7));
 
-        $files = File::collectFiles($this->path);
-
-        $this->setProgressMax(count($files));
-        $this->startProgress();
-
         $rows = [];
-        foreach ($files as $file) {
+        $this->analyzeFiles(function (string $file) use (&$rows, $parser): void {
             $code = file_get_contents($file);
             if ($code === false) {
-                continue;
+                return;
             }
 
             try {
                 $ast = $parser->parse($code);
             } catch (Throwable) {
-                continue;
+                return;
             }
 
             $visitors = [];
@@ -83,11 +79,7 @@ class FindBadPracticesCommand extends SyntraCommand
                     ];
                 }
             }
-
-            $this->advanceProgress();
-        }
-
-        $this->finishProgress();
+        });
 
         if (empty($rows)) {
             $this->output->success("All good. 👍");

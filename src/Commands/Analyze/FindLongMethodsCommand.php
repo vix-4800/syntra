@@ -12,13 +12,14 @@ use Symfony\Component\Console\Input\InputOption;
 use Throwable;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Enums\ProgressIndicatorType;
-use Vix\Syntra\Facades\File;
 use Vix\Syntra\NodeVisitors\LongMethodVisitor;
+use Vix\Syntra\Traits\AnalyzesFilesTrait;
 use Vix\Syntra\Traits\ContainerAwareTrait;
 
 class FindLongMethodsCommand extends SyntraCommand
 {
     use ContainerAwareTrait;
+    use AnalyzesFilesTrait;
 
     protected ProgressIndicatorType $progressType = ProgressIndicatorType::PROGRESS_BAR;
 
@@ -37,25 +38,20 @@ class FindLongMethodsCommand extends SyntraCommand
     {
         $parser = $this->getService(Parser::class, fn (): Parser => (new ParserFactory())->create(ParserFactory::PREFER_PHP7));
 
-        $files = File::collectFiles($this->path);
-
         $maxLength = (int) $this->input->getOption('max');
 
         $longMethods = [];
 
-        $this->setProgressMax(count($files));
-        $this->startProgress();
-
-        foreach ($files as $filePath) {
+        $this->analyzeFiles(function (string $filePath) use (&$longMethods, $maxLength, $parser): void {
             $code = file_get_contents($filePath);
             if ($code === false) {
-                continue;
+                return;
             }
 
             try {
                 $stmts = $parser->parse($code);
             } catch (Throwable) {
-                continue;
+                return;
             }
 
             $traverser = new NodeTraverser();
@@ -63,11 +59,7 @@ class FindLongMethodsCommand extends SyntraCommand
 
             $traverser->addVisitor($visitor);
             $traverser->traverse($stmts);
-
-            $this->advanceProgress();
-        }
-
-        $this->finishProgress();
+        });
 
         if (empty($longMethods)) {
             $this->output->success("No methods/functions longer than $maxLength lines found. 👍");

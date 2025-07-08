@@ -44,5 +44,4 @@ class PhpVersionCheckCommand extends AbstractHealthCommand
 
         return CommandResult::warning(["Unable to determine PHP version from \"$version\""]);
     }
-
 }

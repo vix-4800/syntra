@@ -8,9 +8,12 @@ use Symfony\Component\Console\Command\Command;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Enums\ProgressIndicatorType;
 use Vix\Syntra\Facades\File;
+use Vix\Syntra\Traits\AnalyzesFilesTrait;
 
 class FindDebugCallsCommand extends SyntraCommand
 {
+    use AnalyzesFilesTrait;
+
     protected ProgressIndicatorType $progressType = ProgressIndicatorType::PROGRESS_BAR;
 
     private const DEBUG_FUNCTIONS = [
@@ -38,22 +41,17 @@ class FindDebugCallsCommand extends SyntraCommand
 
     public function perform(): int
     {
-        $files = File::collectFiles($this->path);
-
         $matches = [];
         $pattern = '/(?<![\w\$])(' . implode('|', array_map('preg_quote', self::DEBUG_FUNCTIONS)) . ')\s*\(/i';
 
-        $this->setProgressMax(count($files));
-        $this->startProgress();
-
-        foreach ($files as $filePath) {
-            if (str_contains((string) $filePath, "FindDebugCallsCommand")) {
-                continue;
+        $this->analyzeFiles(function (string $filePath) use (&$matches, $pattern): void {
+            if (str_contains((string) $filePath, 'FindDebugCallsCommand')) {
+                return;
             }
 
             $content = file_get_contents($filePath);
             if ($content === false) {
-                continue;
+                return;
             }
 
             $relativePath = File::makeRelative($filePath, $this->path);
@@ -69,11 +67,7 @@ class FindDebugCallsCommand extends SyntraCommand
                     ];
                 }
             }
-
-            $this->advanceProgress();
-        }
-
-        $this->finishProgress();
+        });
 
         if (!$matches) {
             $this->output->success('No debug calls or comments found! Code is clean 👌');

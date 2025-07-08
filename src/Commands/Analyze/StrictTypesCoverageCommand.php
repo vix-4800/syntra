@@ -7,10 +7,12 @@ namespace Vix\Syntra\Commands\Analyze;
 use Symfony\Component\Console\Command\Command;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Enums\ProgressIndicatorType;
-use Vix\Syntra\Facades\File;
+use Vix\Syntra\Traits\AnalyzesFilesTrait;
 
 class StrictTypesCoverageCommand extends SyntraCommand
 {
+    use AnalyzesFilesTrait;
+
     protected ProgressIndicatorType $progressType = ProgressIndicatorType::PROGRESS_BAR;
 
     protected function configure(): void
@@ -25,23 +27,17 @@ class StrictTypesCoverageCommand extends SyntraCommand
 
     public function perform(): int
     {
-        $files = File::collectFiles($this->path);
+        $files = $this->collectFiles();
 
         $total = count($files);
         $withStrict = 0;
 
-        $this->setProgressMax($total);
-        $this->startProgress();
-
-        foreach ($files as $file) {
+        $this->iterateFiles($files, function (string $file) use (&$withStrict): void {
             $content = file_get_contents($file);
             if ($content !== false && preg_match('/^\s*<\?php\s+declare\(strict_types=1\);/m', $content)) {
                 $withStrict++;
             }
-            $this->advanceProgress();
-        }
-
-        $this->finishProgress();
+        });
 
         $coverage = $total > 0 ? round($withStrict / $total * 100, 2) : 100.0;
         $this->output->writeln(sprintf('Strict types coverage: %d/%d (%.1f%%)', $withStrict, $total, $coverage));

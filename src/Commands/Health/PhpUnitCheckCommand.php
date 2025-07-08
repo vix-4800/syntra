@@ -42,5 +42,4 @@ class PhpUnitCheckCommand extends AbstractHealthCommand
 
         return CommandResult::error($messages);
     }
-
 }
