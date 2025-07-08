@@ -105,7 +105,7 @@ All commands support these standard options (with an optional `[path]` argument 
 | `analyze:find-long-methods`  | Finds all methods or functions that exceed a specified number of lines            | `[path]`, `--dry-run`, `--max`, `--no-cache` |
 | `analyze:find-bad-practices` | Detects bad practices in code like magic numbers, nested ternaries                | `[path]`, `--dry-run`, `--no-cache`          |
 | `analyze:find-typos`         | Detects misspellings in filenames and PHP identifiers                             | `[path]`, `--dry-run`, `--no-cache`          |
-| `analyze:strict-types`      | Calculates percentage of files declaring `strict_types=1`                          | `[path]`, `--dry-run`, `--no-cache` |
+| `analyze:strict-types`       | Calculates percentage of files declaring `strict_types=1`                         | `[path]`, `--dry-run`, `--no-cache`          |
 | `analyze:all`                | Runs all enabled analyze commands sequentially                                    | `[path]`, `--dry-run`, `--no-cache`          |
 
 ### 🏥 Health
@@ -139,25 +139,25 @@ All commands support these standard options (with an optional `[path]` argument 
 
 ### 🧠 General
 
-| Command                    | Description                                                                                                                                | Options                                                                |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------- |
-| `general:generate-command` | Generates a scaffold for a new Symfony Console command                                                                                     | `[path]`, `--dry-run`, `--no-cache`, `--group`, `--cli-name`, `--desc` |
+| Command                    | Description                                                                                                                                | Options                                                                 |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------- |
+| `general:generate-command` | Generates a scaffold for a new Symfony Console command                                                                                     | `[path]`, `--dry-run`, `--no-cache`, `--group`, `--cli-name`, `--desc`  |
 | `general:generate-docs`    | Scans project controllers and generates a markdown file listing all action routes with their parameters (framework detected automatically) | `[path]`, `--controller-dir`, `--dry-run`, `--no-cache`, `--count-refs` |
 
 ### 🧩 Yii Framework Extensions
 
-| Command                        | Description                                                                                          | Danger Level | Options                             |
-| ------------------------------ | ---------------------------------------------------------------------------------------------------- | ------------ | ----------------------------------- |
-| `yii:all`                      | Runs all Yii-specific Rector refactorings in sequence                                                | 🟢 LOW       | `[path]`, `--dry-run`, `--force`    |
+| Command                        | Description                                                                                                                                                  | Danger Level | Options                             |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------ | ----------------------------------- |
+| `yii:all`                      | Runs all Yii-specific Rector refactorings in sequence                                                                                                        | 🟢 LOW       | `[path]`, `--dry-run`, `--force`    |
 | `yii:find-shortcuts`           | Converts `Model::find()->where([...])->one()/all()` or `Model::find()->where([...])->limit(1)->one()/all()` into `Model::findOne([...])` or `findAll([...])` | 🟢 LOW       | `[path]`, `--dry-run`, `--force`    |
-| `yii:find-one-id`              | Replaces `Model::findOne(['id' => $id])` with `Model::findOne($id)`                                  | 🟢 LOW       | `[path]`, `--dry-run`, `--force`    |
-| `yii:find-all-id`              | Replaces `Model::findAll(['id' => $id]) with Model::findAll($id)`                                    | 🟢 LOW       | `[path]`, `--dry-run`, `--force`    |
-| `yii:update-shortcut`          | Replaces `Model::find()->where([...])->update([...])` with `Model::updateAll([...], [...])`          | 🟢 LOW       | `[path]`, `--dry-run`, `--force`    |
-| `yii:delete-shortcut`          | Replaces `Model::find()->where([...])->delete()` with `Model::deleteAll([...])`                      | 🟢 LOW       | `[path]`, `--dry-run`, `--force`    |
-| `yii:can-helpers`              | Replaces `can()/!can()` chains with `canAny()`, `canAll()`, `cannotAny()`, or `cannotAll()`          | 🟢 LOW       | `[path]`, `--dry-run`, `--force`    |
-| `yii:check-translations`       | Checks Yii::t translations: finds missing and unused keys across all categories                      | N/A          | `[path]`, `--dry-run`, `--lang`     |
-| `yii:convert-access-chain`     | Replaces `user->identity->hasAccessChain/hasNoAccessChain` with `user->canAny/cannotAny`             | N/A          | `[path]`, `--dry-run`, `--no-cache` |
-| `yii:user-findone-to-identity` | Replaces redundant `User::findOne(...)` lookups for current user with `Yii::$app->user->identity`    | N/A          | `[path]`, `--dry-run`, `--no-cache` |
+| `yii:find-one-id`              | Replaces `Model::findOne(['id' => $id])` with `Model::findOne($id)`                                                                                          | 🟢 LOW       | `[path]`, `--dry-run`, `--force`    |
+| `yii:find-all-id`              | Replaces `Model::findAll(['id' => $id]) with Model::findAll($id)`                                                                                            | 🟢 LOW       | `[path]`, `--dry-run`, `--force`    |
+| `yii:update-shortcut`          | Replaces `Model::find()->where([...])->update([...])` with `Model::updateAll([...], [...])`                                                                  | 🟢 LOW       | `[path]`, `--dry-run`, `--force`    |
+| `yii:delete-shortcut`          | Replaces `Model::find()->where([...])->delete()` with `Model::deleteAll([...])`                                                                              | 🟢 LOW       | `[path]`, `--dry-run`, `--force`    |
+| `yii:can-helpers`              | Replaces `can()/!can()` chains with `canAny()`, `canAll()`, `cannotAny()`, or `cannotAll()`                                                                  | 🟢 LOW       | `[path]`, `--dry-run`, `--force`    |
+| `yii:check-translations`       | Checks Yii::t translations: finds missing and unused keys across all categories                                                                              | N/A          | `[path]`, `--dry-run`, `--lang`     |
+| `yii:convert-access-chain`     | Replaces `user->identity->hasAccessChain/hasNoAccessChain` with `user->canAny/cannotAny`                                                                     | N/A          | `[path]`, `--dry-run`, `--no-cache` |
+| `yii:user-findone-to-identity` | Replaces redundant `User::findOne(...)` lookups for current user with `Yii::$app->user->identity`                                                            | N/A          | `[path]`, `--dry-run`, `--no-cache` |
 
 ### 🧩 Laravel Framework Extensions
 

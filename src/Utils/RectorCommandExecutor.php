@@ -17,11 +17,6 @@ use Vix\Syntra\Facades\Project;
  */
 class RectorCommandExecutor
 {
-    public function __construct()
-    {
-        //
-    }
-
     /**
      * Execute Rector rule(s)
      *
