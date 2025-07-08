@@ -7,6 +7,7 @@
 -   **Health Checks**: Verify project stability with Composer, PHPStan, PHPUnit, and security audits.
 -   **Code Refactoring**: Automatically fix code with custom refactorers, Rector, and PHP-CS-Fixer.
 -   **Static Analysis**: Detect todos, long methods, and unsafe debug calls.
+-   **Typo Detection**: Spot misspellings in files and identifiers using Aspell (via Peck). Requires the `aspell` binary.
 -   **Framework Support**: Built-in tooling for Yii (Laravel, Symfony planned).
 -   **Extensibility**: Generate and register new commands using stubs.
 -   **In-Memory Caching**: Reuses previously scanned file lists for faster repeated command execution.
@@ -59,6 +60,10 @@ vendor/bin/syntra health:all
 # Find TODO comments in specific directory
 vendor/bin/syntra analyze:find-todos /path/to/project
 
+# Detect typos in your project
+vendor/bin/syntra analyze:find-typos /path/to/project
+# Requires `aspell` to be installed and accessible in your PATH
+
 # Fix code style with dry-run (preview changes)
 vendor/bin/syntra refactor:cs-fixer --dry-run
 
@@ -93,6 +98,7 @@ All commands support these standard options (with an optional `[path]` argument 
 | `analyze:find-debug-calls`   | Checks that var_dump, dd, print_r, eval, and other calls prohibited in production | `[path]`, `--dry-run`, `--no-cache`          |
 | `analyze:find-long-methods`  | Finds all methods or functions that exceed a specified number of lines            | `[path]`, `--dry-run`, `--max`, `--no-cache` |
 | `analyze:find-bad-practices` | Detects bad practices in code like magic numbers, nested ternaries                | `[path]`, `--dry-run`, `--no-cache`          |
+| `analyze:find-typos`         | Detects misspellings in filenames and PHP identifiers                             | `[path]`, `--dry-run`, `--no-cache`          |
 | `analyze:strict-types`      | Calculates percentage of files declaring `strict_types=1`                          | `[path]`, `--dry-run`, `--no-cache` |
 | `analyze:all`                | Runs all enabled analyze commands sequentially                                    | `[path]`, `--dry-run`, `--no-cache`          |
 
@@ -207,6 +213,8 @@ The PHPStan health check reads from `config/phpstan.neon` by default, so tweak t
     vendor/bin/syntra analyze:find-todos
     vendor/bin/syntra analyze:find-debug-calls
     vendor/bin/syntra analyze:find-long-methods
+    vendor/bin/syntra analyze:find-typos
+    # Aspell must be installed
     ```
 
 3. **Safe Refactoring Order** (with `--dry-run` first):
@@ -239,6 +247,8 @@ Add to your CI pipeline:
   run: |
       vendor/bin/syntra health:all
       vendor/bin/syntra analyze:find-debug-calls
+      vendor/bin/syntra analyze:find-typos
+      # install aspell via your package manager before running
 
 # Fail the pipeline on warnings
       vendor/bin/syntra health:composer --ci
