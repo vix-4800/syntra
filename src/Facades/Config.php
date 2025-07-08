@@ -11,6 +11,7 @@ use Vix\Syntra\Utils\ConfigLoader;
  * @method static bool       isCommandEnabled(string $group, string $commandClass)
  * @method static mixed      getCommandOption(string $group, string $commandClass, string $option, $default = null)
  * @method static array      getEnabledCommands()
+ * @method static array      getEnabledCommandsByGroup(string $group)
  * @method static array      getEnabledExtensionCommands()
  */
 class Config extends Facade
