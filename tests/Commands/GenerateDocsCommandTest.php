@@ -1,4 +1,5 @@
 <?php
+
 namespace Vix\Syntra\Tests\Commands;
 
 use PHPUnit\Framework\TestCase;
@@ -27,8 +28,8 @@ class GenerateDocsCommandTest extends TestCase
 
         $content = file_get_contents("$dir/docs/routes.md");
 
-        $this->assertMatchesRegularExpression('/\| `index`\s+\| string \$id, int \$page = 1 \|/', $content);
-        $this->assertMatchesRegularExpression('/\| `view`\s+\| \$slug\s+\|/', $content);
+        $this->assertMatchesRegularExpression('/\| `index`\s+\|\s+0\s+\|\s+string \$id, int \$page = 1\s+\|\s+Home page\s+\|/', $content);
+        $this->assertMatchesRegularExpression('/\| `view`\s+\|\s+0\s+\|\s+\$slug\s+\|\s+\|/', $content);
 
         unlink("$dir/backend/controllers/SiteController.php");
         unlink("$dir/composer.json");
