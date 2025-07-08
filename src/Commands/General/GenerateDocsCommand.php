@@ -100,6 +100,7 @@ class GenerateDocsCommand extends SyntraCommand
             [$controller, $action] = explode('/', (string) $route['route']);
             $routesGrouped[$controller][] = [
                 'action' => $action,
+                'params' => $route['params'],
                 'desc' => $route['desc'],
             ];
         }
@@ -118,13 +119,14 @@ class GenerateDocsCommand extends SyntraCommand
 
         foreach ($routes as $controller => $actions) {
             $md .= "## `$controller`\n\n";
-            $md .= "| Method                    | Description                                        |\n";
-            $md .= "|---------------------------|----------------------------------------------------|\n";
+            $md .= "| Method                    | Params                   | Description                                        |\n";
+            $md .= "|---------------------------|-------------------------|----------------------------------------------------|\n";
 
             foreach ($actions as $a) {
                 $method = "`{$a['action']}`";
+                $params = implode(", ", $a["params"]);
                 $desc = $a['desc'] ?: '';
-                $md .= sprintf("| %-25s | %-50s |\n", $method, $desc);
+                $md .= sprintf("| %-25s | %-23s | %-50s |\n", $method, $params, $desc);
             }
 
             $md .= "\n";
