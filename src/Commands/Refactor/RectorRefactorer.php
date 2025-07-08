@@ -9,6 +9,7 @@ use Vix\Syntra\Enums\CommandGroup;
 use Vix\Syntra\Enums\DangerLevel;
 use Vix\Syntra\Exceptions\MissingBinaryException;
 use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Facades\Process;
 
 class RectorRefactorer extends SyntraRefactorCommand
@@ -26,7 +27,7 @@ class RectorRefactorer extends SyntraRefactorCommand
 
     public function perform(): int
     {
-        $binary = find_composer_bin('rector', Config::getProjectRoot());
+        $binary = find_composer_bin('rector', Project::getRootPath());
 
         if (!$binary) {
             throw new MissingBinaryException("rector", "composer require --dev rector/rector");
@@ -40,7 +41,7 @@ class RectorRefactorer extends SyntraRefactorCommand
 
         $result = Process::run($binary, [
             'process',
-            Config::getProjectRoot(),
+            $this->path,
             "--config=" . Config::getCommandOption(CommandGroup::REFACTOR->value, self::class, 'config'),
             "--clear-cache",
         ], callback: $outputCallback);

@@ -8,6 +8,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Facades\File;
 
 class YiiCheckTranslationsCommand extends SyntraCommand
@@ -25,15 +26,15 @@ class YiiCheckTranslationsCommand extends SyntraCommand
 
     public function perform(): int
     {
-        $projectRoot = Config::getProjectRoot();
+        $rootPath = Project::getRootPath();
 
-        $messagesDir = "$projectRoot/backend/messages";
+        $messagesDir = "$rootPath/backend/messages";
         if (!is_dir($messagesDir)) {
             $this->output->error('Translations directory not found.');
             return Command::FAILURE;
         }
 
-        $used = $this->findUsedTranslationKeys($projectRoot);
+        $used = $this->findUsedTranslationKeys($rootPath);
         $found = $this->findExistingTranslationKeys($messagesDir, $this->input->getOption('lang'));
 
         $missing = [];

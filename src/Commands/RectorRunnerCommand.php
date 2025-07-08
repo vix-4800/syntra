@@ -64,7 +64,7 @@ abstract class RectorRunnerCommand extends SyntraRefactorCommand
         };
 
         try {
-            $result = Rector::executeRules($rules, $additionalArgs, $outputCallback);
+            $result = Rector::executeRules($this->path, $rules, $additionalArgs, $outputCallback);
 
             $this->progressIndicator->setMessage(
                 $result->exitCode === 0 ? $this->getSuccessMessage() : $this->getErrorMessage()

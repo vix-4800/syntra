@@ -13,11 +13,11 @@ use Throwable;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Enums\ProgressIndicatorType;
 use Vix\Syntra\Facades\Config;
-use Vix\Syntra\Facades\File;
 use Vix\Syntra\Facades\Project;
+use Vix\Syntra\Facades\File;
 use Vix\Syntra\NodeVisitors\DocsVisitor;
 use Vix\Syntra\Traits\ContainerAwareTrait;
-use Vix\Syntra\Utils\ProjectDetector;
+use Vix\Syntra\Utils\ProjectInfo;
 
 class GenerateDocsCommand extends SyntraCommand
 {
@@ -39,12 +39,12 @@ class GenerateDocsCommand extends SyntraCommand
 
     public function perform(): int
     {
-        $projectRoot = Config::getProjectRoot();
+        $rootPath = Project::getRootPath();
 
-        $type = Project::detect($projectRoot);
+        $type = Project::detect($rootPath);
 
-        if ($type === ProjectDetector::TYPE_YII) {
-            return $this->generateForYii($projectRoot);
+        if ($type === ProjectInfo::TYPE_YII) {
+            return $this->generateForYii($rootPath);
         }
 
         $this->output->warning('Unsupported project type or framework not detected.');
@@ -52,10 +52,10 @@ class GenerateDocsCommand extends SyntraCommand
         return Command::SUCCESS;
     }
 
-    private function generateForYii(string $projectRoot): int
+    private function generateForYii(string $rootPath): int
     {
         $controllerDirOption = $this->input->getOption('controller-dir');
-        $controllerDir = $projectRoot . '/' . ltrim((string) ($controllerDirOption ?? 'backend/controllers'), '/');
+        $controllerDir = $rootPath . '/' . ltrim((string) ($controllerDirOption ?? 'backend/controllers'), '/');
 
         $parser = $this->getService(Parser::class, fn (): Parser => (new ParserFactory())->create(ParserFactory::PREFER_PHP7));
 
@@ -110,7 +110,7 @@ class GenerateDocsCommand extends SyntraCommand
         if ($this->input->getOption('count-refs')) {
             // Count references to each route across controllers and view files
             $searchFiles = File::collectFiles(
-                $projectRoot,
+                $rootPath,
                 ['php', 'phtml', 'twig']
             );
             $searchFiles = array_filter(
@@ -133,7 +133,7 @@ class GenerateDocsCommand extends SyntraCommand
                 $this->advanceProgress();
             }
             $this->finishProgress();
-            $mdFile = $this->writeToMarkdown("$projectRoot/docs", $routesGrouped, $refCounts, 'Yii');
+            $mdFile = $this->writeToMarkdown("$rootPath/docs", $routesGrouped, $refCounts, 'Yii');
 
             $rows = array_map(
                 static fn (array $r): array => [strval($r['route']), (string) $refCounts[$r['route']]],
@@ -151,7 +151,7 @@ class GenerateDocsCommand extends SyntraCommand
                 )
             );
         } else {
-            $mdFile = $this->writeToMarkdown("$projectRoot/docs", $routesGrouped, [], 'Yii');
+            $mdFile = $this->writeToMarkdown("$rootPath/docs", $routesGrouped, [], 'Yii');
 
             $this->output->success("Routes successfully saved to $mdFile");
         }

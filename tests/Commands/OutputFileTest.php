@@ -8,6 +8,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 use Vix\Syntra\Application;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Facades\Project;
 
 class OutputFileTest extends TestCase
 {
@@ -31,7 +32,7 @@ class OutputFileTest extends TestCase
     public function testWritesToOutputFile(): void
     {
         $app = new Application();
-        Config::setProjectRoot(sys_get_temp_dir());
+        Project::setRootPath(sys_get_temp_dir());
 
         $command = $this->makeCommand();
         $app->add($command);

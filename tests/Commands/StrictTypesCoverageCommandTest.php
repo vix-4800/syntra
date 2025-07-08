@@ -7,6 +7,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 use Vix\Syntra\Application;
 use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Facades\File;
 
 class StrictTypesCoverageCommandTest extends TestCase
@@ -29,7 +30,7 @@ class StrictTypesCoverageCommandTest extends TestCase
     {
         $app = new Application();
         File::clearCache();
-        Config::setProjectRoot($this->dir);
+        Project::setRootPath($this->dir);
 
         $command = $app->find('analyze:strict-types');
         $tester = new CommandTester($command);

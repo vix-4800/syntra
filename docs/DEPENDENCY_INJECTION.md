@@ -78,7 +78,7 @@ Registers core application services:
 -   `ProcessRunner` - Process execution
 -   `FileHelper` - File operations (available via the `File` facade)
     -   caches results of file searches during a single run for performance
--   `ProjectDetector` - Detects framework type (available via the `Project` facade)
+-   `ProjectInfo` - Provides project root and detects framework type (available via the `Project` facade)
 -   `RectorCommandExecutor` - Runs Rector rules (available via the `Rector` facade)
 
 ### HealthServiceProvider
@@ -131,9 +131,9 @@ For simple access to common services you can use facades. Facades provide a
 static interface to services resolved from the application's container:
 
 ```php
-use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Facades\Project;
 
-$root = Config::getProjectRoot();
+$root = Project::getRootPath();
 ```
 
 ## Best Practices

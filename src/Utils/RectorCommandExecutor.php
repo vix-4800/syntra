@@ -9,6 +9,7 @@ use Vix\Syntra\DTO\ProcessResult;
 use Vix\Syntra\Enums\CommandGroup;
 use Vix\Syntra\Exceptions\MissingBinaryException;
 use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Facades\Process;
 
 /**
@@ -31,13 +32,13 @@ class RectorCommandExecutor
      *
      * @throws MissingBinaryException
      */
-    public function executeRules(array $rectorClasses, array $additionalArgs = [], ?callable $outputCallback = null): ProcessResult
+    public function executeRules(string $path, array $rectorClasses, array $additionalArgs = [], ?callable $outputCallback = null): ProcessResult
     {
         $binary = $this->findRectorBinary();
         $result = null;
 
         foreach ($rectorClasses as $rectorClass) {
-            $args = $this->buildRectorArgs($rectorClass, $additionalArgs);
+            $args = $this->buildRectorArgs($path, $rectorClass, $additionalArgs);
             $result = Process::run($binary, $args, callback: $outputCallback);
 
             // Stop on first failure
@@ -70,7 +71,7 @@ class RectorCommandExecutor
      */
     private function findRectorBinary(): string
     {
-        $binary = find_composer_bin('rector', Config::getProjectRoot());
+        $binary = find_composer_bin('rector', Project::getRootPath());
 
         if (!$binary) {
             throw new MissingBinaryException("rector", "composer require --dev rector/rector");
@@ -82,10 +83,10 @@ class RectorCommandExecutor
     /**
      * Build Rector command arguments
      */
-    private function buildRectorArgs(string $rectorClass, array $additionalArgs = []): array
+    private function buildRectorArgs(string $path, string $rectorClass, array $additionalArgs = []): array
     {
         $args = [
-            Config::getProjectRoot(),
+            $path,
             "--config=" . $this->getRectorConfig(),
             "--only=" . $this->normalizeRectorClassName($rectorClass),
             "--clear-cache",

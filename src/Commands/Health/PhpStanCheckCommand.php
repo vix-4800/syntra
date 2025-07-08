@@ -10,6 +10,7 @@ use Vix\Syntra\DTO\CommandResult;
 use Vix\Syntra\Enums\CommandGroup;
 use Vix\Syntra\Exceptions\MissingBinaryException;
 use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Facades\Process;
 use Vix\Syntra\Traits\HandlesResultTrait;
 
@@ -26,7 +27,7 @@ class PhpStanCheckCommand extends SyntraCommand implements HealthCheckCommandInt
 
     public function runCheck(): CommandResult
     {
-        $binary = find_composer_bin('phpstan', Config::getProjectRoot());
+        $binary = find_composer_bin('phpstan', Project::getRootPath());
 
         if (!$binary) {
             throw new MissingBinaryException('phpstan', 'composer require --dev phpstan/phpstan');
@@ -37,7 +38,7 @@ class PhpStanCheckCommand extends SyntraCommand implements HealthCheckCommandInt
             '--error-format=json',
             '--no-progress',
             '--configuration=' . Config::getCommandOption(CommandGroup::HEALTH->value, self::class, 'config', 'phpstan.neon'),
-            Config::getProjectRoot(),
+            Project::getRootPath(),
         ];
 
         $result = Process::run($binary, $args);

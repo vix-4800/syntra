@@ -3,12 +3,12 @@
 namespace Vix\Syntra\Tests\Commands;
 
 use PHPUnit\Framework\TestCase;
-use ReflectionClass;
 use Vix\Syntra\Commands\Health\PhpVersionCheckCommand;
 use Vix\Syntra\DI\Container;
 use Vix\Syntra\Enums\CommandStatus;
 use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\Facade;
+use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Utils\ConfigLoader;
 
 class PhpVersionCheckCommandTest extends TestCase
@@ -18,19 +18,7 @@ class PhpVersionCheckCommandTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        $ref = new ReflectionClass(ConfigLoader::class);
-        /** @var ConfigLoader $cfg */
-        $cfg = $ref->newInstanceWithoutConstructor();
-
-        $propRoot = $ref->getProperty('projectRoot');
-        $propRoot->setAccessible(true);
-        $propRoot->setValue($cfg, sys_get_temp_dir());
-
-        $propCmd = $ref->getProperty('commands');
-        $propCmd->setAccessible(true);
-        $propCmd->setValue($cfg, require PACKAGE_ROOT . '/config.php');
-
-        self::$config = $cfg;
+        self::$config = new ConfigLoader();
     }
 
     protected function setUp(): void
@@ -54,7 +42,7 @@ class PhpVersionCheckCommandTest extends TestCase
         $container->instance(ConfigLoader::class, self::$config);
         Facade::setContainer($container);
 
-        Config::setProjectRoot($this->dir);
+        Project::setRootPath($this->dir);
         return new PhpVersionCheckCommand();
     }
 

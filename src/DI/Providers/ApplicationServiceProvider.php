@@ -10,7 +10,7 @@ use Vix\Syntra\Utils\ConfigLoader;
 use Vix\Syntra\Utils\FileHelper;
 use Vix\Syntra\Utils\PackageInstaller;
 use Vix\Syntra\Utils\ProcessRunner;
-use Vix\Syntra\Utils\ProjectDetector;
+use Vix\Syntra\Utils\ProjectInfo;
 use Vix\Syntra\Utils\RectorCommandExecutor;
 
 /**
@@ -35,8 +35,8 @@ class ApplicationServiceProvider implements ServiceProviderInterface
         // Register PackageInstaller as singleton
         $container->singleton(PackageInstaller::class, fn (): PackageInstaller => new PackageInstaller());
 
-        // Register ProjectDetector as singleton
-        $container->singleton(ProjectDetector::class, fn (): ProjectDetector => new ProjectDetector());
+        // Register ProjectInfo as singleton
+        $container->singleton(ProjectInfo::class, fn (): ProjectInfo => new ProjectInfo());
 
         // Register RectorCommandExecutor as singleton
         $container->singleton(RectorCommandExecutor::class, fn (): RectorCommandExecutor => new RectorCommandExecutor());

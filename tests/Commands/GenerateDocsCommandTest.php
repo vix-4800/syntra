@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 use Vix\Syntra\Application;
 use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Facades\File;
 
 class GenerateDocsCommandTest extends TestCase
@@ -20,7 +21,7 @@ class GenerateDocsCommandTest extends TestCase
         $app = new Application();
         File::clearCache();
         Config::setContainer($app->getContainer());
-        Config::setProjectRoot($dir);
+        Project::setRootPath($dir);
 
         $command = $app->find('general:generate-docs');
         $tester = new CommandTester($command);

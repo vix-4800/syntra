@@ -8,6 +8,7 @@ use Vix\Syntra\Commands\Health\HealthCheckCommandInterface;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\DTO\CommandResult;
 use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Facades\Process;
 use Vix\Syntra\Traits\HandlesResultTrait;
 
@@ -27,7 +28,7 @@ class SecurityCheckCommand extends SyntraCommand implements HealthCheckCommandIn
         $result = Process::run(
             'composer',
             ['audit', '--format=json'],
-            ['working_dir' => Config::getProjectRoot()]
+            ['working_dir' => Project::getRootPath()]
         );
 
         if ($result->exitCode !== 0) {

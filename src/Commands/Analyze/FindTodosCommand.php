@@ -8,6 +8,7 @@ use Symfony\Component\Console\Command\Command;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Enums\ProgressIndicatorType;
 use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Facades\File;
 
 class FindTodosCommand extends SyntraCommand
@@ -38,9 +39,9 @@ class FindTodosCommand extends SyntraCommand
 
     public function perform(): int
     {
-        $projectRoot = Config::getProjectRoot();
+        $rootPath = $this->path;
 
-        $files = File::collectFiles($projectRoot);
+        $files = File::collectFiles($rootPath);
 
         $matches = [];
         $allTags = implode('|', array_map('preg_quote', self::$TAGS));
@@ -59,7 +60,7 @@ class FindTodosCommand extends SyntraCommand
                 continue;
             }
 
-            $relativePath = File::makeRelative($filePath, $projectRoot);
+            $relativePath = File::makeRelative($filePath, $rootPath);
 
             $lines = explode("\n", $content);
             foreach ($lines as $lineNumber => $line) {

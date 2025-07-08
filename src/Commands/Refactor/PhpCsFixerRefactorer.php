@@ -8,6 +8,7 @@ use Vix\Syntra\Commands\SyntraRefactorCommand;
 use Vix\Syntra\Enums\CommandGroup;
 use Vix\Syntra\Exceptions\MissingBinaryException;
 use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Facades\Process;
 
 class PhpCsFixerRefactorer extends SyntraRefactorCommand
@@ -23,7 +24,7 @@ class PhpCsFixerRefactorer extends SyntraRefactorCommand
 
     public function perform(): int
     {
-        $binary = find_composer_bin('php-cs-fixer', Config::getProjectRoot());
+        $binary = find_composer_bin('php-cs-fixer', Project::getRootPath());
 
         if (!$binary) {
             throw new MissingBinaryException("php-cs-fixer", "composer require --dev friendsofphp/php-cs-fixer");
@@ -39,7 +40,7 @@ class PhpCsFixerRefactorer extends SyntraRefactorCommand
 
         $result = Process::run($binary, [
             'fix',
-            Config::getProjectRoot(),
+            $this->path,
             "--config={$config}",
         ], callback: $outputCallback);
 
