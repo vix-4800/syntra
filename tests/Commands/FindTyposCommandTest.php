@@ -8,6 +8,7 @@ use Symfony\Component\Process\ExecutableFinder;
 use Vix\Syntra\Application;
 use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\File;
+use Vix\Syntra\Facades\Project;
 
 class FindTyposCommandTest extends TestCase
 {
@@ -25,7 +26,7 @@ class FindTyposCommandTest extends TestCase
         $app = new Application();
         File::clearCache();
         Config::setContainer($app->getContainer());
-        Config::setProjectRoot($dir);
+        Project::setRootPath($dir);
 
         $command = $app->find('analyze:find-typos');
         $tester = new CommandTester($command);

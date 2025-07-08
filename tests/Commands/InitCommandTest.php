@@ -9,6 +9,7 @@ use Vix\Syntra\Commands\General\InitCommand;
 use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\Facade;
 use Vix\Syntra\Facades\File;
+use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Utils\PackageInstaller;
 use Vix\Syntra\Tests\Fixtures\DummyInstaller;
 
@@ -19,7 +20,7 @@ class InitCommandTest extends TestCase
         $app = new Application();
         File::clearCache();
         Config::setContainer($app->getContainer());
-        Config::setProjectRoot($dir);
+        Project::setRootPath($dir);
 
         $container = $app->getContainer();
         $container->instance(PackageInstaller::class, $installer);
