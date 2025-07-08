@@ -12,9 +12,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Throwable;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Enums\ProgressIndicatorType;
-use Vix\Syntra\Facades\Config;
-use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Facades\File;
+use Vix\Syntra\Facades\Project;
 use Vix\Syntra\NodeVisitors\DocsVisitor;
 use Vix\Syntra\Traits\ContainerAwareTrait;
 use Vix\Syntra\Utils\ProjectInfo;
@@ -40,7 +39,6 @@ class GenerateDocsCommand extends SyntraCommand
     public function perform(): int
     {
         $rootPath = Project::getRootPath();
-
         $type = Project::detect($rootPath);
 
         if ($type === ProjectInfo::TYPE_YII) {

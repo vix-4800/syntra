@@ -8,8 +8,8 @@ use Vix\Syntra\Commands\SyntraRefactorCommand;
 use Vix\Syntra\Enums\CommandGroup;
 use Vix\Syntra\Exceptions\MissingBinaryException;
 use Vix\Syntra\Facades\Config;
-use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Facades\Process;
+use Vix\Syntra\Facades\Project;
 
 class PhpCsFixerRefactorer extends SyntraRefactorCommand
 {

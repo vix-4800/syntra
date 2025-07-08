@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Vix\Syntra\Commands\Analyze;
 
 use Peck\Kernel;
-use Symfony\Component\Process\ExecutableFinder;
+use Peck\ValueObjects\Issue;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Process\ExecutableFinder;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Enums\ProgressIndicatorType;
-use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Exceptions\MissingBinaryException;
 use Vix\Syntra\Facades\File;
 
 class FindTyposCommand extends SyntraCommand
@@ -28,20 +29,18 @@ class FindTyposCommand extends SyntraCommand
 
     public function perform(): int
     {
-        $projectRoot = Config::getProjectRoot();
         $finder = new ExecutableFinder();
         if ($finder->find('aspell') === null) {
-            throw new \Vix\Syntra\Exceptions\MissingBinaryException('aspell');
+            throw new MissingBinaryException('aspell');
         }
 
         $kernel = Kernel::default();
 
-        $this->setProgressMax(0); // spinner
         $this->startProgress();
         $this->progressIndicator->setMessage('Scanning for typos...');
 
         $issues = $kernel->handle([
-            'directory' => $projectRoot,
+            'directory' => $this->path,
             'onSuccess' => fn () => $this->advanceProgress(),
             'onFailure' => fn () => $this->advanceProgress(),
         ]);
@@ -50,12 +49,13 @@ class FindTyposCommand extends SyntraCommand
 
         if ($issues === []) {
             $this->output->success('No misspellings found.');
+
             return Command::SUCCESS;
         }
 
         $rows = array_map(
-            static function (\Peck\ValueObjects\Issue $issue) use ($projectRoot): array {
-                $file = File::makeRelative($issue->file, $projectRoot);
+            function (Issue $issue): array {
+                $file = File::makeRelative($issue->file, $this->path);
                 $line = $issue->line > 0 ? (string) $issue->line : '-';
                 $suggestions = implode(', ', $issue->misspelling->suggestions);
 

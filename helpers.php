@@ -56,7 +56,7 @@ if (!function_exists('find_composer_bin')) {
             return $path;
         }
 
-        if (class_exists('\\Symfony\\Component\\Process\\ExecutableFinder')) {
+        if (class_exists(ExecutableFinder::class)) {
             return (new ExecutableFinder())->find($binary);
         }
 

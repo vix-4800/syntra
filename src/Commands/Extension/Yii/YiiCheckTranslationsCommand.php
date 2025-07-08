@@ -7,9 +7,8 @@ namespace Vix\Syntra\Commands\Extension\Yii;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Vix\Syntra\Commands\SyntraCommand;
-use Vix\Syntra\Facades\Config;
-use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Facades\File;
+use Vix\Syntra\Facades\Project;
 
 class YiiCheckTranslationsCommand extends SyntraCommand
 {

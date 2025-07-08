@@ -6,8 +6,8 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 use Vix\Syntra\Application;
 use Vix\Syntra\Facades\Config;
-use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Facades\File;
+use Vix\Syntra\Facades\Project;
 
 class FindTodosCommandTest extends TestCase
 {

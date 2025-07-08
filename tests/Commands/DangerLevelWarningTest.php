@@ -8,7 +8,6 @@ use Symfony\Component\Console\Tester\CommandTester;
 use Vix\Syntra\Application;
 use Vix\Syntra\Commands\SyntraRefactorCommand;
 use Vix\Syntra\Enums\DangerLevel;
-use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\Project;
 
 class DangerLevelWarningTest extends TestCase

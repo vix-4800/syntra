@@ -9,8 +9,8 @@ use Vix\Syntra\Enums\CommandGroup;
 use Vix\Syntra\Enums\DangerLevel;
 use Vix\Syntra\Exceptions\MissingBinaryException;
 use Vix\Syntra\Facades\Config;
-use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Facades\Process;
+use Vix\Syntra\Facades\Project;
 
 class RectorRefactorer extends SyntraRefactorCommand
 {

@@ -10,7 +10,6 @@ use Vix\Syntra\Commands\Health\HealthCheckCommandInterface;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\DTO\CommandResult;
 use Vix\Syntra\Enums\CommandStatus;
-use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Traits\HandlesResultTrait;
 
@@ -19,31 +18,31 @@ class EditorConfigCheckCommand extends SyntraCommand implements HealthCheckComma
     use HandlesResultTrait;
 
     private const DEFAULT_CONFIG = <<<'CFG'
-root = true
+    root = true
 
-[*]
-charset = utf-8
-end_of_line = lf
-indent_size = 4
-indent_style = space
-insert_final_newline = true
-trim_trailing_whitespace = true
+    [*]
+    charset = utf-8
+    end_of_line = lf
+    indent_size = 4
+    indent_style = space
+    insert_final_newline = true
+    trim_trailing_whitespace = true
 
-[*.md]
-trim_trailing_whitespace = false
+    [*.md]
+    trim_trailing_whitespace = false
 
-[*.{yml,yaml}]
-indent_size = 2
+    [*.{yml,yaml}]
+    indent_size = 2
 
-[docker-compose.yml]
-indent_size = 2
+    [docker-compose.yml]
+    indent_size = 2
 
-[*.php]
-indent_style = space
-indent_size = 4
-insert_final_newline = true
-trim_trailing_whitespace = true
-CFG;
+    [*.php]
+    indent_style = space
+    indent_size = 4
+    insert_final_newline = true
+    trim_trailing_whitespace = true
+    CFG;
 
     protected function configure(): void
     {

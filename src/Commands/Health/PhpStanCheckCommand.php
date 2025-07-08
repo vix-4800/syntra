@@ -10,8 +10,8 @@ use Vix\Syntra\DTO\CommandResult;
 use Vix\Syntra\Enums\CommandGroup;
 use Vix\Syntra\Exceptions\MissingBinaryException;
 use Vix\Syntra\Facades\Config;
-use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Facades\Process;
+use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Traits\HandlesResultTrait;
 
 class PhpStanCheckCommand extends SyntraCommand implements HealthCheckCommandInterface

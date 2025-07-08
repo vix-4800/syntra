@@ -10,8 +10,8 @@ use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\Facade;
 use Vix\Syntra\Facades\File;
 use Vix\Syntra\Facades\Project;
-use Vix\Syntra\Utils\PackageInstaller;
 use Vix\Syntra\Tests\Fixtures\DummyInstaller;
+use Vix\Syntra\Utils\PackageInstaller;
 
 class InitCommandTest extends TestCase
 {

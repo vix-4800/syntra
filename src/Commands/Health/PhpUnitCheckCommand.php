@@ -8,9 +8,8 @@ use Vix\Syntra\Commands\Health\HealthCheckCommandInterface;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\DTO\CommandResult;
 use Vix\Syntra\Exceptions\MissingBinaryException;
-use Vix\Syntra\Facades\Config;
-use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Facades\Process;
+use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Traits\HandlesResultTrait;
 
 class PhpUnitCheckCommand extends SyntraCommand implements HealthCheckCommandInterface
