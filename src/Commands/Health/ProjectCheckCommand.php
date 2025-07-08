@@ -35,6 +35,7 @@ class ProjectCheckCommand extends SyntraCommand
             ['name' => 'Composer', 'class' => ComposerCheckCommand::class],
             ['name' => 'PHPStan', 'class' => PhpStanCheckCommand::class],
             ['name' => 'PHPUnit', 'class' => PhpUnitCheckCommand::class],
+            ['name' => 'Security', 'class' => SecurityCheckCommand::class],
         ];
 
         $hasErrors = false;
