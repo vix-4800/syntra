@@ -7,6 +7,7 @@ use Vix\Syntra\Commands\Analyze\FindBadPracticesCommand;
 use Vix\Syntra\Commands\Analyze\FindDebugCallsCommand;
 use Vix\Syntra\Commands\Analyze\FindLongMethodsCommand;
 use Vix\Syntra\Commands\Analyze\FindTodosCommand;
+use Vix\Syntra\Commands\Analyze\StrictTypesCoverageCommand;
 use Vix\Syntra\Commands\Extension\Laravel\LaravelAllCommand;
 use Vix\Syntra\Commands\Extension\Yii\YiiAllCommand;
 use Vix\Syntra\Commands\Extension\Yii\YiiCanHelpersCommand;
@@ -144,6 +145,10 @@ return [
             'web_enabled' => true,
         ],
         FindBadPracticesCommand::class => [
+            'enabled' => true,
+            'web_enabled' => true,
+        ],
+        StrictTypesCoverageCommand::class => [
             'enabled' => true,
             'web_enabled' => true,
         ],
