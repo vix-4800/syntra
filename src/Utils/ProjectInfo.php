@@ -25,7 +25,7 @@ class ProjectInfo
         }
 
         $dir = $cwd;
-        while (!file_exists($dir . '/composer.json')) {
+        while (!file_exists("$dir/composer.json")) {
             $parent = dirname($dir);
             if ($parent === $dir) {
                 break;
@@ -46,7 +46,7 @@ class ProjectInfo
         return $this->rootPath;
     }
 
-    public function detect(string $rootPath = null): string
+    public function detect(?string $rootPath = null): string
     {
         $composerPath = rtrim($rootPath ?? $this->rootPath, '/') . '/composer.json';
         if (!is_file($composerPath)) {
@@ -75,4 +75,3 @@ class ProjectInfo
         return self::TYPE_UNKNOWN;
     }
 }
-

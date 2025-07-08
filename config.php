@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 use Vix\Syntra\Commands\Analyze\AnalyzeAllCommand;
 use Vix\Syntra\Commands\Analyze\FindBadPracticesCommand;
-use Vix\Syntra\Commands\Analyze\FindTyposCommand;
 use Vix\Syntra\Commands\Analyze\FindDebugCallsCommand;
 use Vix\Syntra\Commands\Analyze\FindLongMethodsCommand;
 use Vix\Syntra\Commands\Analyze\FindTodosCommand;
+use Vix\Syntra\Commands\Analyze\FindTyposCommand;
 use Vix\Syntra\Commands\Analyze\StrictTypesCoverageCommand;
 use Vix\Syntra\Commands\Extension\Laravel\LaravelAllCommand;
 use Vix\Syntra\Commands\Extension\Yii\YiiAllCommand;
@@ -22,6 +22,7 @@ use Vix\Syntra\Commands\Extension\Yii\YiiUpdateShortcutCommand;
 use Vix\Syntra\Commands\Extension\Yii\YiiUserFindoneToIdentityCommand;
 use Vix\Syntra\Commands\General\GenerateCommandCommand;
 use Vix\Syntra\Commands\General\GenerateDocsCommand;
+use Vix\Syntra\Commands\General\InitCommand;
 use Vix\Syntra\Commands\Health\ComposerCheckCommand;
 use Vix\Syntra\Commands\Health\EditorConfigCheckCommand;
 use Vix\Syntra\Commands\Health\PhpStanCheckCommand;
@@ -167,7 +168,7 @@ return [
             'enabled' => true,
             'web_enabled' => true,
         ],
-        \Vix\Syntra\Commands\General\InitCommand::class => [
+        InitCommand::class => [
             'enabled' => true,
             'web_enabled' => true,
         ],

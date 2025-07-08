@@ -12,8 +12,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Throwable;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Enums\ProgressIndicatorType;
-use Vix\Syntra\Facades\Config;
-use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Facades\File;
 use Vix\Syntra\NodeVisitors\LongMethodVisitor;
 use Vix\Syntra\Traits\ContainerAwareTrait;
@@ -37,11 +35,9 @@ class FindLongMethodsCommand extends SyntraCommand
 
     public function perform(): int
     {
-        $rootPath = $this->path;
-
         $parser = $this->getService(Parser::class, fn (): Parser => (new ParserFactory())->create(ParserFactory::PREFER_PHP7));
 
-        $files = File::collectFiles($rootPath);
+        $files = File::collectFiles($this->path);
 
         $maxLength = (int) $this->input->getOption('max');
 

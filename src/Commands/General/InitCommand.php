@@ -8,9 +8,9 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Vix\Syntra\Commands\SyntraCommand;
-use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\File;
 use Vix\Syntra\Facades\Installer;
+use Vix\Syntra\Facades\Project;
 
 class InitCommand extends SyntraCommand
 {
@@ -49,25 +49,22 @@ class InitCommand extends SyntraCommand
             }
         }
 
-        $projectRoot = Config::getProjectRoot();
+        $projectRoot = Project::getRootPath();
         $files = [
-            'config.php',
-            'config/php_cs_fixer.php',
-            'config/phpstan.neon',
-            'config/rector.php',
-            'config/rector_only_custom.php',
+            PACKAGE_ROOT . '/config.php',
+            config_path('php_cs_fixer.php'),
+            config_path('phpstan.neon'),
+            config_path('rector.php'),
+            config_path('rector_only_custom.php'),
         ];
 
-        foreach ($files as $rel) {
-            $src = PACKAGE_ROOT . '/' . $rel;
-            $dest = $projectRoot . '/' . $rel;
+        foreach ($files as $path) {
+            if (file_exists($path)) {
+                $dest = File::makeRelative($path, $projectRoot);
 
-            if (!file_exists($dest) && file_exists($src)) {
-                if (!is_dir(dirname($dest))) {
-                    mkdir(dirname($dest), 0777, true);
-                }
-                copy($src, $dest);
+                copy($path, $dest);
                 $display = File::makeRelative($dest, $projectRoot);
+
                 $this->output->writeln("Created $display");
             }
         }

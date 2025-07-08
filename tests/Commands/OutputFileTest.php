@@ -7,7 +7,6 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 use Vix\Syntra\Application;
 use Vix\Syntra\Commands\SyntraCommand;
-use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\Project;
 
 class OutputFileTest extends TestCase

@@ -7,8 +7,6 @@ namespace Vix\Syntra\Commands\Analyze;
 use Symfony\Component\Console\Command\Command;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Enums\ProgressIndicatorType;
-use Vix\Syntra\Facades\Config;
-use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Facades\File;
 
 class StrictTypesCoverageCommand extends SyntraCommand
@@ -27,8 +25,7 @@ class StrictTypesCoverageCommand extends SyntraCommand
 
     public function perform(): int
     {
-        $rootPath = $this->path;
-        $files = File::collectFiles($rootPath);
+        $files = File::collectFiles($this->path);
 
         $total = count($files);
         $withStrict = 0;
@@ -55,7 +52,8 @@ class StrictTypesCoverageCommand extends SyntraCommand
         }
 
         $missing = $total - $withStrict;
-        $this->output->warning($missing . ' file(s) missing strict_types declaration.');
+        $this->output->warning("$missing file(s) missing strict_types declaration.");
+
         return Command::FAILURE;
     }
 }
