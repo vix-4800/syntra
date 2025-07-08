@@ -114,6 +114,8 @@ class GenerateDocsCommand extends SyntraCommand
         );
 
         $refCounts = [];
+        $this->setProgressMax(count($routes));
+        $this->startProgress();
         foreach ($routes as $route) {
             $count = 0;
             foreach ($searchFiles as $f) {
@@ -124,7 +126,9 @@ class GenerateDocsCommand extends SyntraCommand
                 $count += substr_count($content, (string) $route['route']);
             }
             $refCounts[(string) $route['route']] = $count;
+            $this->advanceProgress();
         }
+        $this->finishProgress();
         $mdFile = $this->writeToMarkdown("$projectRoot/docs", $routesGrouped, $refCounts, 'Yii');
 
         $rows = array_map(
