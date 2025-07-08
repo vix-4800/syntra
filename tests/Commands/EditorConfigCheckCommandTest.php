@@ -11,6 +11,7 @@ use Vix\Syntra\DI\Container;
 use Vix\Syntra\Enums\CommandStatus;
 use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\Facade;
+use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Utils\ConfigLoader;
 
 class EditorConfigCheckCommandTest extends TestCase
@@ -18,8 +19,9 @@ class EditorConfigCheckCommandTest extends TestCase
     private function makeCommand(string $root): EditorConfigCheckCommand
     {
         $container = new Container();
-        $container->instance(ConfigLoader::class, new ConfigLoader($root));
+        $container->instance(ConfigLoader::class, new ConfigLoader());
         Facade::setContainer($container);
+        Project::setRootPath($root);
 
         return new EditorConfigCheckCommand();
     }
@@ -59,7 +61,7 @@ class EditorConfigCheckCommandTest extends TestCase
         mkdir($dir);
 
         $app = new Application();
-        Config::setProjectRoot($dir);
+        Project::setRootPath($dir);
 
         $command = $app->find('health:editorconfig');
         $tester = new CommandTester($command);

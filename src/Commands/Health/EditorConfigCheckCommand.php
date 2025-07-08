@@ -11,6 +11,7 @@ use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\DTO\CommandResult;
 use Vix\Syntra\Enums\CommandStatus;
 use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Traits\HandlesResultTrait;
 
 class EditorConfigCheckCommand extends SyntraCommand implements HealthCheckCommandInterface
@@ -54,7 +55,7 @@ CFG;
 
     public function runCheck(): CommandResult
     {
-        $path = Config::getProjectRoot() . '/.editorconfig';
+        $path = Project::getRootPath() . '/.editorconfig';
 
         if (is_file($path)) {
             return CommandResult::ok(['.editorconfig file exists.']);
@@ -71,7 +72,7 @@ CFG;
 
         $result = $this->runCheck();
         if ($result->status === CommandStatus::WARNING && $this->input->getOption('generate')) {
-            $path = Config::getProjectRoot() . '/.editorconfig';
+            $path = Project::getRootPath() . '/.editorconfig';
             file_put_contents($path, self::DEFAULT_CONFIG . "\n");
             $this->output->success('.editorconfig file generated.');
             return Command::SUCCESS;

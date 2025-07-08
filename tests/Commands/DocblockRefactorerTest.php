@@ -7,6 +7,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 use Vix\Syntra\Application;
 use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\File;
+use Vix\Syntra\Facades\Project;
 
 class DocblockRefactorerTest extends TestCase
 {
@@ -38,7 +39,7 @@ class DocblockRefactorerTest extends TestCase
     {
         $app = new Application();
         File::clearCache();
-        Config::setProjectRoot($this->dir);
+        Project::setRootPath($this->dir);
 
         $command = $app->find('refactor:docblocks');
         $tester = new CommandTester($command);

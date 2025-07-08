@@ -6,9 +6,9 @@ use PHPUnit\Framework\TestCase;
 use Vix\Syntra\Application;
 use Vix\Syntra\Facades\File;
 use Vix\Syntra\Facades\Project;
-use Vix\Syntra\Utils\ProjectDetector;
+use Vix\Syntra\Utils\ProjectInfo;
 
-class ProjectDetectorTest extends TestCase
+class ProjectInfoTest extends TestCase
 {
     public function testDetectsYiiProject(): void
     {
@@ -23,7 +23,7 @@ class ProjectDetectorTest extends TestCase
         new Application();
         File::clearCache();
 
-        $this->assertSame(ProjectDetector::TYPE_YII, Project::detect($dir));
+        $this->assertSame(ProjectInfo::TYPE_YII, Project::detect($dir));
 
         unlink("$dir/composer.json");
         rmdir($dir);
@@ -42,7 +42,7 @@ class ProjectDetectorTest extends TestCase
         new Application();
         File::clearCache();
 
-        $this->assertSame(ProjectDetector::TYPE_LARAVEL, Project::detect($dir));
+        $this->assertSame(ProjectInfo::TYPE_LARAVEL, Project::detect($dir));
 
         unlink("$dir/composer.json");
         rmdir($dir);
@@ -61,7 +61,7 @@ class ProjectDetectorTest extends TestCase
         new Application();
         File::clearCache();
 
-        $this->assertSame(ProjectDetector::TYPE_UNKNOWN, Project::detect($dir));
+        $this->assertSame(ProjectInfo::TYPE_UNKNOWN, Project::detect($dir));
 
         unlink("$dir/composer.json");
         rmdir($dir);

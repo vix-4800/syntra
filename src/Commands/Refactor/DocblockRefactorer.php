@@ -10,6 +10,7 @@ use Vix\Syntra\Commands\SyntraRefactorCommand;
 use Vix\Syntra\Enums\DangerLevel;
 use Vix\Syntra\Enums\ProgressIndicatorType;
 use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Facades\File;
 use Vix\Syntra\Utils\StubHelper;
 
@@ -32,7 +33,7 @@ class DocblockRefactorer extends SyntraRefactorCommand
 
     public function perform(): int
     {
-        $files = File::collectFiles(Config::getProjectRoot());
+        $files = File::collectFiles($this->path);
 
         $this->setProgressMax(count($files));
         $this->startProgress();
@@ -58,7 +59,7 @@ class DocblockRefactorer extends SyntraRefactorCommand
         if ($changed) {
             $this->output->section('Changed files');
             $list = array_map(
-                fn (string $f): string => File::makeRelative($f, Config::getProjectRoot()),
+                fn (string $f): string => File::makeRelative($f, $this->path),
                 $changed
             );
             $this->listing($list);

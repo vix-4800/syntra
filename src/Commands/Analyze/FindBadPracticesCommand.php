@@ -12,6 +12,7 @@ use Throwable;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Enums\ProgressIndicatorType;
 use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Facades\File;
 use Vix\Syntra\NodeVisitors\AssignmentInConditionVisitor;
 use Vix\Syntra\NodeVisitors\NestedTernaryVisitor;
@@ -35,11 +36,11 @@ class FindBadPracticesCommand extends SyntraCommand
 
     public function perform(): int
     {
-        $projectRoot = Config::getProjectRoot();
+        $rootPath = $this->path;
 
         $parser = $this->getService(Parser::class, fn (): Parser => (new ParserFactory())->create(ParserFactory::PREFER_PHP7));
 
-        $files = File::collectFiles($projectRoot);
+        $files = File::collectFiles($rootPath);
 
         $this->setProgressMax(count($files));
         $this->startProgress();

@@ -9,6 +9,7 @@ use Vix\Syntra\Application;
 use Vix\Syntra\Commands\Extension\Yii\YiiAllCommand;
 use Vix\Syntra\Commands\Refactor\RefactorAllCommand;
 use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Facades\File;
 
 class RefactorAllFrameworkTest extends TestCase
@@ -26,7 +27,7 @@ class RefactorAllFrameworkTest extends TestCase
         $app = new Application();
         $container = $app->getContainer();
         File::clearCache();
-        Config::setProjectRoot($dir);
+        Project::setRootPath($dir);
 
         $command = new class () extends RefactorAllCommand {
             public array $executed = [];

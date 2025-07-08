@@ -9,13 +9,14 @@ use Vix\Syntra\Application;
 use Vix\Syntra\Commands\SyntraRefactorCommand;
 use Vix\Syntra\Enums\DangerLevel;
 use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Facades\Project;
 
 class DangerLevelWarningTest extends TestCase
 {
     public function testWarningShownForHighDanger(): void
     {
         $app = new Application();
-        Config::setProjectRoot(sys_get_temp_dir());
+        Project::setRootPath(sys_get_temp_dir());
 
         $command = new class () extends SyntraRefactorCommand {
             protected DangerLevel $dangerLevel = DangerLevel::HIGH;

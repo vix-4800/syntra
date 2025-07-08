@@ -17,6 +17,7 @@ use Vix\Syntra\Enums\ProgressIndicatorType;
 use Vix\Syntra\Exceptions\CommandException;
 use Vix\Syntra\Exceptions\MissingBinaryException;
 use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Facades\File;
 use Vix\Syntra\Facades\Installer;
 use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
@@ -46,10 +47,12 @@ abstract class SyntraCommand extends Command
 
     protected int $progressMax = 0;
 
+    protected string $path;
+
     protected function configure(): void
     {
         $this
-            ->addArgument('path', InputArgument::OPTIONAL, 'Root path of the project', Config::getProjectRoot())
+            ->addArgument('path', InputArgument::OPTIONAL, 'Path to operate on', Project::getRootPath())
             ->addOption('dry-run', 'd', InputOption::VALUE_NONE, 'Do not apply changes, only show what would be done')
             ->addOption('no-progress', null, InputOption::VALUE_NONE, 'Disable progress output')
             ->addOption('no-cache', null, InputOption::VALUE_NONE, 'Disable file caching')
@@ -87,9 +90,7 @@ abstract class SyntraCommand extends Command
         File::setCacheEnabled(!$this->noCache);
 
         $argPath = $input->getArgument('path');
-        if ($argPath !== null) {
-            Config::setProjectRoot((string) $argPath);
-        }
+        $this->path = $argPath !== null ? (string) $argPath : Project::getRootPath();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

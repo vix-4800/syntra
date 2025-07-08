@@ -8,6 +8,7 @@ use Symfony\Component\Console\Command\Command;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Enums\ProgressIndicatorType;
 use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Facades\File;
 
 class FindDebugCallsCommand extends SyntraCommand
@@ -39,9 +40,9 @@ class FindDebugCallsCommand extends SyntraCommand
 
     public function perform(): int
     {
-        $projectRoot = Config::getProjectRoot();
+        $rootPath = $this->path;
 
-        $files = File::collectFiles($projectRoot);
+        $files = File::collectFiles($rootPath);
 
         $matches = [];
         $pattern = '/(?<![\w\$])(' . implode('|', array_map('preg_quote', self::$DEBUG_FUNCTIONS)) . ')\s*\(/i';
@@ -59,7 +60,7 @@ class FindDebugCallsCommand extends SyntraCommand
                 continue;
             }
 
-            $relativePath = File::makeRelative($filePath, $projectRoot);
+            $relativePath = File::makeRelative($filePath, $rootPath);
 
             $lines = explode("\n", $content);
             foreach ($lines as $lineNumber => $line) {

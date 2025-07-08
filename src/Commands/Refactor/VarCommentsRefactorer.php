@@ -8,6 +8,7 @@ use Symfony\Component\Console\Command\Command;
 use Vix\Syntra\Commands\SyntraRefactorCommand;
 use Vix\Syntra\Enums\ProgressIndicatorType;
 use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Facades\File;
 
 /**
@@ -31,7 +32,7 @@ class VarCommentsRefactorer extends SyntraRefactorCommand
 
     public function perform(): int
     {
-        $files = File::collectFiles(Config::getProjectRoot());
+        $files = File::collectFiles($this->path);
 
         $this->setProgressMax(count($files));
         $this->startProgress();
@@ -56,7 +57,7 @@ class VarCommentsRefactorer extends SyntraRefactorCommand
         if ($changed) {
             $this->output->section('Changed files');
             $list = array_map(
-                fn (string $f): string => File::makeRelative($f, Config::getProjectRoot()),
+                fn (string $f): string => File::makeRelative($f, $this->path),
                 $changed
             );
             $this->listing($list);

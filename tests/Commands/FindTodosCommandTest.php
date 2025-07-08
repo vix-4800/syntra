@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 use Vix\Syntra\Application;
 use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Facades\File;
 
 class FindTodosCommandTest extends TestCase
@@ -19,7 +20,7 @@ class FindTodosCommandTest extends TestCase
         $app = new Application();
         File::clearCache();
         Config::setContainer($app->getContainer());
-        Config::setProjectRoot($dir);
+        Project::setRootPath($dir);
 
         $command = $app->find('analyze:find-todos');
         $tester = new CommandTester($command);
@@ -42,7 +43,7 @@ class FindTodosCommandTest extends TestCase
         $app = new Application();
         File::clearCache();
         Config::setContainer($app->getContainer());
-        Config::setProjectRoot($dir);
+        Project::setRootPath($dir);
 
         $command = $app->find('analyze:find-todos');
         $tester = new CommandTester($command);

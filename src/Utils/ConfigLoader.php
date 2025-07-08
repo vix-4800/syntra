@@ -20,24 +20,11 @@ class ConfigLoader
         CommandGroup::GENERAL->value,
     ];
 
-    private ?string $projectRoot = null;
-
     private readonly array $commands;
 
-    public function __construct(?string $projectRoot = null)
+    public function __construct()
     {
-        $this->projectRoot = $projectRoot ?? getcwd();
         $this->commands = require PACKAGE_ROOT . '/config.php';
-    }
-
-    public function setProjectRoot(string $path): void
-    {
-        $this->projectRoot = rtrim($path, '/');
-    }
-
-    public function getProjectRoot(): ?string
-    {
-        return $this->projectRoot;
     }
 
     public function getCommandConfig(string $group, string $commandClass): array|bool

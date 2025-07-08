@@ -8,6 +8,7 @@ use Symfony\Component\Console\Command\Command;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Enums\ProgressIndicatorType;
 use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Facades\File;
 
 class StrictTypesCoverageCommand extends SyntraCommand
@@ -26,8 +27,8 @@ class StrictTypesCoverageCommand extends SyntraCommand
 
     public function perform(): int
     {
-        $projectRoot = Config::getProjectRoot();
-        $files = File::collectFiles($projectRoot);
+        $rootPath = $this->path;
+        $files = File::collectFiles($rootPath);
 
         $total = count($files);
         $withStrict = 0;

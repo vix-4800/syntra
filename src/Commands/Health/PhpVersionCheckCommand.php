@@ -7,6 +7,7 @@ namespace Vix\Syntra\Commands\Health;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\DTO\CommandResult;
 use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Traits\HandlesResultTrait;
 
 class PhpVersionCheckCommand extends SyntraCommand implements HealthCheckCommandInterface
@@ -22,7 +23,7 @@ class PhpVersionCheckCommand extends SyntraCommand implements HealthCheckCommand
 
     public function runCheck(): CommandResult
     {
-        $composer = Config::getProjectRoot() . '/composer.json';
+        $composer = Project::getRootPath() . '/composer.json';
         if (!is_file($composer)) {
             return CommandResult::error(['composer.json not found.']);
         }

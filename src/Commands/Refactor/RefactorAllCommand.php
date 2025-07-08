@@ -14,7 +14,7 @@ use Vix\Syntra\Enums\DangerLevel;
 use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Traits\CommandRunnerTrait;
-use Vix\Syntra\Utils\ProjectDetector;
+use Vix\Syntra\Utils\ProjectInfo;
 
 class RefactorAllCommand extends SyntraRefactorCommand
 {
@@ -59,14 +59,14 @@ class RefactorAllCommand extends SyntraRefactorCommand
         }
 
         if ($this->runFramework) {
-            $type = Project::detect((string) Config::getProjectRoot());
+            $type = Project::detect(Project::getRootPath());
 
-            if ($type === ProjectDetector::TYPE_YII) {
+            if ($type === ProjectInfo::TYPE_YII) {
                 $exitCode = $this->runCommand(YiiAllCommand::class, $this->getForwardOptions());
                 if ($exitCode !== self::SUCCESS) {
                     $hasErrors = true;
                 }
-            } elseif ($type === ProjectDetector::TYPE_LARAVEL) {
+            } elseif ($type === ProjectInfo::TYPE_LARAVEL) {
                 $exitCode = $this->runCommand(LaravelAllCommand::class, $this->getForwardOptions());
                 if ($exitCode !== self::SUCCESS) {
                     $hasErrors = true;
