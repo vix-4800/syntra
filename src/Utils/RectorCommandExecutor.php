@@ -26,12 +26,18 @@ class RectorCommandExecutor
      * @param string[] $rectorClasses  Rector rule class name(s)
      * @param array    $additionalArgs Additional arguments to pass to Rector
      *
-     * @return ProcessResult The result of the last executed rule
+     * @return ProcessResult The result of the last executed rule. If no rules
+     *                        are provided, a successful empty result is returned.
      *
      * @throws MissingBinaryException
      */
     public function executeRules(string $path, array $rectorClasses, array $additionalArgs = [], ?callable $outputCallback = null): ProcessResult
     {
+        if ($rectorClasses === []) {
+            // No rules to execute, return a successful default result
+            return new ProcessResult(0, '', '');
+        }
+
         $this->findBinaryTool(new RectorTool());
         $result = null;
 
