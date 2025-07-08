@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Symfony\Component\Process\ExecutableFinder;
+
 if (!function_exists('find_in_vendor')) {
     /**
      * Recursively search for a path inside the vendor directory up the
@@ -31,16 +33,6 @@ if (!function_exists('find_in_vendor')) {
     }
 }
 
-if (!function_exists('find_composer_autoload')) {
-    /**
-     * Find composer autoloader
-     */
-    function find_composer_autoload(string $startDir): ?string
-    {
-        return find_in_vendor($startDir, 'autoload.php', 'is_file');
-    }
-}
-
 if (!function_exists('config_path')) {
     /**
      * Get path inside config directory
@@ -58,14 +50,14 @@ if (!function_exists('find_composer_bin')) {
      */
     function find_composer_bin(string $binary, string $startDir): ?string
     {
-        $path = find_in_vendor($startDir, 'bin/' . $binary, 'is_executable');
+        $path = find_in_vendor($startDir, "bin/$binary", 'is_executable');
 
         if ($path !== null) {
             return $path;
         }
 
         if (class_exists('\\Symfony\\Component\\Process\\ExecutableFinder')) {
-            return (new \Symfony\Component\Process\ExecutableFinder())->find($binary);
+            return (new ExecutableFinder())->find($binary);
         }
 
         return null;
