@@ -4,19 +4,18 @@ declare(strict_types=1);
 
 namespace Vix\Syntra\Commands\Health;
 
-use Vix\Syntra\Commands\Health\HealthCheckCommandInterface;
-use Vix\Syntra\Commands\SyntraCommand;
+use Vix\Syntra\Commands\Health\AbstractHealthCommand;
 use Vix\Syntra\DTO\CommandResult;
 use Vix\Syntra\Facades\Process;
 use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Tools\PhpUnitTool;
-use Vix\Syntra\Traits\HandlesResultTrait;
 use Vix\Syntra\Traits\HasBinaryTool;
 
-class PhpUnitCheckCommand extends SyntraCommand implements HealthCheckCommandInterface
+class PhpUnitCheckCommand extends AbstractHealthCommand
 {
-    use HandlesResultTrait;
     use HasBinaryTool;
+    protected string $sectionTitle = 'Running PHPUnit tests...';
+    protected string $successMessage = 'PHPUnit tests finished.';
 
     protected function configure(): void
     {
@@ -27,6 +26,8 @@ class PhpUnitCheckCommand extends SyntraCommand implements HealthCheckCommandInt
 
     public function runCheck(): CommandResult
     {
+        $this->findBinaryTool(new PhpUnitTool());
+
         $result = Process::run(
             $this->binary,
             options: ['working_dir' => Project::getRootPath()]
@@ -42,13 +43,4 @@ class PhpUnitCheckCommand extends SyntraCommand implements HealthCheckCommandInt
         return CommandResult::error($messages);
     }
 
-    public function perform(): int
-    {
-        $this->output->section('Running PHPUnit tests...');
-
-        $this->findBinaryTool(new PhpUnitTool());
-        $result = $this->runCheck();
-
-        return $this->handleResult($result, 'PHPUnit tests finished.', $this->failOnWarning);
-    }
 }

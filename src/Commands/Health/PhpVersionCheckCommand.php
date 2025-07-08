@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Vix\Syntra\Commands\Health;
 
-use Vix\Syntra\Commands\SyntraCommand;
+use Vix\Syntra\Commands\Health\AbstractHealthCommand;
 use Vix\Syntra\DTO\CommandResult;
 use Vix\Syntra\Facades\Project;
-use Vix\Syntra\Traits\HandlesResultTrait;
 
-class PhpVersionCheckCommand extends SyntraCommand implements HealthCheckCommandInterface
+class PhpVersionCheckCommand extends AbstractHealthCommand
 {
-    use HandlesResultTrait;
+    protected string $sectionTitle = 'Checking PHP version requirement...';
+    protected string $successMessage = 'PHP version check complete.';
 
     protected function configure(): void
     {
@@ -45,12 +45,4 @@ class PhpVersionCheckCommand extends SyntraCommand implements HealthCheckCommand
         return CommandResult::warning(["Unable to determine PHP version from \"$version\""]);
     }
 
-    public function perform(): int
-    {
-        $this->output->section('Checking PHP version requirement...');
-
-        $result = $this->runCheck();
-
-        return $this->handleResult($result, 'PHP version check complete.');
-    }
 }

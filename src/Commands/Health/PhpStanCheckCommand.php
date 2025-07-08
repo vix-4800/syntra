@@ -4,21 +4,20 @@ declare(strict_types=1);
 
 namespace Vix\Syntra\Commands\Health;
 
-use Vix\Syntra\Commands\Health\HealthCheckCommandInterface;
-use Vix\Syntra\Commands\SyntraCommand;
+use Vix\Syntra\Commands\Health\AbstractHealthCommand;
 use Vix\Syntra\DTO\CommandResult;
 use Vix\Syntra\Enums\CommandGroup;
 use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\Process;
 use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Tools\PhpStanTool;
-use Vix\Syntra\Traits\HandlesResultTrait;
 use Vix\Syntra\Traits\HasBinaryTool;
 
-class PhpStanCheckCommand extends SyntraCommand implements HealthCheckCommandInterface
+class PhpStanCheckCommand extends AbstractHealthCommand
 {
-    use HandlesResultTrait;
     use HasBinaryTool;
+    protected string $sectionTitle = 'Running PHPStan...';
+    protected string $successMessage = 'PHPStan analysis completed.';
 
     protected function configure(): void
     {
@@ -29,6 +28,8 @@ class PhpStanCheckCommand extends SyntraCommand implements HealthCheckCommandInt
 
     public function runCheck(): CommandResult
     {
+        $this->findBinaryTool(new PhpStanTool());
+
         $args = [
             'analyse',
             '--error-format=json',
@@ -67,13 +68,4 @@ class PhpStanCheckCommand extends SyntraCommand implements HealthCheckCommandInt
         return CommandResult::warning($messages);
     }
 
-    public function perform(): int
-    {
-        $this->output->section('Running PHPStan...');
-
-        $this->findBinaryTool(new PhpStanTool());
-        $result = $this->runCheck();
-
-        return $this->handleResult($result, 'PHPStan analysis completed.', $this->failOnWarning);
-    }
 }

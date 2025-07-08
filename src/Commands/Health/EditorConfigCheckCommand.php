@@ -6,16 +6,16 @@ namespace Vix\Syntra\Commands\Health;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
-use Vix\Syntra\Commands\Health\HealthCheckCommandInterface;
-use Vix\Syntra\Commands\SyntraCommand;
+use Vix\Syntra\Commands\Health\AbstractHealthCommand;
 use Vix\Syntra\DTO\CommandResult;
 use Vix\Syntra\Enums\CommandStatus;
 use Vix\Syntra\Facades\Project;
-use Vix\Syntra\Traits\HandlesResultTrait;
 
-class EditorConfigCheckCommand extends SyntraCommand implements HealthCheckCommandInterface
+
+class EditorConfigCheckCommand extends AbstractHealthCommand
 {
-    use HandlesResultTrait;
+    protected string $sectionTitle = 'Checking for .editorconfig...';
+    protected string $successMessage = '.editorconfig check completed.';
 
     private const DEFAULT_CONFIG = <<<'CFG'
     root = true
@@ -65,11 +65,8 @@ class EditorConfigCheckCommand extends SyntraCommand implements HealthCheckComma
         ]);
     }
 
-    public function perform(): int
+    protected function afterCheck(CommandResult $result): int
     {
-        $this->output->section('Checking for .editorconfig...');
-
-        $result = $this->runCheck();
         if ($result->status === CommandStatus::WARNING && $this->input->getOption('generate')) {
             $path = Project::getRootPath() . '/.editorconfig';
             file_put_contents($path, self::DEFAULT_CONFIG . "\n");
@@ -77,6 +74,6 @@ class EditorConfigCheckCommand extends SyntraCommand implements HealthCheckComma
             return Command::SUCCESS;
         }
 
-        return $this->handleResult($result, '.editorconfig check completed.');
+        return parent::afterCheck($result);
     }
 }
