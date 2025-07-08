@@ -101,6 +101,7 @@ class GenerateDocsCommand extends SyntraCommand
             [$controller, $action] = explode('/', (string) $route['route']);
             $routesGrouped[$controller][] = [
                 'action' => $action,
+                'params' => $route['params'],
                 'desc' => $route['desc'],
             ];
         }
@@ -114,7 +115,7 @@ class GenerateDocsCommand extends SyntraCommand
             );
             $searchFiles = array_filter(
                 $searchFiles,
-                static fn(string $f): bool => str_contains($f, 'controllers') || str_contains($f, 'views')
+                static fn (string $f): bool => str_contains($f, 'controllers') || str_contains($f, 'views')
             );
 
             $this->setProgressMax(count($routes));
@@ -135,7 +136,7 @@ class GenerateDocsCommand extends SyntraCommand
             $mdFile = $this->writeToMarkdown("$projectRoot/docs", $routesGrouped, $refCounts, 'Yii');
 
             $rows = array_map(
-                static fn(array $r): array => [strval($r['route']), (string) $refCounts[$r['route']]],
+                static fn (array $r): array => [strval($r['route']), (string) $refCounts[$r['route']]],
                 $routes
             );
             $this->table(['Route', 'Refs'], $rows);
@@ -165,15 +166,18 @@ class GenerateDocsCommand extends SyntraCommand
 
         foreach ($routes as $controller => $actions) {
             $md .= "## `$controller`\n\n";
-            $md .= "| Method                    | Refs | Description                     |\n";
-            $md .= "|---------------------------|------|----------------------------------------------|\n";
+            $md .= "| Method                    | Refs | Params                   | Description                                        |\n";
+            $md .= "|---------------------------|------|--------------------------|----------------------------------------------------|\n";
 
             foreach ($actions as $a) {
                 $method = "`{$a['action']}`";
+                $params = implode(", ", $a["params"]);
                 $desc = $a['desc'] ?: '';
+
                 $routeKey = $controller . '/' . $a['action'];
                 $refs = $refCounts[$routeKey] ?? 0;
-                $md .= sprintf("| %-25s | %4d | %-50s |\n", $method, $refs, $desc);
+
+                $md .= sprintf("| %-25s | %4d | %-23s | %-50s |\n", $method, $refs, $params, $desc);
             }
 
             $md .= "\n";

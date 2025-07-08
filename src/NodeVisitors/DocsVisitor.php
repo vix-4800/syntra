@@ -5,10 +5,24 @@ declare(strict_types=1);
 namespace Vix\Syntra\NodeVisitors;
 
 use PhpParser\Node;
+use PhpParser\Node\Identifier;
+use PhpParser\Node\IntersectionType;
+use PhpParser\Node\Name;
+use PhpParser\Node\NullableType;
+use PhpParser\Node\Param;
 use PhpParser\Node\Stmt\Class_;
+use PhpParser\Node\UnionType;
+use PhpParser\PrettyPrinter\Standard;
 
 class DocsVisitor extends NodeVisitor
 {
+    private readonly Standard $printer;
+
+    public function __construct()
+    {
+        $this->printer = new Standard();
+    }
+
     public function enterNode(Node $node)
     {
         if (
@@ -46,14 +60,54 @@ class DocsVisitor extends NodeVisitor
                         }
                     }
 
+                    $params = [];
+                    foreach ($method->getParams() as $param) {
+                        $params[] = $this->paramToString($param);
+                    }
+
                     $this->results[] = [
                         'route' => $route,
                         'desc' => $desc,
+                        'params' => $params,
                     ];
                 }
             }
         }
 
         return null;
+    }
+
+    private function paramToString(Param $param): string
+    {
+        $type = '';
+        if ($param->type !== null) {
+            $type = $this->typeToString($param->type) . ' ';
+        }
+
+        $default = '';
+        if ($param->default !== null) {
+            $default = ' = ' . $this->printer->prettyPrintExpr($param->default);
+        }
+
+        return trim($type . '$' . $param->var->name . $default);
+    }
+
+    private function typeToString(Name|Identifier|NullableType|UnionType|IntersectionType $type): string
+    {
+        if ($type instanceof NullableType) {
+            return '?' . $this->typeToString($type->type);
+        }
+
+        if ($type instanceof UnionType) {
+            $types = array_map(fn ($t): string => $this->typeToString($t), $type->types);
+            return implode('|', $types);
+        }
+
+        if ($type instanceof IntersectionType) {
+            $types = array_map(fn ($t): string => $this->typeToString($t), $type->types);
+            return implode('&', $types);
+        }
+
+        return $type->toString();
     }
 }
