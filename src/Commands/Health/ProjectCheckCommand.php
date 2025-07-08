@@ -6,12 +6,13 @@ namespace Vix\Syntra\Commands\Health;
 
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Enums\CommandGroup;
-use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Traits\CommandRunnerTrait;
+use Vix\Syntra\Traits\RunsSubCommandsTrait;
 
 class ProjectCheckCommand extends SyntraCommand
 {
     use CommandRunnerTrait;
+    use RunsSubCommandsTrait;
 
     protected function configure(): void
     {
@@ -25,21 +26,7 @@ class ProjectCheckCommand extends SyntraCommand
     public function perform(): int
     {
         $this->output->section('Starting full health check...');
-
-        $commands = Config::getEnabledCommandsByGroup(CommandGroup::HEALTH->value);
-        $commands = array_filter(
-            $commands,
-            static fn (string $class): bool => $class !== self::class
-        );
-
-        $hasErrors = false;
-        foreach ($commands as $class) {
-            $exitCode = $this->runCommand($class);
-
-            if ($exitCode !== self::SUCCESS) {
-                $hasErrors = true;
-            }
-        }
+        $hasErrors = $this->runSubCommands('', CommandGroup::HEALTH->value);
 
         if ($hasErrors) {
             return self::FAILURE;
