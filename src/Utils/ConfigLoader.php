@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Vix\Syntra\Utils;
 
 use Vix\Syntra\Enums\CommandGroup;
+use Vix\Syntra\Exceptions\ConfigException;
 use Vix\Syntra\Utils\ProjectInfo;
 
 class ConfigLoader
@@ -28,9 +29,19 @@ class ConfigLoader
         $projectRoot = (new ProjectInfo())->getRootPath();
         $projectConfig = rtrim($projectRoot, '/') . '/syntra.php';
 
-        $this->commands = is_readable($projectConfig)
-            ? require $projectConfig
-            : require PACKAGE_ROOT . '/syntra.php';
+        $file = is_readable($projectConfig)
+            ? $projectConfig
+            : PACKAGE_ROOT . '/syntra.php';
+
+        $config = require $file;
+
+        if (!is_array($config)) {
+            throw new ConfigException("Config file '$file' must return an array");
+        }
+
+        ConfigValidator::validate($config);
+
+        $this->commands = $config;
     }
 
     public function getCommandConfig(string $group, string $commandClass): array|bool
