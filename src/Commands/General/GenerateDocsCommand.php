@@ -55,7 +55,7 @@ class GenerateDocsCommand extends SyntraCommand
         $controllerDirOption = $this->input->getOption('controller-dir');
         $controllerDir = $rootPath . '/' . ltrim((string) ($controllerDirOption ?? 'backend/controllers'), '/');
 
-        $parser = $this->getService(Parser::class, fn (): Parser => (new ParserFactory())->create(ParserFactory::PREFER_PHP7));
+        $parser = $this->resolveService(Parser::class, fn (): Parser => (new ParserFactory())->create(ParserFactory::PREFER_PHP7));
 
         $routes = [];
 

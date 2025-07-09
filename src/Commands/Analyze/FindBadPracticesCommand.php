@@ -35,7 +35,7 @@ class FindBadPracticesCommand extends SyntraCommand
 
     public function perform(): int
     {
-        $parser = $this->getService(Parser::class, fn (): Parser => (new ParserFactory())->create(ParserFactory::PREFER_PHP7));
+        $parser = $this->resolveService(Parser::class, fn (): Parser => (new ParserFactory())->create(ParserFactory::PREFER_PHP7));
 
         $rows = [];
         $this->analyzeFiles(function (string $file) use (&$rows, $parser): void {
