@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Vix\Syntra\Exceptions;
 
-class MissingPackageException extends CommandException
+use Exception;
+
+class MissingPackageException extends Exception
 {
     public function __construct(string $package, public ?string $suggestedInstall = null)
     {

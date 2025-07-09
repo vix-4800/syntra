@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Vix\Syntra\Facades;
 
-use RuntimeException;
+use Vix\Syntra\Exceptions\NotFoundException;
 use Vix\Syntra\DI\ContainerInterface;
 
 /**
@@ -46,7 +46,7 @@ abstract class Facade
 
         if (!isset(self::$resolved[$accessor])) {
             if (self::$container === null || !self::$container->has($accessor)) {
-                throw new RuntimeException("Service '$accessor' not available for facade");
+                throw new NotFoundException("Service '$accessor' not available for facade");
             }
             self::$resolved[$accessor] = self::$container->get($accessor);
         }

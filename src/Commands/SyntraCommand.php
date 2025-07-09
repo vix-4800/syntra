@@ -14,7 +14,6 @@ use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Vix\Syntra\Enums\ProgressIndicatorType;
-use Vix\Syntra\Exceptions\CommandException;
 use Vix\Syntra\Exceptions\MissingBinaryException;
 use Vix\Syntra\Exceptions\MissingPackageException;
 use Vix\Syntra\Facades\Cache;
@@ -101,10 +100,6 @@ abstract class SyntraCommand extends Command
             return $this->handleMissingBinary($e);
         } catch (MissingPackageException $e) {
             return $this->handleMissingPackage($e);
-        } catch (CommandException $e) {
-            $this->output->error($e->getMessage());
-
-            return self::FAILURE;
         }
     }
 
