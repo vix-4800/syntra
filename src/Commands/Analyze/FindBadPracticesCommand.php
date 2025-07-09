@@ -5,21 +5,20 @@ declare(strict_types=1);
 namespace Vix\Syntra\Commands\Analyze;
 
 use PhpParser\NodeTraverser;
-use PhpParser\Parser;
-use PhpParser\ParserFactory;
 use Symfony\Component\Console\Command\Command;
-use Throwable;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Enums\ProgressIndicatorType;
 use Vix\Syntra\NodeVisitors\AssignmentInConditionVisitor;
 use Vix\Syntra\NodeVisitors\NestedTernaryVisitor;
 use Vix\Syntra\Traits\AnalyzesFilesTrait;
 use Vix\Syntra\Traits\ContainerAwareTrait;
+use Vix\Syntra\Traits\ParsesPhpFilesTrait;
 
 class FindBadPracticesCommand extends SyntraCommand
 {
     use ContainerAwareTrait;
     use AnalyzesFilesTrait;
+    use ParsesPhpFilesTrait;
 
     protected ProgressIndicatorType $progressType = ProgressIndicatorType::PROGRESS_BAR;
 
@@ -35,40 +34,24 @@ class FindBadPracticesCommand extends SyntraCommand
 
     public function perform(): int
     {
-        $parser = $this->getService(Parser::class, fn (): Parser => (new ParserFactory())->create(ParserFactory::PREFER_PHP7));
-
         $rows = [];
-        $this->analyzeFiles(function (string $file) use (&$rows, $parser): void {
-            $code = file_get_contents($file);
-            if ($code === false) {
-                return;
-            }
-
-            try {
-                $ast = $parser->parse($code);
-            } catch (Throwable) {
-                return;
-            }
-
+        $this->analyzeFiles(function (string $file) use (&$rows): void {
             $visitors = [];
-            $traverser = new NodeTraverser();
 
-            // Use visitor classes through DI
-            $visitorClasses = [
-                NestedTernaryVisitor::class,
-                AssignmentInConditionVisitor::class,
-                // ReturnThrowVisitor::class,
-            ];
+            $this->parseFile($file, function (NodeTraverser $traverser) use (&$visitors): void {
+                $visitorClasses = [
+                    NestedTernaryVisitor::class,
+                    AssignmentInConditionVisitor::class,
+                    // ReturnThrowVisitor::class,
+                ];
 
-            foreach ($visitorClasses as $visitorClass) {
-                $visitor = new $visitorClass();
-                $visitors[] = $visitor;
-                $traverser->addVisitor($visitor);
-            }
+                foreach ($visitorClasses as $visitorClass) {
+                    $visitor = new $visitorClass();
+                    $visitors[] = $visitor;
+                    $traverser->addVisitor($visitor);
+                }
+            });
 
-            $traverser->traverse($ast);
-
-            // Get findings from visitors
             foreach ($visitors as $visitor) {
                 foreach ($visitor->getResults() as $finding) {
                     $rows[] = [
