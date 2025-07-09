@@ -17,10 +17,10 @@ trait RunsExternalTool
     /**
      * Run the given tool and display progress.
      *
-     * @param ToolInterface       $tool            Tool used for binary lookup
-     * @param string[]            $args            Arguments passed to the binary
-     * @param string              $successMessage  Message shown on success
-     * @param string              $errorMessage    Message shown on failure
+     * @param ToolInterface $tool           Tool used for binary lookup
+     * @param string[]      $args           Arguments passed to the binary
+     * @param string        $successMessage Message shown on success
+     * @param string        $errorMessage   Message shown on failure
      */
     protected function runTool(ToolInterface $tool, array $args, string $successMessage, string $errorMessage): int
     {

@@ -25,5 +25,4 @@ class ReturnThrowVisitor extends NodeVisitor
 
         return null;
     }
-
 }

@@ -16,7 +16,6 @@ class EditorConfigCheckCommand extends AbstractHealthCommand
     protected string $sectionTitle = 'Checking for .editorconfig...';
     protected string $successMessage = '.editorconfig check completed.';
 
-
     protected function configure(): void
     {
         parent::configure();

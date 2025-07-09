@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Vix\Syntra\NodeVisitors;
 
 use PhpParser\Node;
-use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\Ternary;
 
 class NestedTernaryVisitor extends NodeVisitor
@@ -26,5 +25,4 @@ class NestedTernaryVisitor extends NodeVisitor
 
         return null;
     }
-
 }

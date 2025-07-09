@@ -22,4 +22,3 @@ class RectorCommandExecutorTest extends TestCase
         $this->assertSame('', $result->stderr);
     }
 }
-

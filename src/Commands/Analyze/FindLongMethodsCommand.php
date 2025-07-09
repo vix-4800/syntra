@@ -5,21 +5,20 @@ declare(strict_types=1);
 namespace Vix\Syntra\Commands\Analyze;
 
 use PhpParser\NodeTraverser;
-use PhpParser\Parser;
-use PhpParser\ParserFactory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
-use Throwable;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Enums\ProgressIndicatorType;
 use Vix\Syntra\NodeVisitors\LongMethodVisitor;
 use Vix\Syntra\Traits\AnalyzesFilesTrait;
 use Vix\Syntra\Traits\ContainerAwareTrait;
+use Vix\Syntra\Traits\ParsesPhpFilesTrait;
 
 class FindLongMethodsCommand extends SyntraCommand
 {
     use ContainerAwareTrait;
     use AnalyzesFilesTrait;
+    use ParsesPhpFilesTrait;
 
     protected ProgressIndicatorType $progressType = ProgressIndicatorType::PROGRESS_BAR;
 
@@ -36,29 +35,15 @@ class FindLongMethodsCommand extends SyntraCommand
 
     public function perform(): int
     {
-        $parser = $this->resolveService(Parser::class, fn (): Parser => (new ParserFactory())->create(ParserFactory::PREFER_PHP7));
-
         $maxLength = (int) $this->input->getOption('max');
 
         $longMethods = [];
 
-        $this->analyzeFiles(function (string $filePath) use (&$longMethods, $maxLength, $parser): void {
-            $code = file_get_contents($filePath);
-            if ($code === false) {
-                return;
-            }
-
-            try {
-                $stmts = $parser->parse($code);
-            } catch (Throwable) {
-                return;
-            }
-
-            $traverser = new NodeTraverser();
-            $visitor = new LongMethodVisitor($filePath, $maxLength, $longMethods);
-
-            $traverser->addVisitor($visitor);
-            $traverser->traverse($stmts);
+        $this->analyzeFiles(function (string $filePath) use (&$longMethods, $maxLength): void {
+            $this->parseFile($filePath, function (NodeTraverser $traverser) use (&$longMethods, $maxLength, $filePath): void {
+                $visitor = new LongMethodVisitor($filePath, $maxLength, $longMethods);
+                $traverser->addVisitor($visitor);
+            });
         });
 
         if (empty($longMethods)) {
