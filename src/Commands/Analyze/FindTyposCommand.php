@@ -11,6 +11,7 @@ use Symfony\Component\Process\ExecutableFinder;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Enums\ProgressIndicatorType;
 use Vix\Syntra\Exceptions\MissingBinaryException;
+use Vix\Syntra\Exceptions\MissingPackageException;
 use Vix\Syntra\Facades\File;
 
 class FindTyposCommand extends SyntraCommand
@@ -32,6 +33,10 @@ class FindTyposCommand extends SyntraCommand
         $finder = new ExecutableFinder();
         if ($finder->find('aspell') === null) {
             throw new MissingBinaryException('aspell');
+        }
+
+        if (!class_exists(Kernel::class)) {
+            throw new MissingPackageException('peckphp/peck', 'composer require --dev peckphp/peck');
         }
 
         $kernel = Kernel::default();
