@@ -11,12 +11,10 @@ use Vix\Syntra\Enums\ProgressIndicatorType;
 use Vix\Syntra\NodeVisitors\AssignmentInConditionVisitor;
 use Vix\Syntra\NodeVisitors\NestedTernaryVisitor;
 use Vix\Syntra\Traits\AnalyzesFilesTrait;
-use Vix\Syntra\Traits\ContainerAwareTrait;
 use Vix\Syntra\Traits\ParsesPhpFilesTrait;
 
 class FindBadPracticesCommand extends SyntraCommand
 {
-    use ContainerAwareTrait;
     use AnalyzesFilesTrait;
     use ParsesPhpFilesTrait;
 

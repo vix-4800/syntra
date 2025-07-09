@@ -11,12 +11,10 @@ use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Enums\ProgressIndicatorType;
 use Vix\Syntra\NodeVisitors\LongMethodVisitor;
 use Vix\Syntra\Traits\AnalyzesFilesTrait;
-use Vix\Syntra\Traits\ContainerAwareTrait;
 use Vix\Syntra\Traits\ParsesPhpFilesTrait;
 
 class FindLongMethodsCommand extends SyntraCommand
 {
-    use ContainerAwareTrait;
     use AnalyzesFilesTrait;
     use ParsesPhpFilesTrait;
 
