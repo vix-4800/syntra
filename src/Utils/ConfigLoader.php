@@ -31,7 +31,7 @@ class ConfigLoader
         if (is_readable($projectConfig)) {
             $this->commands = require $projectConfig;
         } else {
-            $this->commands = require PACKAGE_ROOT . '/config.php';
+            $this->commands = require PACKAGE_ROOT . '/syntra.php';
         }
     }
 
