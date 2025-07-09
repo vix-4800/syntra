@@ -30,36 +30,14 @@ trait ContainerAwareTrait
     }
 
     /**
-     * Get a service from the container with fallback
+     * Resolve a service from the container with an optional fallback
      *
      * @template T of object
      * @param  class-string<T> $id       Service identifier
-     * @param  callable|null   $fallback Function to create service if container unavailable
-     * @return T
+     * @param  callable|null  $fallback Function to create service if container unavailable
+     * @return T|mixed
      */
-    protected function getService(string $id, ?callable $fallback = null): object
-    {
-        $container = $this->getContainer();
-
-        if ($container !== null && $container->has($id)) {
-            return $container->get($id);
-        }
-
-        if ($fallback !== null) {
-            return $fallback();
-        }
-
-        throw new RuntimeException("Service '$id' not available and no fallback provided");
-    }
-
-    /**
-     * Get a named service from the container with fallback
-     *
-     * @param  string        $id       Service identifier
-     * @param  callable|null $fallback Function to create service if container unavailable
-     * @return mixed
-     */
-    protected function getNamedService(string $id, ?callable $fallback = null): mixed
+    protected function resolveService(string $id, ?callable $fallback = null): mixed
     {
         $container = $this->getContainer();
 

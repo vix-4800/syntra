@@ -36,7 +36,7 @@ class FindLongMethodsCommand extends SyntraCommand
 
     public function perform(): int
     {
-        $parser = $this->getService(Parser::class, fn (): Parser => (new ParserFactory())->create(ParserFactory::PREFER_PHP7));
+        $parser = $this->resolveService(Parser::class, fn (): Parser => (new ParserFactory())->create(ParserFactory::PREFER_PHP7));
 
         $maxLength = (int) $this->input->getOption('max');
 
