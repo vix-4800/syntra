@@ -2,28 +2,12 @@
 
 namespace Vix\Syntra\Tests\Commands;
 
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
-use Vix\Syntra\Application;
-use Vix\Syntra\Facades\File;
-use Vix\Syntra\Facades\Project;
+use Vix\Syntra\Tests\CommandTestCase;
 
-class FindLongMethodsCommandTest extends TestCase
+class FindLongMethodsCommandTest extends CommandTestCase
 {
-    private string $dir;
-
-    protected function setUp(): void
-    {
-        $this->dir = sys_get_temp_dir() . '/syntra_' . uniqid();
-        mkdir($this->dir);
-    }
-
-    protected function tearDown(): void
-    {
-        array_map('unlink', glob("$this->dir/*.php"));
-        rmdir($this->dir);
-    }
 
     public function testDetectsLongMethod(): void
     {
@@ -31,13 +15,7 @@ class FindLongMethodsCommandTest extends TestCase
         $code = "<?php\nfunction longOne() {\n$body}\n";
         file_put_contents("$this->dir/test.php", $code);
 
-        $app = new Application();
-        File::clearCache();
-        Project::setRootPath($this->dir);
-
-        $command = $app->find('analyze:find-long-methods');
-        $tester = new CommandTester($command);
-        $tester->execute([
+        $tester = $this->runCommand('analyze:find-long-methods', [
             'path' => $this->dir,
             '--no-progress' => true,
             '--max' => 3,

@@ -2,15 +2,11 @@
 
 namespace Vix\Syntra\Tests\Commands;
 
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Process\ExecutableFinder;
-use Vix\Syntra\Application;
-use Vix\Syntra\Facades\Config;
-use Vix\Syntra\Facades\File;
-use Vix\Syntra\Facades\Project;
+use Vix\Syntra\Tests\CommandTestCase;
 
-class FindTyposCommandTest extends TestCase
+class FindTyposCommandTest extends CommandTestCase
 {
     public function testDetectsTypos(): void
     {
@@ -19,24 +15,15 @@ class FindTyposCommandTest extends TestCase
             $this->markTestSkipped('Aspell not installed.');
         }
 
-        $dir = sys_get_temp_dir() . '/syntra_typo_' . uniqid();
-        mkdir($dir);
-        file_put_contents("$dir/teh_file.php", "<?php\n");
+        file_put_contents("$this->dir/teh_file.php", "<?php\n");
 
-        $app = new Application();
-        File::clearCache();
-        Config::setContainer($app->getContainer());
-        Project::setRootPath($dir);
-
-        $command = $app->find('analyze:find-typos');
-        $tester = new CommandTester($command);
-        $tester->execute(['path' => $dir, '--no-progress' => true]);
+        $tester = $this->runCommand('analyze:find-typos', [
+            'path' => $this->dir,
+            '--no-progress' => true,
+        ]);
 
         $display = $tester->getDisplay();
 
         $this->assertStringContainsString('teh', $display);
-
-        unlink("$dir/teh_file.php");
-        rmdir($dir);
     }
 }
