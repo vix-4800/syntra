@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Vix\Syntra;
 
+use Composer\InstalledVersions;
 use ReflectionClass;
 use Symfony\Component\Console\Application as SymfonyApplication;
+use Throwable;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\DI\ContainerFactory;
 use Vix\Syntra\DI\ContainerInterface;
@@ -22,11 +24,11 @@ class Application extends SymfonyApplication
     {
         if (self::$packageVersion === null) {
             // Prefer Composer installed version if available
-            if (class_exists('Composer\\InstalledVersions')) {
+            if (class_exists(InstalledVersions::class)) {
                 try {
                     /** @psalm-suppress UndefinedClass */
-                    self::$packageVersion = \Composer\InstalledVersions::getPrettyVersion('vix/syntra');
-                } catch (\Throwable $e) {
+                    self::$packageVersion = InstalledVersions::getPrettyVersion('vix/syntra');
+                } catch (Throwable) {
                     // Ignore and fallback to git
                 }
             }

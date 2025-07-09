@@ -15,8 +15,8 @@ use Vix\Syntra\Enums\ProgressIndicatorType;
 use Vix\Syntra\Facades\File;
 use Vix\Syntra\Facades\Project;
 use Vix\Syntra\NodeVisitors\DocsVisitor;
-use Vix\Syntra\Traits\ContainerAwareTrait;
 use Vix\Syntra\Traits\AnalyzesFilesTrait;
+use Vix\Syntra\Traits\ContainerAwareTrait;
 use Vix\Syntra\Utils\ProjectInfo;
 
 class GenerateDocsCommand extends SyntraCommand
@@ -59,6 +59,42 @@ class GenerateDocsCommand extends SyntraCommand
 
         $parser = $this->resolveService(Parser::class, fn (): Parser => (new ParserFactory())->create(ParserFactory::PREFER_PHP7));
 
+        $routes = $this->collectControllerRoutes($controllerDir, $parser);
+        if (empty($routes)) {
+            $this->output->warning('Controllers with action methods not found.');
+
+            return Command::SUCCESS;
+        }
+
+        $routesGrouped = [];
+        foreach ($routes as $route) {
+            [$controller, $action] = explode('/', (string) $route['route']);
+            $routesGrouped[$controller][] = [
+                'action' => $action,
+                'params' => $route['params'],
+                'desc' => $route['desc'],
+            ];
+        }
+
+        $refCounts = [];
+        if ($this->input->getOption('count-refs')) {
+            $refCounts = $this->countRouteReferences($routes, $rootPath);
+        }
+
+        $mdFile = $this->writeRoutesMarkdown("$rootPath/docs", $routesGrouped, $refCounts, 'Yii');
+
+        $this->output->success(sprintf('Routes successfully saved to %s.', $mdFile));
+
+        return Command::SUCCESS;
+    }
+
+    /**
+     * Collect action routes from controller files.
+     *
+     * @return array<int, array{route: string, desc: string, params: array<int, string>}>
+     */
+    private function collectControllerRoutes(string $controllerDir, Parser $parser): array
+    {
         $routes = [];
 
         $prevPath = $this->path;
@@ -87,78 +123,63 @@ class GenerateDocsCommand extends SyntraCommand
             $routes = array_merge($routes, $visitor->getResults());
         });
 
-        if (empty($routes)) {
-            $this->output->warning('Controllers with action methods not found.');
-            return Command::SUCCESS;
-        }
-
-        $routesGrouped = [];
-        foreach ($routes as $route) {
-            [$controller, $action] = explode('/', (string) $route['route']);
-            $routesGrouped[$controller][] = [
-                'action' => $action,
-                'params' => $route['params'],
-                'desc' => $route['desc'],
-            ];
-        }
-        $mdFile = '';
-        $refCounts = [];
-        if ($this->input->getOption('count-refs')) {
-            // Count references to each route across controllers and view files
-            $prevPath = $this->path;
-            $this->path = $rootPath;
-            $searchFiles = $this->collectFiles();
-            $this->path = $prevPath;
-            $searchFiles = array_merge(
-                $searchFiles,
-                File::collectFiles(
-                    $rootPath,
-                    ['phtml', 'twig']
-                )
-            );
-            $searchFiles = array_filter(
-                $searchFiles,
-                static fn (string $f): bool => str_contains($f, 'controllers') || str_contains($f, 'views')
-            );
-
-            $this->iterateFiles($routes, function (array $route) use ($searchFiles, &$refCounts): void {
-                $count = 0;
-                foreach ($searchFiles as $f) {
-                    $content = file_get_contents($f);
-                    if ($content === false) {
-                        continue;
-                    }
-                    $count += substr_count($content, (string) $route['route']);
-                }
-                $refCounts[(string) $route['route']] = $count;
-            });
-            $mdFile = $this->writeToMarkdown("$rootPath/docs", $routesGrouped, $refCounts, 'Yii');
-
-            $this->output->success(
-                sprintf('Routes successfully saved to %s.', $mdFile)
-            );
-        } else {
-            $mdFile = $this->writeToMarkdown("$rootPath/docs", $routesGrouped, [], 'Yii');
-
-            $this->output->success("Routes successfully saved to $mdFile");
-        }
-
-        return Command::SUCCESS;
+        return $routes;
     }
 
-    private function writeToMarkdown(string $filePath, array $routes, array $refCounts = [], string $suffix = ''): string
+    /**
+     * Count how many times each route is referenced in controllers and views.
+     *
+     * @param  array<int, array{route: string}> $routes
+     * @return array<string, int>
+     */
+    private function countRouteReferences(array $routes, string $rootPath): array
+    {
+        $prevPath = $this->path;
+        $this->path = $rootPath;
+        $searchFiles = $this->collectFiles();
+        $this->path = $prevPath;
+        $searchFiles = array_merge(
+            $searchFiles,
+            File::collectFiles(
+                $rootPath,
+                ['phtml', 'twig']
+            )
+        );
+        $searchFiles = array_filter(
+            $searchFiles,
+            static fn (string $f): bool => str_contains($f, 'controllers') || str_contains($f, 'views')
+        );
+
+        $refCounts = [];
+
+        $this->iterateFiles($routes, function (array $route) use ($searchFiles, &$refCounts): void {
+            $count = 0;
+            foreach ($searchFiles as $f) {
+                $content = file_get_contents($f);
+                if ($content === false) {
+                    continue;
+                }
+                $count += substr_count($content, (string) $route['route']);
+            }
+            $refCounts[(string) $route['route']] = $count;
+        });
+
+        return $refCounts;
+    }
+
+    private function writeRoutesMarkdown(string $filePath, array $routes, array $refCounts = [], string $suffix = ''): string
     {
         $md = '# 📘 Route documentation' . ($suffix ? " ($suffix)" : '') . "\n\n";
         ksort($routes);
 
         foreach ($routes as $controller => $actions) {
             $md .= "## `$controller`\n\n";
-            $md .= "| Method                    | Refs | Params                   | Description                                        |\n";
+            $md .= "| Method                    | Refs | Params          | Description                                        |\n";
             $md .= "|---------------------------|------|--------------------------|----------------------------------------------------|\n";
 
             foreach ($actions as $a) {
                 $method = "`{$a['action']}`";
-                $params = implode(", ", $a["params"]);
+                $params = implode(", ", $a['params']);
                 $desc = $a['desc'] ?: '';
 
                 $routeKey = $controller . '/' . $a['action'];

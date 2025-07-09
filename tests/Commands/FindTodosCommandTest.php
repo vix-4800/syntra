@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Vix\Syntra\Tests\Commands;
 
-use Symfony\Component\Console\Tester\CommandTester;
 use Vix\Syntra\Tests\CommandTestCase;
 
 class FindTodosCommandTest extends CommandTestCase
