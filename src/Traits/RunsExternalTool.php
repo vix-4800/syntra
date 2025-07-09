@@ -27,8 +27,7 @@ trait RunsExternalTool
         array $args,
         ?string $successMessage = null,
         ?string $errorMessage = null
-    ): int
-    {
+    ): int {
         $this->findBinaryTool($tool);
 
         $this->startProgress();

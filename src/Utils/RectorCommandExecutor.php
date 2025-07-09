@@ -7,10 +7,10 @@ namespace Vix\Syntra\Utils;
 use Vix\Syntra\Commands\Refactor\RectorRefactorer;
 use Vix\Syntra\DTO\ProcessResult;
 use Vix\Syntra\Enums\CommandGroup;
+use Vix\Syntra\Enums\Tool;
 use Vix\Syntra\Exceptions\MissingBinaryException;
 use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\Process;
-use Vix\Syntra\Tools\ToolEnum;
 use Vix\Syntra\Traits\HasBinaryTool;
 
 /**
@@ -38,7 +38,7 @@ class RectorCommandExecutor
             return new ProcessResult(0, '', '');
         }
 
-        $this->findBinaryTool(ToolEnum::RECTOR);
+        $this->findBinaryTool(Tool::RECTOR);
         $result = null;
 
         foreach ($rectorClasses as $rectorClass) {

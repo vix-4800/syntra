@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Vix\Syntra\Tools;
+namespace Vix\Syntra\Enums;
+
+use Vix\Syntra\Tools\ToolInterface;
 
 /**
  * List of built-in tools with their metadata.
  */
-enum ToolEnum: string implements ToolInterface
+enum Tool: string implements ToolInterface
 {
     case RECTOR = 'rector';
     case PHP_CS_FIXER = 'php-cs-fixer';

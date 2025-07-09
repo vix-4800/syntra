@@ -7,8 +7,8 @@ namespace Vix\Syntra\Commands\Refactor;
 use Vix\Syntra\Commands\SyntraRefactorCommand;
 use Vix\Syntra\Enums\CommandGroup;
 use Vix\Syntra\Enums\DangerLevel;
+use Vix\Syntra\Enums\Tool;
 use Vix\Syntra\Facades\Config;
-use Vix\Syntra\Tools\ToolEnum;
 use Vix\Syntra\Traits\RunsExternalTool;
 
 class RectorRefactorer extends SyntraRefactorCommand
@@ -28,7 +28,7 @@ class RectorRefactorer extends SyntraRefactorCommand
 
     public function perform(): int
     {
-        $tool = ToolEnum::RECTOR;
+        $tool = Tool::RECTOR;
 
         return $this->runTool(
             $tool,

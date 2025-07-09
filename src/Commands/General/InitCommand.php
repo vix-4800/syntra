@@ -8,10 +8,10 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Vix\Syntra\Commands\SyntraCommand;
+use Vix\Syntra\Enums\Tool;
 use Vix\Syntra\Facades\File;
 use Vix\Syntra\Facades\Installer;
 use Vix\Syntra\Facades\Project;
-use Vix\Syntra\Tools\ToolEnum;
 
 class InitCommand extends SyntraCommand
 {
@@ -31,10 +31,10 @@ class InitCommand extends SyntraCommand
         $helper = $this->getHelper('question');
 
         $toolObjects = [
-            ToolEnum::RECTOR,
-            ToolEnum::PHP_CS_FIXER,
-            ToolEnum::PHP_STAN,
-            ToolEnum::PHPUNIT,
+            Tool::RECTOR,
+            Tool::PHP_CS_FIXER,
+            Tool::PHP_STAN,
+            Tool::PHPUNIT,
         ];
 
         foreach ($toolObjects as $tool) {

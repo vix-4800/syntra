@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Vix\Syntra\Commands;
 
 use Exception;
+use Vix\Syntra\Enums\Tool;
 use Vix\Syntra\Facades\Rector;
-use Vix\Syntra\Tools\ToolEnum;
 
 /**
  * Generic command base for running specific Rector rules.
@@ -39,7 +39,7 @@ abstract class RectorRunnerCommand extends SyntraRefactorCommand
      */
     protected function getSuccessMessage(): string
     {
-        return ToolEnum::RECTOR->name() . ' refactoring completed.';
+        return Tool::RECTOR->name() . ' refactoring completed.';
     }
 
     /**
@@ -47,7 +47,7 @@ abstract class RectorRunnerCommand extends SyntraRefactorCommand
      */
     protected function getErrorMessage(): string
     {
-        return ToolEnum::RECTOR->name() . ' refactoring crashed.';
+        return Tool::RECTOR->name() . ' refactoring crashed.';
     }
 
     /**
