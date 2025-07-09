@@ -270,6 +270,25 @@ Execute the PHPUnit test suite locally or in CI:
 vendor/bin/phpunit
 ```
 
+### Release Workflow
+
+1. Ensure the test suite passes:
+
+   ```bash
+   vendor/bin/phpunit
+   ```
+
+2. Tag the commit with the new semantic version:
+
+   ```bash
+   git tag -a vX.Y.Z -m "Release X.Y.Z"
+   git push origin vX.Y.Z
+   ```
+
+Syntra reads its version from Composer's installed package metadata or the most
+recent Git tag. Creating a tag is all that's required to set the application
+version for releases.
+
 ## 🤝 Contributing
 
 Feel free to fork and contribute your own health checks, refactorers, or extensions via pull requests!

@@ -21,13 +21,19 @@ class Application extends SymfonyApplication
     public static function getPackageVersion(): string
     {
         if (self::$packageVersion === null) {
-            $composerFile = PACKAGE_ROOT . '/composer.json';
+            // Prefer Composer installed version if available
+            if (class_exists('Composer\\InstalledVersions')) {
+                try {
+                    /** @psalm-suppress UndefinedClass */
+                    self::$packageVersion = \Composer\InstalledVersions::getPrettyVersion('vix/syntra');
+                } catch (\Throwable $e) {
+                    // Ignore and fallback to git
+                }
+            }
 
-            if (is_readable($composerFile)) {
-                $data = json_decode((string) file_get_contents($composerFile), true);
-                self::$packageVersion = $data['version'] ?? '0.0.0';
-            } else {
-                self::$packageVersion = '0.0.0';
+            if (!self::$packageVersion) {
+                $tag = trim((string) shell_exec('git describe --tags --abbrev=0 2>/dev/null'));
+                self::$packageVersion = $tag !== '' ? $tag : '0.0.0';
             }
         }
 
