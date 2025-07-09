@@ -50,6 +50,15 @@ abstract class SyntraCommand extends Command
 
     protected string $path;
 
+    public function run(InputInterface $input, OutputInterface $output): int
+    {
+        try {
+            return parent::run($input, $output);
+        } catch (DirectoryNotFoundException $e) {
+            return $this->handleDirectoryNotFound($e);
+        }
+    }
+
     protected function configure(): void
     {
         $this
@@ -105,6 +114,8 @@ abstract class SyntraCommand extends Command
             return $this->handleMissingBinary($e);
         } catch (MissingPackageException $e) {
             return $this->handleMissingPackage($e);
+        } catch (DirectoryNotFoundException $e) {
+            return $this->handleDirectoryNotFound($e);
         } catch (CommandException $e) {
             $this->output->error($e->getMessage());
 
@@ -176,6 +187,16 @@ abstract class SyntraCommand extends Command
                 }
             }
         }
+
+        return self::FAILURE;
+    }
+
+    /**
+     * Handle DirectoryNotFoundException uniformly across commands.
+     */
+    protected function handleDirectoryNotFound(DirectoryNotFoundException $e): int
+    {
+        $this->output->error($e->getMessage());
 
         return self::FAILURE;
     }
