@@ -23,10 +23,7 @@ trait ParsesPhpFilesTrait
      */
     protected function parseFile(string $path, callable $traverserSetup): void
     {
-        $parser = $this->getService(
-            Parser::class,
-            fn (): Parser => (new ParserFactory())->create(ParserFactory::PREFER_PHP7),
-        );
+        $parser = $this->resolveService(Parser::class, fn(): Parser => (new ParserFactory())->create(ParserFactory::PREFER_PHP7));
 
         $code = file_get_contents($path);
         if ($code === false) {
