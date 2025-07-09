@@ -20,7 +20,7 @@ class ProgressIndicatorFactory
             ProgressIndicatorType::PROGRESS_BAR => new ProgressBarIndicator($output, $maxSteps),
             ProgressIndicatorType::SPINNER => new SpinnerIndicator($output),
             ProgressIndicatorType::BOUNCING => new BouncingIndicator($output),
-            ProgressIndicatorType::NONE => new NullProgressIndicator(),
+            ProgressIndicatorType::NONE => new NullProgressIndicator($output),
         };
     }
 }
