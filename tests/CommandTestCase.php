@@ -10,8 +10,8 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Symfony\Component\Console\Tester\CommandTester;
 use Vix\Syntra\Application;
-use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\Cache;
+use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\Project;
 
 abstract class CommandTestCase extends TestCase

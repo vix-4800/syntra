@@ -11,12 +11,10 @@ use Vix\Syntra\Facades\Cache;
 
 class FileHelper
 {
-
     /**
      * @var string[]
      */
     private array $changedFiles = [];
-
 
     /**
      * Returns the list of files changed by writeChanges().
