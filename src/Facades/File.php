@@ -12,8 +12,6 @@ use Vix\Syntra\Utils\FileHelper;
  * @method static string   makeRelative(string $path, string $root)
  * @method static string[] getChangedFiles()
  * @method static void     clearChangedFiles()
- * @method static void     setCacheEnabled(bool $enabled)
- * @method static void     clearCache()
  */
 class File extends Facade
 {

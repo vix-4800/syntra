@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 use Vix\Syntra\Application;
 use Vix\Syntra\Facades\Config;
-use Vix\Syntra\Facades\File;
+use Vix\Syntra\Facades\Cache;
 use Vix\Syntra\Facades\Project;
 
 abstract class CommandTestCase extends TestCase
@@ -22,7 +22,7 @@ abstract class CommandTestCase extends TestCase
         mkdir($this->dir, 0777, true);
 
         $this->app = new Application();
-        File::clearCache();
+        Cache::clearAll();
         Config::setContainer($this->app->getContainer());
         Project::setRootPath($this->dir);
     }

@@ -5,7 +5,7 @@ namespace Vix\Syntra\Tests\Commands;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 use Vix\Syntra\Application;
-use Vix\Syntra\Facades\File;
+use Vix\Syntra\Facades\Cache;
 use Vix\Syntra\Facades\Project;
 
 class DocblockRefactorerTest extends TestCase
@@ -37,7 +37,7 @@ class DocblockRefactorerTest extends TestCase
     private function runCommand(): string
     {
         $app = new Application();
-        File::clearCache();
+        Cache::clearAll();
         Project::setRootPath($this->dir);
 
         $command = $app->find('refactor:docblocks');

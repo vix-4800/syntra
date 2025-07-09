@@ -16,7 +16,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Vix\Syntra\Enums\ProgressIndicatorType;
 use Vix\Syntra\Exceptions\CommandException;
 use Vix\Syntra\Exceptions\MissingBinaryException;
-use Vix\Syntra\Facades\File;
+use Vix\Syntra\Facades\Cache;
 use Vix\Syntra\Facades\Installer;
 use Vix\Syntra\Facades\Project;
 use Vix\Syntra\ProgressIndicators\ProgressIndicatorFactory;
@@ -86,7 +86,7 @@ abstract class SyntraCommand extends Command
             $this->failOnWarning = true;
         }
 
-        File::setCacheEnabled(!$this->noCache);
+        Cache::setEnabled(!$this->noCache);
 
         $argPath = $input->getArgument('path');
         $this->path = $argPath !== null ? (string) $argPath : Project::getRootPath();

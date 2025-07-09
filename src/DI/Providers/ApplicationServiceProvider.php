@@ -12,6 +12,7 @@ use Vix\Syntra\Utils\PackageInstaller;
 use Vix\Syntra\Utils\ProcessRunner;
 use Vix\Syntra\Utils\ProjectInfo;
 use Vix\Syntra\Utils\RectorCommandExecutor;
+use Vix\Syntra\Utils\CacheStore;
 
 /**
  * Application Service Provider
@@ -25,6 +26,9 @@ class ApplicationServiceProvider implements ServiceProviderInterface
     {
         // Register ConfigLoader as singleton
         $container->singleton(ConfigLoader::class, fn (): ConfigLoader => new ConfigLoader());
+
+        // Register CacheStore as singleton
+        $container->singleton(CacheStore::class, fn (): CacheStore => new CacheStore());
 
         // Register ProcessRunner as singleton
         $container->singleton(ProcessRunner::class, fn (): ProcessRunner => new ProcessRunner());
