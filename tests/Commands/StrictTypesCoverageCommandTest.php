@@ -3,12 +3,10 @@
 namespace Vix\Syntra\Tests\Commands;
 
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Tester\CommandTester;
 use Vix\Syntra\Tests\CommandTestCase;
 
 class StrictTypesCoverageCommandTest extends CommandTestCase
 {
-
     public function testSuccessWhenAllFilesDeclareStrict(): void
     {
         file_put_contents("$this->dir/a.php", "<?php\ndeclare(strict_types=1);\n");

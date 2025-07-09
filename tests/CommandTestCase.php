@@ -2,7 +2,10 @@
 
 namespace Vix\Syntra\Tests;
 
+use FilesystemIterator;
 use PHPUnit\Framework\TestCase;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 use Symfony\Component\Console\Tester\CommandTester;
 use Vix\Syntra\Application;
 use Vix\Syntra\Facades\Config;
@@ -47,9 +50,9 @@ abstract class CommandTestCase extends TestCase
             return;
         }
 
-        $items = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS),
-            \RecursiveIteratorIterator::CHILD_FIRST
+        $items = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS),
+            RecursiveIteratorIterator::CHILD_FIRST
         );
 
         foreach ($items as $item) {

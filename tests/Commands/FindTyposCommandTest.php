@@ -2,7 +2,6 @@
 
 namespace Vix\Syntra\Tests\Commands;
 
-use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Process\ExecutableFinder;
 use Vix\Syntra\Tests\CommandTestCase;
 

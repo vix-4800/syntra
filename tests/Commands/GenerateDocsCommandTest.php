@@ -2,7 +2,6 @@
 
 namespace Vix\Syntra\Tests\Commands;
 
-use Symfony\Component\Console\Tester\CommandTester;
 use Vix\Syntra\Tests\CommandTestCase;
 
 class GenerateDocsCommandTest extends CommandTestCase
@@ -27,7 +26,6 @@ class GenerateDocsCommandTest extends CommandTestCase
 
         $this->assertMatchesRegularExpression('/\| `index`\s+\|\s+0\s+\|\s+string \$id, int \$page = 1\s+\|\s+Home page\s+\|/', $content);
         $this->assertMatchesRegularExpression('/\| `view`\s+\|\s+0\s+\|\s+\$slug\s+\|\s+\|/', $content);
-
     }
 
     public function testReferenceCountsIncluded(): void
