@@ -10,14 +10,20 @@ use Vix\Syntra\Enums\CommandGroup;
 use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\Process;
 use Vix\Syntra\Facades\Project;
-use Vix\Syntra\Tools\PhpStanTool;
+use Vix\Syntra\Tools\ToolEnum;
 use Vix\Syntra\Traits\HasBinaryTool;
 
 class PhpStanCheckCommand extends AbstractHealthCommand
 {
     use HasBinaryTool;
     protected string $sectionTitle = 'Running PHPStan...';
-    protected string $successMessage = 'PHPStan analysis completed.';
+    protected string $successMessage;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->successMessage = ToolEnum::PHP_STAN->name() . ' analysis completed.';
+    }
 
     protected function configure(): void
     {
@@ -28,7 +34,7 @@ class PhpStanCheckCommand extends AbstractHealthCommand
 
     public function runCheck(): CommandResult
     {
-        $this->findBinaryTool(new PhpStanTool());
+        $this->findBinaryTool(ToolEnum::PHP_STAN);
 
         $args = [
             'analyse',

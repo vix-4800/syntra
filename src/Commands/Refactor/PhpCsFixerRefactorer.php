@@ -7,7 +7,7 @@ namespace Vix\Syntra\Commands\Refactor;
 use Vix\Syntra\Commands\SyntraRefactorCommand;
 use Vix\Syntra\Enums\CommandGroup;
 use Vix\Syntra\Facades\Config;
-use Vix\Syntra\Tools\PhpCsFixerTool;
+use Vix\Syntra\Tools\ToolEnum;
 use Vix\Syntra\Traits\RunsExternalTool;
 
 class PhpCsFixerRefactorer extends SyntraRefactorCommand
@@ -27,15 +27,17 @@ class PhpCsFixerRefactorer extends SyntraRefactorCommand
     {
         $config = Config::getCommandOption(CommandGroup::REFACTOR->value, self::class, 'config');
 
+        $tool = ToolEnum::PHP_CS_FIXER;
+
         return $this->runTool(
-            new PhpCsFixerTool(),
+            $tool,
             [
                 'fix',
                 $this->path,
                 "--config={$config}",
             ],
-            'CS Fixer refactoring completed.',
-            'CS Fixer refactoring crashed.'
+            $tool->name() . ' refactoring completed.',
+            $tool->name() . ' refactoring crashed.'
         );
     }
 }

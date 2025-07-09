@@ -6,6 +6,8 @@ namespace Vix\Syntra\Tools;
 
 interface ToolInterface
 {
+    public function name(): string;
+
     public function binaryName(): string;
 
     public function packageName(): string;

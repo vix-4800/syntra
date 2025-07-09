@@ -11,10 +11,7 @@ use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Facades\File;
 use Vix\Syntra\Facades\Installer;
 use Vix\Syntra\Facades\Project;
-use Vix\Syntra\Tools\PhpCsFixerTool;
-use Vix\Syntra\Tools\PhpStanTool;
-use Vix\Syntra\Tools\PhpUnitTool;
-use Vix\Syntra\Tools\RectorTool;
+use Vix\Syntra\Tools\ToolEnum;
 
 class InitCommand extends SyntraCommand
 {
@@ -34,10 +31,10 @@ class InitCommand extends SyntraCommand
         $helper = $this->getHelper('question');
 
         $toolObjects = [
-            new RectorTool(),
-            new PhpCsFixerTool(),
-            new PhpStanTool(),
-            new PhpUnitTool(),
+            ToolEnum::RECTOR,
+            ToolEnum::PHP_CS_FIXER,
+            ToolEnum::PHP_STAN,
+            ToolEnum::PHPUNIT,
         ];
 
         foreach ($toolObjects as $tool) {
