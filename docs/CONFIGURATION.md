@@ -44,10 +44,10 @@ Each command can be configured using either:
 
 #### Common Command Options
 
-| Option        | Type     | Default | Description                              |
-| ------------- | -------- | ------- | ---------------------------------------- |
-| `enabled`     | `bool`   | -       | **Required**: Enable command for console |
-| `config`      | `string` | -       | Path to command-specific config file     |
+| Option    | Type     | Default | Description                              |
+| --------- | -------- | ------- | ---------------------------------------- |
+| `enabled` | `bool`   | -       | **Required**: Enable command for console |
+| `config`  | `string` | -       | Path to command-specific config file     |
 
 ## Examples
 
@@ -122,9 +122,7 @@ Refactor commands modify your code files. For production use:
 ],
 ```
 
-
 ## Migration from Separate Config Files
-
 
 ## Validation
 

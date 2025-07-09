@@ -42,7 +42,7 @@ if (!function_exists('config_path')) {
     {
         static $root = null;
         if ($root === null) {
-            $root = (new Vix\Syntra\Utils\ProjectInfo())->getRootPath();
+            $root = (new ProjectInfo())->getRootPath();
         }
 
         $candidate = rtrim($root, '/').'/config';

@@ -26,13 +26,11 @@ class ConfigLoader
     public function __construct()
     {
         $projectRoot = (new ProjectInfo())->getRootPath();
-        $projectConfig = rtrim($projectRoot, '/').'/syntra.php';
+        $projectConfig = rtrim($projectRoot, '/') . '/syntra.php';
 
-        if (is_readable($projectConfig)) {
-            $this->commands = require $projectConfig;
-        } else {
-            $this->commands = require PACKAGE_ROOT . '/syntra.php';
-        }
+        $this->commands = is_readable($projectConfig)
+            ? require $projectConfig
+            : require PACKAGE_ROOT . '/syntra.php';
     }
 
     public function getCommandConfig(string $group, string $commandClass): array|bool
