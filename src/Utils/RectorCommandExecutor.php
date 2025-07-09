@@ -8,7 +8,7 @@ use Vix\Syntra\Commands\Refactor\RectorRefactorer;
 use Vix\Syntra\DTO\ProcessResult;
 use Vix\Syntra\Enums\CommandGroup;
 use Vix\Syntra\Enums\Tool;
-use Vix\Syntra\Exceptions\MissingBinaryException;
+use Vix\Syntra\Exceptions\MissingPackageException;
 use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\Process;
 use Vix\Syntra\Traits\HasBinaryTool;
@@ -29,7 +29,7 @@ class RectorCommandExecutor
      * @return ProcessResult The result of the last executed rule. If no rules
      *                       are provided, a successful empty result is returned.
      *
-     * @throws MissingBinaryException
+     * @throws MissingPackageException
      */
     public function executeRules(string $path, array $rectorClasses, array $additionalArgs = [], ?callable $outputCallback = null): ProcessResult
     {

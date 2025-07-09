@@ -16,6 +16,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Vix\Syntra\Enums\ProgressIndicatorType;
 use Vix\Syntra\Exceptions\CommandException;
 use Vix\Syntra\Exceptions\MissingBinaryException;
+use Vix\Syntra\Exceptions\MissingPackageException;
 use Vix\Syntra\Facades\File;
 use Vix\Syntra\Facades\Installer;
 use Vix\Syntra\Facades\Project;
@@ -98,6 +99,8 @@ abstract class SyntraCommand extends Command
             return $this->perform();
         } catch (MissingBinaryException $e) {
             return $this->handleMissingBinary($e);
+        } catch (MissingPackageException $e) {
+            return $this->handleMissingPackage($e);
         } catch (CommandException $e) {
             $this->output->error($e->getMessage());
 
@@ -139,6 +142,16 @@ abstract class SyntraCommand extends Command
      * Handle MissingBinaryException uniformly across commands.
      */
     protected function handleMissingBinary(MissingBinaryException $e): int
+    {
+        $this->output->error($e->getMessage());
+
+        return self::FAILURE;
+    }
+
+    /**
+     * Handle MissingPackageException uniformly across commands.
+     */
+    protected function handleMissingPackage(MissingPackageException $e): int
     {
         $this->output->error($e->getMessage());
 

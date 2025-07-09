@@ -6,14 +6,8 @@ namespace Vix\Syntra\Exceptions;
 
 class MissingBinaryException extends CommandException
 {
-    public function __construct(string $binary, public ?string $suggestedInstall = null)
+    public function __construct(string $binary)
     {
-        $message = "'$binary' is not installed.";
-
-        if ($suggestedInstall) {
-            $message .= "\nTo install: $suggestedInstall";
-        }
-
-        parent::__construct($message);
+        parent::__construct("'$binary' is not installed.");
     }
 }
