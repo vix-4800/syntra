@@ -68,4 +68,20 @@ class ProjectInfoTest extends TestCase
         unlink("$dir/composer.json");
         rmdir($dir);
     }
+
+    public function testGetRootPathFallsBackToCwd(): void
+    {
+        $dir = sys_get_temp_dir() . '/syntra_test_' . uniqid();
+        mkdir($dir);
+        $cwd = getcwd();
+        chdir($dir);
+
+        try {
+            $info = new ProjectInfo();
+            $this->assertSame($dir, $info->getRootPath());
+        } finally {
+            chdir($cwd);
+            rmdir($dir);
+        }
+    }
 }

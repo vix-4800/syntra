@@ -28,7 +28,8 @@ class ProjectInfo
         while (!file_exists("$dir/composer.json")) {
             $parent = dirname($dir);
             if ($parent === $dir) {
-                break;
+                // Reached filesystem root without locating composer.json
+                return rtrim($cwd, '/');
             }
             $dir = $parent;
         }
