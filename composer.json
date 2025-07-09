@@ -23,6 +23,11 @@
             "role": "maintainer"
         }
     ],
+    "support": {
+        "issues": "https://github.com/vix-4800/syntra/issues",
+        "source": "https://github.com/vix-4800/syntra",
+        "docs": "https://github.com/vix-4800/syntra/blob/main/README.md"
+    },
     "require": {
         "php": "^8.2",
         "psr/container": "^2.0",
