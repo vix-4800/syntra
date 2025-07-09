@@ -34,7 +34,7 @@ trait ContainerAwareTrait
      *
      * @template T of object
      * @param  class-string<T> $id       Service identifier
-     * @param  callable|null  $fallback Function to create service if container unavailable
+     * @param  callable|null   $fallback Function to create service if container unavailable
      * @return T|mixed
      */
     protected function resolveService(string $id, ?callable $fallback = null): mixed

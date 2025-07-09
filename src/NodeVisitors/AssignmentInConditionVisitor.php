@@ -54,5 +54,4 @@ class AssignmentInConditionVisitor extends NodeVisitor
 
         return $assignments;
     }
-
 }

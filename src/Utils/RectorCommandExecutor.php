@@ -27,7 +27,7 @@ class RectorCommandExecutor
      * @param array    $additionalArgs Additional arguments to pass to Rector
      *
      * @return ProcessResult The result of the last executed rule. If no rules
-     *                        are provided, a successful empty result is returned.
+     *                       are provided, a successful empty result is returned.
      *
      * @throws MissingBinaryException
      */

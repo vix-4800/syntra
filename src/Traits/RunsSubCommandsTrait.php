@@ -11,9 +11,9 @@ trait RunsSubCommandsTrait
     /**
      * Run enabled commands filtered by namespace and/or group.
      *
-     * @param string      $namespace Part of the FQCN to filter by.
-     * @param string|null $group     Command group to filter, or null for all.
-     * @param array<string,mixed> $input Input forwarded to each command.
+     * @param string              $namespace Part of the FQCN to filter by.
+     * @param string|null         $group     Command group to filter, or null for all.
+     * @param array<string,mixed> $input     Input forwarded to each command.
      *
      * @return bool True when at least one command returned non-success.
      */
