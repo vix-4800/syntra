@@ -189,6 +189,8 @@ return [
 
 The PHPStan health check reads from `config/phpstan.neon` by default, so tweak that file to customize analysis settings.
 
+You can customize the list of debug function names or TODO tags by editing the `debug_functions` and `todo_tags` arrays for their commands in `config.php`.
+
 ## 💡 Tips & Best Practices
 
 ### Safety First
