@@ -46,5 +46,6 @@ return (new Config())
         'standardize_not_equals' => true, // Converts != to !==
 
         // 'use_arrow_functions' => true, // Use arrow functions where possible (potentially unsafe)
+        // "declare_strict_types" => true, // Force strict types declaration in all files.
     ])
     ->setUsingCache(false);

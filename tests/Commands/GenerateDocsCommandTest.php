@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Vix\Syntra\Tests\Commands;
 
 use Vix\Syntra\Tests\CommandTestCase;
