@@ -7,6 +7,7 @@ namespace Vix\Syntra\Utils;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use SplFileInfo;
+use Vix\Syntra\Exceptions\DirectoryNotFoundException;
 use Vix\Syntra\Facades\Cache;
 
 class FileHelper
@@ -43,7 +44,7 @@ class FileHelper
     public function collectFiles(string $dir, array $extensions = ['php'], array $excludeDirs = ['vendor', 'tests']): array
     {
         if (!is_dir($dir)) {
-            throw new \Vix\Syntra\Exceptions\DirectoryNotFoundException($dir);
+            throw new DirectoryNotFoundException($dir);
         }
 
         $cacheKey = md5($dir . '|' . implode(',', $extensions) . '|' . implode(',', $excludeDirs));

@@ -15,6 +15,7 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Vix\Syntra\Enums\ProgressIndicatorType;
 use Vix\Syntra\Exceptions\CommandException;
+use Vix\Syntra\Exceptions\DirectoryNotFoundException;
 use Vix\Syntra\Exceptions\MissingBinaryException;
 use Vix\Syntra\Exceptions\MissingPackageException;
 use Vix\Syntra\Facades\Cache;
@@ -91,6 +92,9 @@ abstract class SyntraCommand extends Command
 
         $argPath = $input->getArgument('path');
         $this->path = $argPath !== null ? (string) $argPath : Project::getRootPath();
+        if (!is_dir($this->path)) {
+            throw new DirectoryNotFoundException($this->path);
+        }
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
