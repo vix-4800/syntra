@@ -76,8 +76,8 @@
         "sort-packages": true
     },
     "require-dev": {
-        "phpunit/phpunit": "^10.5",
+        "peckphp/peck": "^0.1.3",
         "phpstan/phpstan": "^2.1",
-        "peckphp/peck": "^0.1.3"
+        "phpunit/phpunit": "^10.5"
     }
 }
