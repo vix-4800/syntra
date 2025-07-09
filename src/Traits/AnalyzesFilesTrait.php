@@ -33,18 +33,19 @@ trait AnalyzesFilesTrait
     }
 
     /**
-     * Iterate over the given files with progress indicators.
+     * Iterate over the given items with progress indicators.
      *
-     * @param string[]              $files
-     * @param callable(string):void $callback
+     * @template T
+     * @param array<T>              $items
+     * @param callable(T):void $callback
      */
-    protected function iterateFiles(array $files, callable $callback): void
+    protected function iterateFiles(array $items, callable $callback): void
     {
-        $this->setProgressMax(count($files));
+        $this->setProgressMax(count($items));
         $this->startProgress();
 
-        foreach ($files as $file) {
-            $callback($file);
+        foreach ($items as $item) {
+            $callback($item);
             $this->advanceProgress();
         }
 
