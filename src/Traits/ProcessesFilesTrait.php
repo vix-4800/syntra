@@ -12,6 +12,7 @@ use Vix\Syntra\Facades\File;
  */
 trait ProcessesFilesTrait
 {
+    use IteratesFilesTrait;
     /**
      * Collect files, process them with the provided callback and list changed files.
      *
@@ -21,10 +22,7 @@ trait ProcessesFilesTrait
     {
         $files = File::collectFiles($this->path);
 
-        $this->setProgressMax(count($files));
-        $this->startProgress();
-
-        foreach ($files as $filePath) {
+        $this->iterateFiles($files, function (string $filePath) use ($processor): void {
             $content = file_get_contents($filePath);
 
             $newContent = $processor($content, $filePath);
@@ -32,11 +30,7 @@ trait ProcessesFilesTrait
             if (!$this->dryRun) {
                 File::writeChanges($filePath, $content, $newContent);
             }
-
-            $this->advanceProgress();
-        }
-
-        $this->finishProgress();
+        });
 
         $changed = File::getChangedFiles();
         File::clearChangedFiles();
