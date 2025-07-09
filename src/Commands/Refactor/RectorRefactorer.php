@@ -8,13 +8,12 @@ use Vix\Syntra\Commands\SyntraRefactorCommand;
 use Vix\Syntra\Enums\CommandGroup;
 use Vix\Syntra\Enums\DangerLevel;
 use Vix\Syntra\Facades\Config;
-use Vix\Syntra\Facades\Process;
 use Vix\Syntra\Tools\RectorTool;
-use Vix\Syntra\Traits\HasBinaryTool;
+use Vix\Syntra\Traits\RunsExternalTool;
 
 class RectorRefactorer extends SyntraRefactorCommand
 {
-    use HasBinaryTool;
+    use RunsExternalTool;
 
     protected DangerLevel $dangerLevel = DangerLevel::HIGH;
 
@@ -29,33 +28,16 @@ class RectorRefactorer extends SyntraRefactorCommand
 
     public function perform(): int
     {
-        $this->findBinaryTool(new RectorTool());
-
-        $this->startProgress();
-
-        $outputCallback = function (): void {
-            $this->advanceProgress();
-        };
-
-        $result = Process::run($this->binary, [
-            'process',
-            $this->path,
-            "--config=" . Config::getCommandOption(CommandGroup::REFACTOR->value, self::class, 'config'),
-            "--clear-cache",
-        ], callback: $outputCallback);
-
-        $this->progressIndicator->setMessage(
-            $result->exitCode === 0 ? 'Success!' : 'Error!'
+        return $this->runTool(
+            new RectorTool(),
+            [
+                'process',
+                $this->path,
+                "--config=" . Config::getCommandOption(CommandGroup::REFACTOR->value, self::class, 'config'),
+                '--clear-cache',
+            ],
+            'Rector refactoring completed.',
+            'Rector refactoring crashed.'
         );
-
-        $this->finishProgress();
-
-        if ($result->exitCode === 0) {
-            $this->output->success('Rector refactoring completed.');
-        } else {
-            $this->output->error('Rector refactoring crashed.');
-        }
-
-        return $result->exitCode;
     }
 }
