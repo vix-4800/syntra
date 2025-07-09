@@ -22,8 +22,12 @@ trait RunsExternalTool
      * @param string        $successMessage Message shown on success
      * @param string        $errorMessage   Message shown on failure
      */
-    protected function runTool(ToolInterface $tool, array $args, string $successMessage, string $errorMessage): int
-    {
+    protected function runTool(
+        ToolInterface $tool,
+        array $args,
+        ?string $successMessage = null,
+        ?string $errorMessage = null
+    ): int {
         $this->findBinaryTool($tool);
 
         $this->startProgress();
@@ -37,6 +41,9 @@ trait RunsExternalTool
         $this->progressIndicator->setMessage($result->exitCode === 0 ? 'Success!' : 'Error!');
 
         $this->finishProgress();
+
+        $successMessage ??= $tool->name() . ' completed.';
+        $errorMessage ??= $tool->name() . ' crashed.';
 
         if ($result->exitCode === 0) {
             $this->output->success($successMessage);

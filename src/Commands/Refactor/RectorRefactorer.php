@@ -7,8 +7,8 @@ namespace Vix\Syntra\Commands\Refactor;
 use Vix\Syntra\Commands\SyntraRefactorCommand;
 use Vix\Syntra\Enums\CommandGroup;
 use Vix\Syntra\Enums\DangerLevel;
+use Vix\Syntra\Enums\Tool;
 use Vix\Syntra\Facades\Config;
-use Vix\Syntra\Tools\RectorTool;
 use Vix\Syntra\Traits\RunsExternalTool;
 
 class RectorRefactorer extends SyntraRefactorCommand
@@ -28,16 +28,18 @@ class RectorRefactorer extends SyntraRefactorCommand
 
     public function perform(): int
     {
+        $tool = Tool::RECTOR;
+
         return $this->runTool(
-            new RectorTool(),
+            $tool,
             [
                 'process',
                 $this->path,
                 "--config=" . Config::getCommandOption(CommandGroup::REFACTOR->value, self::class, 'config'),
                 '--clear-cache',
             ],
-            'Rector refactoring completed.',
-            'Rector refactoring crashed.'
+            $tool->name() . ' refactoring completed.',
+            $tool->name() . ' refactoring crashed.'
         );
     }
 }
