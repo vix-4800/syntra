@@ -8,6 +8,8 @@ use Symfony\Component\Console\Command\Command;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Enums\ProgressIndicatorType;
 use Vix\Syntra\Facades\File;
+use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Enums\CommandGroup;
 use Vix\Syntra\Traits\AnalyzesFilesTrait;
 
 class FindTodosCommand extends SyntraCommand
@@ -16,17 +18,6 @@ class FindTodosCommand extends SyntraCommand
 
     protected ProgressIndicatorType $progressType = ProgressIndicatorType::PROGRESS_BAR;
 
-    private const TAGS = [
-        'TODO',
-        'FIXME',
-        '@todo',
-        '@fixme',
-        '@deprecated',
-        '@note',
-        // '@see',
-        '@hack',
-        '@internal',
-    ];
 
     protected function configure(): void
     {
@@ -41,7 +32,23 @@ class FindTodosCommand extends SyntraCommand
     public function perform(): int
     {
         $matches = [];
-        $allTags = implode('|', array_map('preg_quote', self::TAGS));
+        $tags = Config::getCommandOption(
+            CommandGroup::ANALYZE->value,
+            self::class,
+            'todo_tags',
+            [
+                'TODO',
+                'FIXME',
+                '@todo',
+                '@fixme',
+                '@deprecated',
+                '@note',
+                // '@see',
+                '@hack',
+                '@internal',
+            ]
+        );
+        $allTags = implode('|', array_map('preg_quote', $tags));
         $pattern = "/(?:\/\/|#|\*|\s)\s*($allTags)\b(.*)/i";
 
         $this->analyzeFiles(function (string $filePath) use (&$matches, $pattern): void {
