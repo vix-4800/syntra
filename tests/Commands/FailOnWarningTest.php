@@ -2,16 +2,14 @@
 
 namespace Vix\Syntra\Tests\Commands;
 
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
-use Vix\Syntra\Application;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\DTO\CommandResult;
-use Vix\Syntra\Facades\Project;
+use Vix\Syntra\Tests\CommandTestCase;
 use Vix\Syntra\Traits\HandlesResultTrait;
 
-class FailOnWarningTest extends TestCase
+class FailOnWarningTest extends CommandTestCase
 {
     private function makeCommand(): SyntraCommand
     {
@@ -34,11 +32,8 @@ class FailOnWarningTest extends TestCase
 
     public function testFailOnWarningOption(): void
     {
-        $app = new Application();
-        Project::setRootPath(sys_get_temp_dir());
-
         $command = $this->makeCommand();
-        $app->add($command);
+        $this->app->add($command);
         $tester = new CommandTester($command);
 
         $tester->execute(['--fail-on-warning' => true]);
@@ -48,11 +43,8 @@ class FailOnWarningTest extends TestCase
 
     public function testCiModeFailsOnWarning(): void
     {
-        $app = new Application();
-        Project::setRootPath(sys_get_temp_dir());
-
         $command = $this->makeCommand();
-        $app->add($command);
+        $this->app->add($command);
         $tester = new CommandTester($command);
 
         $tester->execute(['--ci' => true]);

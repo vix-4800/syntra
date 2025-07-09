@@ -2,14 +2,12 @@
 
 namespace Vix\Syntra\Tests\Commands;
 
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
-use Vix\Syntra\Application;
 use Vix\Syntra\Commands\SyntraCommand;
-use Vix\Syntra\Facades\Project;
+use Vix\Syntra\Tests\CommandTestCase;
 
-class OutputFileTest extends TestCase
+class OutputFileTest extends CommandTestCase
 {
     private function makeCommand(): SyntraCommand
     {
@@ -30,11 +28,8 @@ class OutputFileTest extends TestCase
 
     public function testWritesToOutputFile(): void
     {
-        $app = new Application();
-        Project::setRootPath(sys_get_temp_dir());
-
         $command = $this->makeCommand();
-        $app->add($command);
+        $this->app->add($command);
         $tester = new CommandTester($command);
 
         $file = tempnam(sys_get_temp_dir(), 'syntra_log');

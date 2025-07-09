@@ -2,21 +2,16 @@
 
 namespace Vix\Syntra\Tests\Commands;
 
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
-use Vix\Syntra\Application;
 use Vix\Syntra\Commands\SyntraRefactorCommand;
 use Vix\Syntra\Enums\DangerLevel;
-use Vix\Syntra\Facades\Project;
+use Vix\Syntra\Tests\CommandTestCase;
 
-class DangerLevelWarningTest extends TestCase
+class DangerLevelWarningTest extends CommandTestCase
 {
     public function testWarningShownForHighDanger(): void
     {
-        $app = new Application();
-        Project::setRootPath(sys_get_temp_dir());
-
         $command = new class () extends SyntraRefactorCommand {
             protected DangerLevel $dangerLevel = DangerLevel::HIGH;
 
@@ -33,7 +28,7 @@ class DangerLevelWarningTest extends TestCase
             }
         };
 
-        $app->add($command);
+        $this->app->add($command);
         $tester = new CommandTester($command);
         $tester->execute([]);
 
