@@ -6,6 +6,7 @@ namespace Vix\Syntra\DI\Providers;
 
 use Vix\Syntra\DI\ContainerInterface;
 use Vix\Syntra\DI\ServiceProviderInterface;
+use Vix\Syntra\Utils\CacheStore;
 use Vix\Syntra\Utils\ConfigLoader;
 use Vix\Syntra\Utils\FileHelper;
 use Vix\Syntra\Utils\PackageInstaller;
@@ -25,6 +26,9 @@ class ApplicationServiceProvider implements ServiceProviderInterface
     {
         // Register ConfigLoader as singleton
         $container->singleton(ConfigLoader::class, fn (): ConfigLoader => new ConfigLoader());
+
+        // Register CacheStore as singleton
+        $container->singleton(CacheStore::class, fn (): CacheStore => new CacheStore());
 
         // Register ProcessRunner as singleton
         $container->singleton(ProcessRunner::class, fn (): ProcessRunner => new ProcessRunner());

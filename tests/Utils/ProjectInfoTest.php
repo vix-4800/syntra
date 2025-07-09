@@ -6,7 +6,7 @@ namespace Vix\Syntra\Tests\Utils;
 
 use PHPUnit\Framework\TestCase;
 use Vix\Syntra\Application;
-use Vix\Syntra\Facades\File;
+use Vix\Syntra\Facades\Cache;
 use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Utils\ProjectInfo;
 
@@ -23,7 +23,7 @@ class ProjectInfoTest extends TestCase
         ]));
 
         new Application();
-        File::clearCache();
+        Cache::clearAll();
 
         $this->assertSame(ProjectInfo::TYPE_YII, Project::detect($dir));
 
@@ -42,7 +42,7 @@ class ProjectInfoTest extends TestCase
         ]));
 
         new Application();
-        File::clearCache();
+        Cache::clearAll();
 
         $this->assertSame(ProjectInfo::TYPE_LARAVEL, Project::detect($dir));
 
@@ -61,7 +61,7 @@ class ProjectInfoTest extends TestCase
         ]));
 
         new Application();
-        File::clearCache();
+        Cache::clearAll();
 
         $this->assertSame(ProjectInfo::TYPE_UNKNOWN, Project::detect($dir));
 

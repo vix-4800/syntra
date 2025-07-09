@@ -11,7 +11,7 @@
 -   **Framework Support**: Built-in tooling for Yii (Laravel, Symfony planned).
 -   **Extensibility**: Generate and register new commands using stubs.
 -   **In-Memory Caching**: Reuses previously scanned file lists for faster repeated command execution.
--   **Cache Reset**: Call `File::clearCache()` to manually reset cached file lists when working with temporary directories or tests.
+-   **Cache Reset**: Call `Cache::clearAll()` to manually reset cached file lists when working with temporary directories or tests.
 -   **No-Cache Option**: Use `--no-cache` to disable caching for a single command run.
 -   **Facades**: Convenient static access to common services.
 -   **Progress Indicators**: Choose between spinner, progress bar, bouncing, or none via the `ProgressIndicatorType` enum.
@@ -274,16 +274,16 @@ vendor/bin/phpunit
 
 1. Ensure the test suite passes:
 
-   ```bash
-   vendor/bin/phpunit
-   ```
+    ```bash
+    vendor/bin/phpunit
+    ```
 
 2. Tag the commit with the new semantic version:
 
-   ```bash
-   git tag -a vX.Y.Z -m "Release X.Y.Z"
-   git push origin vX.Y.Z
-   ```
+    ```bash
+    git tag -a vX.Y.Z -m "Release X.Y.Z"
+    git push origin vX.Y.Z
+    ```
 
 Syntra reads its version from Composer's installed package metadata or the most
 recent Git tag. Creating a tag is all that's required to set the application

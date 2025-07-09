@@ -8,9 +8,9 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 use Vix\Syntra\Application;
 use Vix\Syntra\Commands\General\InitCommand;
+use Vix\Syntra\Facades\Cache;
 use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\Facade;
-use Vix\Syntra\Facades\File;
 use Vix\Syntra\Facades\Project;
 use Vix\Syntra\Tests\Fixtures\DummyInstaller;
 use Vix\Syntra\Utils\PackageInstaller;
@@ -20,7 +20,7 @@ class InitCommandTest extends TestCase
     private function createApp(string $dir, DummyInstaller $installer): Application
     {
         $app = new Application();
-        File::clearCache();
+        Cache::clearAll();
         Config::setContainer($app->getContainer());
         Project::setRootPath($dir);
 

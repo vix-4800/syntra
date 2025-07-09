@@ -7,37 +7,14 @@ namespace Vix\Syntra\Utils;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use SplFileInfo;
+use Vix\Syntra\Facades\Cache;
 
 class FileHelper
 {
     /**
-     * @var array<string, string[]>
-     */
-    private array $filesCache = [];
-
-    private bool $cacheEnabled = true;
-
-    /**
      * @var string[]
      */
     private array $changedFiles = [];
-
-    /**
-     * Clears the internal files cache.
-     */
-    public function clearCache(): void
-    {
-        $this->filesCache = [];
-    }
-
-    public function setCacheEnabled(bool $enabled): void
-    {
-        $this->cacheEnabled = $enabled;
-
-        if (!$enabled) {
-            $this->filesCache = [];
-        }
-    }
 
     /**
      * Returns the list of files changed by writeChanges().
@@ -66,8 +43,9 @@ class FileHelper
     public function collectFiles(string $dir, array $extensions = ['php'], array $excludeDirs = ['vendor', 'tests']): array
     {
         $cacheKey = md5($dir . '|' . implode(',', $extensions) . '|' . implode(',', $excludeDirs));
-        if ($this->cacheEnabled && isset($this->filesCache[$cacheKey])) {
-            return $this->filesCache[$cacheKey];
+        if (Cache::has($cacheKey)) {
+            /** @var string[] */
+            return Cache::get($cacheKey, []);
         }
 
         $files = [];
@@ -90,9 +68,7 @@ class FileHelper
             }
         }
 
-        if ($this->cacheEnabled) {
-            $this->filesCache[$cacheKey] = $files;
-        }
+        Cache::set($cacheKey, $files);
 
         return $files;
     }

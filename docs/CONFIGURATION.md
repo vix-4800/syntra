@@ -141,7 +141,7 @@ vendor/bin/syntra analyze:find-todos --dry-run
 1. **Regular Review**: Periodically review and update your configuration
 2. **Version Control**: Keep `syntra.php` in version control
 3. **Environment Specific**: Consider different configs for dev/staging/production
-4. **Reset File Cache**: Use `File::clearCache()` or run commands with `--no-cache` when working on temporary directories or between test runs.
+4. **Reset File Cache**: Use `Cache::clearAll()` or run commands with `--no-cache` when working on temporary directories or between test runs.
 
 ## Troubleshooting
 
