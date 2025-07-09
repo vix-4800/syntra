@@ -112,9 +112,32 @@ return [
         ],
         FindTodosCommand::class => [
             'enabled' => true,
+            'todo_tags' => [
+                'TODO',
+                'FIXME',
+                '@todo',
+                '@fixme',
+                '@deprecated',
+                '@note',
+                // '@see',
+                '@hack',
+                '@internal',
+            ],
         ],
         FindDebugCallsCommand::class => [
             'enabled' => true,
+            'debug_functions' => [
+                'var_dump',
+                'print_r',
+                'dd',
+                'dump',
+                'ray',
+                'die',
+                'exit',
+                'logger(',
+                'eval',
+                'xdebug_break',
+            ],
         ],
         FindLongMethodsCommand::class => [
             'enabled' => true,

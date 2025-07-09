@@ -8,6 +8,8 @@ use Symfony\Component\Console\Command\Command;
 use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Enums\ProgressIndicatorType;
 use Vix\Syntra\Facades\File;
+use Vix\Syntra\Facades\Config;
+use Vix\Syntra\Enums\CommandGroup;
 use Vix\Syntra\Traits\AnalyzesFilesTrait;
 
 class FindDebugCallsCommand extends SyntraCommand
@@ -16,18 +18,6 @@ class FindDebugCallsCommand extends SyntraCommand
 
     protected ProgressIndicatorType $progressType = ProgressIndicatorType::PROGRESS_BAR;
 
-    private const DEBUG_FUNCTIONS = [
-        'var_dump',
-        'print_r',
-        'dd',
-        'dump',
-        'ray',
-        'die',
-        'exit',
-        'logger(',
-        'eval',
-        'xdebug_break',
-    ];
 
     protected function configure(): void
     {
@@ -42,7 +32,24 @@ class FindDebugCallsCommand extends SyntraCommand
     public function perform(): int
     {
         $matches = [];
-        $pattern = '/(?<![\w\$])(' . implode('|', array_map('preg_quote', self::DEBUG_FUNCTIONS)) . ')\s*\(/i';
+        $debugFunctions = Config::getCommandOption(
+            CommandGroup::ANALYZE->value,
+            self::class,
+            'debug_functions',
+            [
+                'var_dump',
+                'print_r',
+                'dd',
+                'dump',
+                'ray',
+                'die',
+                'exit',
+                'logger(',
+                'eval',
+                'xdebug_break',
+            ]
+        );
+        $pattern = '/(?<![\w\$])(' . implode('|', array_map('preg_quote', $debugFunctions)) . ')\s*\(/i';
 
         $this->analyzeFiles(function (string $filePath) use (&$matches, $pattern): void {
             if (str_contains((string) $filePath, 'FindDebugCallsCommand')) {

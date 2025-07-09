@@ -16,32 +16,6 @@ class EditorConfigCheckCommand extends AbstractHealthCommand
     protected string $sectionTitle = 'Checking for .editorconfig...';
     protected string $successMessage = '.editorconfig check completed.';
 
-    private const DEFAULT_CONFIG = <<<'CFG'
-    root = true
-
-    [*]
-    charset = utf-8
-    end_of_line = lf
-    indent_size = 4
-    indent_style = space
-    insert_final_newline = true
-    trim_trailing_whitespace = true
-
-    [*.md]
-    trim_trailing_whitespace = false
-
-    [*.{yml,yaml}]
-    indent_size = 2
-
-    [docker-compose.yml]
-    indent_size = 2
-
-    [*.php]
-    indent_style = space
-    indent_size = 4
-    insert_final_newline = true
-    trim_trailing_whitespace = true
-    CFG;
 
     protected function configure(): void
     {
@@ -68,7 +42,13 @@ class EditorConfigCheckCommand extends AbstractHealthCommand
     {
         if ($result->status === CommandStatus::WARNING && $this->input->getOption('generate')) {
             $path = Project::getRootPath() . '/.editorconfig';
-            file_put_contents($path, self::DEFAULT_CONFIG . "\n");
+            $stubPath = PACKAGE_ROOT . '/stubs/editorconfig.stub';
+            if (is_file($stubPath)) {
+                $content = file_get_contents($stubPath);
+                if ($content !== false) {
+                    file_put_contents($path, $content);
+                }
+            }
             $this->output->success('.editorconfig file generated.');
             return Command::SUCCESS;
         }
