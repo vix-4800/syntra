@@ -4,6 +4,7 @@
     "type": "library",
     "license": "MIT",
     "keywords": [
+        "dev",
         "php",
         "cli",
         "health-check",
@@ -70,7 +71,9 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "config": {
-        "platform": { "php": "8.2" },
+        "platform": {
+            "php": "8.2"
+        },
         "preferred-install": "dist",
         "optimize-autoloader": true,
         "sort-packages": true
