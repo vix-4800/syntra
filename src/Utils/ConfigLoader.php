@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Vix\Syntra\Utils;
 
 use Vix\Syntra\Enums\CommandGroup;
+use Vix\Syntra\Utils\ProjectInfo;
 
 class ConfigLoader
 {
@@ -24,7 +25,14 @@ class ConfigLoader
 
     public function __construct()
     {
-        $this->commands = require PACKAGE_ROOT . '/config.php';
+        $projectRoot = (new ProjectInfo())->getRootPath();
+        $projectConfig = rtrim($projectRoot, '/').'/syntra.php';
+
+        if (is_readable($projectConfig)) {
+            $this->commands = require $projectConfig;
+        } else {
+            $this->commands = require PACKAGE_ROOT . '/config.php';
+        }
     }
 
     public function getCommandConfig(string $group, string $commandClass): array|bool

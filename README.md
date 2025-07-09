@@ -167,7 +167,7 @@ All commands support these standard options (with an optional `[path]` argument 
 
 ## 📁 Configuration
 
-Configuration is defined in PHP via `config.php`, allowing you to enable/disable commands or set options per tool. Example:
+Configuration is defined in PHP via `syntra.php`, allowing you to enable/disable commands or set options per tool. Example:
 
 The default group names are provided as enum cases in `Vix\Syntra\Enums\CommandGroup`.
 

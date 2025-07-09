@@ -56,7 +56,7 @@ class InitCommand extends SyntraCommand
 
         $projectRoot = Project::getRootPath();
         $files = [
-            'config.php',
+            'syntra.php',
             'config/php_cs_fixer.php',
             'config/phpstan.neon',
             'config/rector.php',

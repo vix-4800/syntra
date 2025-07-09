@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Symfony\Component\Process\ExecutableFinder;
+use Vix\Syntra\Utils\ProjectInfo;
 
 if (!function_exists('find_in_vendor')) {
     /**
@@ -39,6 +40,24 @@ if (!function_exists('config_path')) {
      */
     function config_path(string $file = ''): string
     {
+        static $root = null;
+        if ($root === null) {
+            $root = (new Vix\Syntra\Utils\ProjectInfo())->getRootPath();
+        }
+
+        $candidate = rtrim($root, '/').'/config';
+        if ($file !== '') {
+            $candidate .= '/' . ltrim($file, '/');
+        }
+
+        if ($file !== '' && is_readable($candidate)) {
+            return $candidate;
+        }
+
+        if ($file === '' && is_dir($candidate)) {
+            return $candidate;
+        }
+
         return $file === '' ? CONFIG_DIR : CONFIG_DIR . '/' . ltrim($file, '/');
     }
 }

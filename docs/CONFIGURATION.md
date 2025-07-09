@@ -1,10 +1,10 @@
 # Syntra Configuration Guide
 
-This document explains how to configure Syntra console commands using the unified `config.php` file.
+This document explains how to configure Syntra console commands using the unified `syntra.php` file.
 
 ## Overview
 
-Syntra uses a single configuration file (`config.php`) that controls:
+Syntra uses a single configuration file (`syntra.php`) that controls:
 
 -   **Console Access**: Which commands are available via CLI
 -   **Command Settings**: Tool-specific configurations (like config file paths)
@@ -141,7 +141,7 @@ vendor/bin/syntra analyze:find-todos --dry-run
 ## Best Practices
 
 1. **Regular Review**: Periodically review and update your configuration
-2. **Version Control**: Keep `config.php` in version control
+2. **Version Control**: Keep `syntra.php` in version control
 3. **Environment Specific**: Consider different configs for dev/staging/production
 4. **Reset File Cache**: Use `File::clearCache()` or run commands with `--no-cache` when working on temporary directories or between test runs.
 
@@ -155,5 +155,5 @@ vendor/bin/syntra analyze:find-todos --dry-run
 
 ### Configuration Not Loading
 
-1. Ensure `config.php` exists in project root
-2. Check PHP syntax with `php -l config.php`
+1. Ensure `syntra.php` exists in project root
+2. Check PHP syntax with `php -l syntra.php`

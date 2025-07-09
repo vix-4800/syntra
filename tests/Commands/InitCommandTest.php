@@ -45,14 +45,14 @@ class InitCommandTest extends TestCase
         $tester->setInputs(['no', 'no', 'no', 'no']);
         $tester->execute(['path' => $dir]);
 
-        $this->assertFileExists("$dir/config.php");
+        $this->assertFileExists("$dir/syntra.php");
         $this->assertFileExists("$dir/config/php_cs_fixer.php");
         $this->assertFileExists("$dir/config/phpstan.neon");
         $this->assertFileExists("$dir/config/rector.php");
         $this->assertFileExists("$dir/config/rector_only_custom.php");
 
         // cleanup
-        unlink("$dir/config.php");
+        unlink("$dir/syntra.php");
         unlink("$dir/config/php_cs_fixer.php");
         unlink("$dir/config/phpstan.neon");
         unlink("$dir/config/rector.php");
@@ -80,7 +80,7 @@ class InitCommandTest extends TestCase
         ], $installer->commands);
 
         // cleanup
-        unlink("$dir/config.php");
+        unlink("$dir/syntra.php");
         unlink("$dir/config/php_cs_fixer.php");
         unlink("$dir/config/phpstan.neon");
         unlink("$dir/config/rector.php");
