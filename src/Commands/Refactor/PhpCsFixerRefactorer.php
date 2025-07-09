@@ -7,13 +7,12 @@ namespace Vix\Syntra\Commands\Refactor;
 use Vix\Syntra\Commands\SyntraRefactorCommand;
 use Vix\Syntra\Enums\CommandGroup;
 use Vix\Syntra\Facades\Config;
-use Vix\Syntra\Facades\Process;
 use Vix\Syntra\Tools\PhpCsFixerTool;
-use Vix\Syntra\Traits\HasBinaryTool;
+use Vix\Syntra\Traits\RunsExternalTool;
 
 class PhpCsFixerRefactorer extends SyntraRefactorCommand
 {
-    use HasBinaryTool;
+    use RunsExternalTool;
 
     protected function configure(): void
     {
@@ -26,34 +25,17 @@ class PhpCsFixerRefactorer extends SyntraRefactorCommand
 
     public function perform(): int
     {
-        $this->findBinaryTool(new PhpCsFixerTool());
-
-        $this->startProgress();
-
-        $outputCallback = function (): void {
-            $this->advanceProgress();
-        };
-
         $config = Config::getCommandOption(CommandGroup::REFACTOR->value, self::class, 'config');
 
-        $result = Process::run($this->binary, [
-            'fix',
-            $this->path,
-            "--config={$config}",
-        ], callback: $outputCallback);
-
-        $this->progressIndicator->setMessage(
-            $result->exitCode === 0 ? 'Success!' : 'Error!'
+        return $this->runTool(
+            new PhpCsFixerTool(),
+            [
+                'fix',
+                $this->path,
+                "--config={$config}",
+            ],
+            'CS Fixer refactoring completed.',
+            'CS Fixer refactoring crashed.'
         );
-
-        $this->finishProgress();
-
-        if ($result->exitCode === 0) {
-            $this->output->success('CS Fixer refactoring completed.');
-        } else {
-            $this->output->error('CS Fixer refactoring crashed.');
-        }
-
-        return $result->exitCode;
     }
 }
