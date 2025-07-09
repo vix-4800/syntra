@@ -53,6 +53,11 @@
     "bin": [
         "bin/syntra"
     ],
+    "scripts": {
+        "test": "phpunit",
+        "phpstan": "phpstan analyse",
+        "lint": "php-cs-fixer fix --dry-run"
+    },
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require-dev": {
