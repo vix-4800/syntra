@@ -16,11 +16,13 @@ use Vix\Syntra\Facades\File;
 use Vix\Syntra\Facades\Project;
 use Vix\Syntra\NodeVisitors\DocsVisitor;
 use Vix\Syntra\Traits\ContainerAwareTrait;
+use Vix\Syntra\Traits\AnalyzesFilesTrait;
 use Vix\Syntra\Utils\ProjectInfo;
 
 class GenerateDocsCommand extends SyntraCommand
 {
     use ContainerAwareTrait;
+    use AnalyzesFilesTrait;
 
     protected ProgressIndicatorType $progressType = ProgressIndicatorType::PROGRESS_BAR;
 
@@ -59,21 +61,21 @@ class GenerateDocsCommand extends SyntraCommand
 
         $routes = [];
 
-        $files = File::collectFiles($controllerDir);
+        $prevPath = $this->path;
+        $this->path = $controllerDir;
+        $files = $this->collectFiles();
+        $this->path = $prevPath;
 
-        $this->setProgressMax(count($files));
-        $this->startProgress();
-
-        foreach ($files as $file) {
+        $this->iterateFiles($files, function (string $file) use (&$routes, $parser): void {
             $code = file_get_contents($file);
             if ($code === false) {
-                continue;
+                return;
             }
 
             try {
                 $ast = $parser->parse($code);
             } catch (Throwable) {
-                continue;
+                return;
             }
 
             $visitor = new DocsVisitor();
@@ -83,11 +85,7 @@ class GenerateDocsCommand extends SyntraCommand
             $traverser->traverse($ast);
 
             $routes = array_merge($routes, $visitor->getResults());
-
-            $this->advanceProgress();
-        }
-
-        $this->finishProgress();
+        });
 
         if (empty($routes)) {
             $this->output->warning('Controllers with action methods not found.');
@@ -107,18 +105,23 @@ class GenerateDocsCommand extends SyntraCommand
         $refCounts = [];
         if ($this->input->getOption('count-refs')) {
             // Count references to each route across controllers and view files
-            $searchFiles = File::collectFiles(
-                $rootPath,
-                ['php', 'phtml', 'twig']
+            $prevPath = $this->path;
+            $this->path = $rootPath;
+            $searchFiles = $this->collectFiles();
+            $this->path = $prevPath;
+            $searchFiles = array_merge(
+                $searchFiles,
+                File::collectFiles(
+                    $rootPath,
+                    ['phtml', 'twig']
+                )
             );
             $searchFiles = array_filter(
                 $searchFiles,
                 static fn (string $f): bool => str_contains($f, 'controllers') || str_contains($f, 'views')
             );
 
-            $this->setProgressMax(count($routes));
-            $this->startProgress();
-            foreach ($routes as $route) {
+            $this->iterateFiles($routes, function (array $route) use ($searchFiles, &$refCounts): void {
                 $count = 0;
                 foreach ($searchFiles as $f) {
                     $content = file_get_contents($f);
@@ -128,9 +131,7 @@ class GenerateDocsCommand extends SyntraCommand
                     $count += substr_count($content, (string) $route['route']);
                 }
                 $refCounts[(string) $route['route']] = $count;
-                $this->advanceProgress();
-            }
-            $this->finishProgress();
+            });
             $mdFile = $this->writeToMarkdown("$rootPath/docs", $routesGrouped, $refCounts, 'Yii');
 
             $this->output->success(
