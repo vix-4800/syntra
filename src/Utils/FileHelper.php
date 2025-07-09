@@ -42,6 +42,10 @@ class FileHelper
      */
     public function collectFiles(string $dir, array $extensions = ['php'], array $excludeDirs = ['vendor', 'tests']): array
     {
+        if (!is_dir($dir)) {
+            throw new \Vix\Syntra\Exceptions\DirectoryNotFoundException($dir);
+        }
+
         $cacheKey = md5($dir . '|' . implode(',', $extensions) . '|' . implode(',', $excludeDirs));
         if (Cache::has($cacheKey)) {
             /** @var string[] */
