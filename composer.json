@@ -58,6 +58,16 @@
     "bin": [
         "bin/syntra"
     ],
+    "scripts": {
+        "test": "phpunit",
+        "phpstan": "phpstan analyse",
+        "lint": "php-cs-fixer fix --dry-run"
+    },
+    "scripts-descriptions": {
+        "test": "Run unit tests with PHPUnit",
+        "phpstan": "Execute static analysis via PHPStan",
+        "lint": "Check coding style using PHP-CS-Fixer"
+    },
     "minimum-stability": "stable",
     "prefer-stable": true,
     "config": {
