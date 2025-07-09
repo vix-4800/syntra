@@ -1,14 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Vix\Syntra\Tests\Commands;
 
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Tester\CommandTester;
 use Vix\Syntra\Tests\CommandTestCase;
 
 class FindLongMethodsCommandTest extends CommandTestCase
 {
-
     public function testDetectsLongMethod(): void
     {
         $body = str_repeat("    \$a = 1;\n", 4);

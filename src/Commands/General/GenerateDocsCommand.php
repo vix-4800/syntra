@@ -15,8 +15,8 @@ use Vix\Syntra\Enums\ProgressIndicatorType;
 use Vix\Syntra\Facades\File;
 use Vix\Syntra\Facades\Project;
 use Vix\Syntra\NodeVisitors\DocsVisitor;
-use Vix\Syntra\Traits\ContainerAwareTrait;
 use Vix\Syntra\Traits\AnalyzesFilesTrait;
+use Vix\Syntra\Traits\ContainerAwareTrait;
 use Vix\Syntra\Utils\ProjectInfo;
 
 class GenerateDocsCommand extends SyntraCommand
@@ -129,7 +129,7 @@ class GenerateDocsCommand extends SyntraCommand
     /**
      * Count how many times each route is referenced in controllers and views.
      *
-     * @param array<int, array{route: string}> $routes
+     * @param  array<int, array{route: string}> $routes
      * @return array<string, int>
      */
     private function countRouteReferences(array $routes, string $rootPath): array
@@ -200,5 +200,4 @@ class GenerateDocsCommand extends SyntraCommand
 
         return $mdFile;
     }
-
 }

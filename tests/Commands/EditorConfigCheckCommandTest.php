@@ -1,15 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Vix\Syntra\Tests\Commands;
 
 use Symfony\Component\Console\Tester\CommandTester;
 use Vix\Syntra\Commands\Health\EditorConfigCheckCommand;
-use Vix\Syntra\Tests\CommandTestCase;
 use Vix\Syntra\DI\Container;
 use Vix\Syntra\Enums\CommandStatus;
-use Vix\Syntra\Facades\Config;
 use Vix\Syntra\Facades\Facade;
 use Vix\Syntra\Facades\Project;
+use Vix\Syntra\Tests\CommandTestCase;
 use Vix\Syntra\Utils\ConfigLoader;
 
 class EditorConfigCheckCommandTest extends CommandTestCase
