@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Vix\Syntra\Exceptions;
 
-class MissingBinaryException extends CommandException
+use Exception;
+
+class MissingBinaryException extends Exception
 {
     public function __construct(string $binary)
     {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Vix\Syntra\Traits;
 
-use RuntimeException;
+use Vix\Syntra\Exceptions\NotFoundException;
 use Vix\Syntra\Application;
 use Vix\Syntra\DI\ContainerInterface;
 
@@ -49,6 +49,6 @@ trait ContainerAwareTrait
             return $fallback();
         }
 
-        throw new RuntimeException("Service '$id' not available and no fallback provided");
+        throw new NotFoundException("Service '$id' not available and no fallback provided");
     }
 }
