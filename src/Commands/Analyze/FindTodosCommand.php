@@ -9,12 +9,11 @@ use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Enums\CommandGroup;
 use Vix\Syntra\Enums\ProgressIndicatorType;
 use Vix\Syntra\Facades\Config;
-use Vix\Syntra\Facades\File;
-use Vix\Syntra\Traits\AnalyzesFilesTrait;
+use Vix\Syntra\Commands\Analyze\PatternFinderTrait;
 
 class FindTodosCommand extends SyntraCommand
 {
-    use AnalyzesFilesTrait;
+    use PatternFinderTrait;
 
     protected ProgressIndicatorType $progressType = ProgressIndicatorType::PROGRESS_BAR;
 
@@ -47,33 +46,18 @@ class FindTodosCommand extends SyntraCommand
                 '@internal',
             ]
         );
-        $allTags = implode('|', array_map('preg_quote', $tags));
-        $pattern = "/(?:\/\/|#|\*|\s)\s*($allTags)\b(.*)/i";
+        $patterns = [];
+        foreach ($tags as $tag) {
+            $patterns[$tag] = '/(?:\\/\\/|#|\\*)\\s*' . preg_quote($tag, '/') . '\\b(.*)/i';
+        }
 
-        $this->analyzeFiles(function (string $filePath) use (&$matches, $pattern): void {
-            if (str_contains((string) $filePath, 'FindTodosCommand')) {
-                return;
-            }
-
-            $content = file_get_contents($filePath);
-            if ($content === false) {
-                return;
-            }
-
-            $relativePath = File::makeRelative($filePath, $this->path);
-
-            $lines = explode("\n", $content);
-            foreach ($lines as $lineNumber => $line) {
-                if (preg_match($pattern, $line, $m)) {
-                    $matches[] = [
-                        $relativePath,
-                        $lineNumber + 1,
-                        $m[1],
-                        trim($m[2]),
-                    ];
-                }
-            }
-        });
+        $this->scanFilesForPatterns(
+            $patterns,
+            function (string $file, int $line, string $label, string $text, array $m) use (&$matches): void {
+                $matches[] = [$file, $line, $label, trim($m[1])];
+            },
+            'FindTodosCommand'
+        );
 
         if (!$matches) {
             $this->output->success('No TODO or special tags found! Clean code 👌');
