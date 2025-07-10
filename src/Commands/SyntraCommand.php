@@ -14,6 +14,7 @@ use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Vix\Syntra\Enums\ProgressIndicatorType;
+use Vix\Syntra\Exceptions\DirectoryNotFoundException;
 use Vix\Syntra\Exceptions\MissingBinaryException;
 use Vix\Syntra\Exceptions\MissingPackageException;
 use Vix\Syntra\Facades\Cache;
@@ -47,6 +48,15 @@ abstract class SyntraCommand extends Command
     protected int $progressMax = 0;
 
     protected string $path;
+
+    public function run(InputInterface $input, OutputInterface $output): int
+    {
+        try {
+            return parent::run($input, $output);
+        } catch (DirectoryNotFoundException $e) {
+            return $this->handleDirectoryNotFound($e);
+        }
+    }
 
     protected function configure(): void
     {
@@ -90,6 +100,9 @@ abstract class SyntraCommand extends Command
 
         $argPath = $input->getArgument('path');
         $this->path = $argPath !== null ? (string) $argPath : Project::getRootPath();
+        if (!is_dir($this->path)) {
+            throw new DirectoryNotFoundException($this->path);
+        }
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -100,6 +113,8 @@ abstract class SyntraCommand extends Command
             return $this->handleMissingBinary($e);
         } catch (MissingPackageException $e) {
             return $this->handleMissingPackage($e);
+        } catch (DirectoryNotFoundException $e) {
+            return $this->handleDirectoryNotFound($e);
         }
     }
 
@@ -167,6 +182,16 @@ abstract class SyntraCommand extends Command
                 }
             }
         }
+
+        return self::FAILURE;
+    }
+
+    /**
+     * Handle DirectoryNotFoundException uniformly across commands.
+     */
+    protected function handleDirectoryNotFound(DirectoryNotFoundException $e): int
+    {
+        $this->output->error($e->getMessage());
 
         return self::FAILURE;
     }

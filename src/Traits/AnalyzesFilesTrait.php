@@ -11,6 +11,8 @@ use Vix\Syntra\Facades\File;
  */
 trait AnalyzesFilesTrait
 {
+    use IteratesFilesTrait;
+
     /**
      * Collect all PHP files within the current path.
      *
@@ -30,25 +32,5 @@ trait AnalyzesFilesTrait
     {
         $files = $this->collectFiles();
         $this->iterateFiles($files, $callback);
-    }
-
-    /**
-     * Iterate over the given items with progress indicators.
-     *
-     * @template T
-     * @param array<T>         $items
-     * @param callable(T):void $callback
-     */
-    protected function iterateFiles(array $items, callable $callback): void
-    {
-        $this->setProgressMax(count($items));
-        $this->startProgress();
-
-        foreach ($items as $item) {
-            $callback($item);
-            $this->advanceProgress();
-        }
-
-        $this->finishProgress();
     }
 }
