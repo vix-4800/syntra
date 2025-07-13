@@ -20,7 +20,7 @@
 ## 📦 Installation
 
 ```bash
-composer require vix/syntra
+composer require --dev vix/syntra
 ```
 
 ## 🚀 Quick Start
@@ -28,7 +28,7 @@ composer require vix/syntra
 1. **Install Syntra** in your PHP project:
 
     ```bash
-    composer require vix/syntra
+    composer require --dev vix/syntra
     ```
 
 2. **Initialize Syntra**:
