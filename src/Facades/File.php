@@ -7,7 +7,7 @@ namespace Vix\Syntra\Facades;
 use Vix\Syntra\Utils\FileHelper;
 
 /**
- * @method static array    collectFiles(string $dir, array $extensions = ['php'], bool $absolute = true)
+ * @method static array    collectFiles(string $path, array $extensions = ['php'], bool $absolute = true)
  * @method static void     writeChanges(string $filePath, string $oldContent, string $newContent)
  * @method static string   makeRelative(string $path, string $root)
  * @method static string[] getChangedFiles()
