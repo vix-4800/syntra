@@ -41,20 +41,26 @@ class FileHelper
      *
      * @return string[]
      */
-    public function collectFiles(string $dir, array $extensions = ['php'], array $excludeDirs = ['vendor', 'tests']): array
+    public function collectFiles(string $path, array $extensions = ['php'], array $excludeDirs = ['vendor', 'tests']): array
     {
-        if (!is_dir($dir)) {
-            throw new DirectoryNotFoundException($dir);
+        if (is_file($path)) {
+            $ext = pathinfo($path, PATHINFO_EXTENSION);
+
+            return in_array($ext, $extensions, true) ? [$path] : [];
         }
 
-        $cacheKey = md5($dir . '|' . implode(',', $extensions) . '|' . implode(',', $excludeDirs));
+        if (!is_dir($path)) {
+            throw new DirectoryNotFoundException($path);
+        }
+
+        $cacheKey = md5($path . '|' . implode(',', $extensions) . '|' . implode(',', $excludeDirs));
         if (Cache::has($cacheKey)) {
             /** @var string[] */
             return Cache::get($cacheKey, []);
         }
 
         $files = [];
-        $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir));
+        $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path));
 
         /** @var SplFileInfo $file */
         foreach ($iterator as $file) {
@@ -91,6 +97,10 @@ class FileHelper
 
     public function makeRelative(string $path, string $root): string
     {
+        if (!is_dir($root)) {
+            $root = dirname($root);
+        }
+
         $root = rtrim($root, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
         return str_starts_with($path, $root)
             ? substr($path, strlen($root))

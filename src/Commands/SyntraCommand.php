@@ -100,7 +100,7 @@ abstract class SyntraCommand extends Command
 
         $argPath = $input->getArgument('path');
         $this->path = $argPath !== null ? (string) $argPath : Project::getRootPath();
-        if (!is_dir($this->path)) {
+        if (!is_dir($this->path) && !is_file($this->path)) {
             throw new DirectoryNotFoundException($this->path);
         }
     }

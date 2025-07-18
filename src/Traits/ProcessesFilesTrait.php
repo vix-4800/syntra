@@ -37,8 +37,9 @@ trait ProcessesFilesTrait
 
         if ($changed) {
             $this->output->section('Changed files');
+            $root = is_file($this->path) ? dirname($this->path) : $this->path;
             $list = array_map(
-                fn (string $f): string => File::makeRelative($f, $this->path),
+                fn (string $f): string => File::makeRelative($f, $root),
                 $changed,
             );
             $this->listing($list);
