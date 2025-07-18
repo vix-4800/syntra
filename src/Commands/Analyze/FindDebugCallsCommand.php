@@ -9,12 +9,11 @@ use Vix\Syntra\Commands\SyntraCommand;
 use Vix\Syntra\Enums\CommandGroup;
 use Vix\Syntra\Enums\ProgressIndicatorType;
 use Vix\Syntra\Facades\Config;
-use Vix\Syntra\Facades\File;
-use Vix\Syntra\Traits\AnalyzesFilesTrait;
+use Vix\Syntra\Commands\Analyze\PatternFinderTrait;
 
 class FindDebugCallsCommand extends SyntraCommand
 {
-    use AnalyzesFilesTrait;
+    use PatternFinderTrait;
 
     protected ProgressIndicatorType $progressType = ProgressIndicatorType::PROGRESS_BAR;
 
@@ -48,32 +47,18 @@ class FindDebugCallsCommand extends SyntraCommand
                 'xdebug_break',
             ]
         );
-        $pattern = '/(?<![\w\$])(' . implode('|', array_map('preg_quote', $debugFunctions)) . ')\s*\(/i';
+        $patterns = [];
+        foreach ($debugFunctions as $fn) {
+            $patterns[$fn . '()'] = '/(?<![\\w\\$])' . preg_quote($fn, '/') . '\\s*\\(/i';
+        }
 
-        $this->analyzeFiles(function (string $filePath) use (&$matches, $pattern): void {
-            if (str_contains((string) $filePath, 'FindDebugCallsCommand')) {
-                return;
-            }
-
-            $content = file_get_contents($filePath);
-            if ($content === false) {
-                return;
-            }
-
-            $relativePath = File::makeRelative($filePath, $this->path);
-
-            $lines = explode("\n", $content);
-            foreach ($lines as $lineNumber => $line) {
-                if (preg_match($pattern, $line, $fnMatch)) {
-                    $matches[] = [
-                        $relativePath,
-                        $lineNumber + 1,
-                        "$fnMatch[1]()",
-                        trim($line),
-                    ];
-                }
-            }
-        });
+        $this->scanFilesForPatterns(
+            $patterns,
+            function (string $file, int $line, string $label, string $text) use (&$matches): void {
+                $matches[] = [$file, $line, $label, trim($text)];
+            },
+            'FindDebugCallsCommand'
+        );
 
         if (!$matches) {
             $this->output->success('No debug calls or comments found! Code is clean 👌');
