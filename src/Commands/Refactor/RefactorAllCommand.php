@@ -45,7 +45,11 @@ class RefactorAllCommand extends SyntraRefactorCommand
 
     public function perform(): int
     {
-        $hasErrors = $this->runSubCommands('\\Commands\\Refactor\\');
+        $hasErrors = $this->runSubCommands(
+            '\\Commands\\Refactor\\',
+            null,
+            $this->getForwardOptions()
+        );
 
         if ($this->runFramework) {
             $type = Project::detect(Project::getRootPath());
@@ -75,7 +79,9 @@ class RefactorAllCommand extends SyntraRefactorCommand
      */
     private function getForwardOptions(): array
     {
-        $opts = [];
+        $opts = [
+            'path' => $this->path,
+        ];
         if ($this->dryRun) {
             $opts['--dry-run'] = true;
         }
